@@ -1,0 +1,72 @@
+<div id="content">
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                <a href="{:U('search/settatclassadd')}" class="btn btn-primary btn-sm" style="float:right">增加推荐</a>
+                <form >
+                    <div class="widget-content nopadding">
+                        <table id="accusation_table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="text-align:center">编号</th>
+                                <th style="text-align:center">名称</th>
+                                <th style="text-align:center">展示时间</th>
+                                <th style="text-align: center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="vo">
+                                <tr class="gradeX">
+                                    <td style="text-align:center">{$vo.id}</td>
+                                    <td style="text-align:center">{$vo.name}</td>
+                                    <td style="text-align:center">
+                                        {$vo['valid_begin']|date='Y-m-d H:i:s',###} 至 {$vo['valid_end']|date='Y-m-d H:i:s',###}
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a class="btn btn-w-m btn-danger" href="{:U('search/settatclassadd',array('id'=>$vo['id']))}">编辑</a>
+                                        <a class="btn btn-primary btn-sm delhost" href="javascript:void(0)" va="{$vo['id']}">删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </form>
+
+
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('.delhost').click(function(){
+            var _this = $(this);
+            var id = $(this).attr('va');
+            layer.confirm('确定要删除么？',function(){
+                $.post("{:U('search/delsettatclass')}",{id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.msg('删除成功！');
+                    }else{
+                        layer.msg('删除失败！');
+                    }
+                });
+            });
+        });
+    });
+</script>
+ 

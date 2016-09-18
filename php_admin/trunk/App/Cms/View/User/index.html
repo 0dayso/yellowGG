@@ -1,0 +1,180 @@
+ 
+<div id="content">
+    
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                <div style="clear:both"></div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-user fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$userCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-car fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$userCarPass}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-file-video-o fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$userVideoPass}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-road fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$pushUserCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-male fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$numwm.mnum}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row vertical-align">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-female fa-3x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <h2 class="font-bold">{$numwm.wnum}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div>
+                    <form class="form-horizontal clearfix" id="form-search">
+                        <div class="controls"  > 
+                            <select  id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value='uid'>按初见号</option>
+                                <option value='nickname'>按用户名</option>
+                                <option value='phone'>按电话号</option>
+                                <option value='sex_male'>男性用户</option>
+                                <option value='sex_female'>女性用户</option>
+                                <option value='verify_video_pass'>视频认证通过</option>
+                                <option value='verify_video_fail'>视频认证失败</option>
+                                <option value='verify_car_pass'>车辆认证通过</option>
+                                <option value='verify_car_fail'>车辆认证失败</option>
+                            </select>
+                            <input type="hidden" name="menu" value="{$menu}">
+                            <input type="hidden" name="type" value="{$type}">
+                            <div class="col-md-2"><input type="text" name="keyword" id="form-search-key" class="form-control"></div> 
+                            <input type="submit" value="搜索" class="btn btn-primary btn-sm">
+                            <!-- 男女比例：{$numwm.bl}:1 -->
+                            　　<!-- 今天活跃用户数（含注册用户）：<a style="color:#ff0000" >{$online['now']}</a>
+                            　　昨天活跃用户数（含注册用户）：<a style="color:#ff0000" >{$online['yes']}</a> -->
+                        </div>
+                    </form>
+                </div>
+
+                <!-- <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <button type="button" class="btn btn-w-m btn-danger">注:红色为地推帐号</button>
+                </div> -->
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="text-align:center">用户ID</th>
+                            <th style="text-align:center">用户昵称</th>
+                            <th style="text-align:center">电话号码</th>
+                            <th style="text-align:center">性别</th>
+                            <th style="text-align:center">注册时间</th>
+                            <th style="text-align:center">最后登录时间</th>
+                            <!--<th>出生日期</th>-->
+                            <!--<th>星座</th>-->
+                            <th style="text-align:center">视频/车辆</th>
+                            <th style="text-align:center">相册</th>
+                            <th style="text-align:center">标签</th>
+                            <th style="text-align:center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <if condition="$vo.status EQ 2">
+                                    <td style="text-align: center;color: #ff0000">
+                                        {$vo.nickname}
+                                    </td>
+                                <elseif condition="$vo.status EQ 3" />
+                                    <td style="text-align: center;color:blue">
+                                        {$vo.nickname}
+                                    </td>
+                                <else />
+                                    <td style="text-align: center">
+                                        {$vo.nickname}
+                                    </td>
+                                </if>
+                                <td style="text-align:center">{$vo.phone}</td>
+                                <td style="text-align:center"><?php $sex = $vo['sex']; ?>{$Think.config.USER_SEX_IS.$sex}</td>
+                                <td style="text-align:center">{$vo.reg_time|date="Y-m-d",###}</td>
+                                <td style="text-align:center">{$vo.update_time|date="Y-m-d",###}</td>
+                                <!--<td style="text-align:center">{$vo.birthday}</td>-->
+                                <!--<td style="text-align:center">{$vo.constellation}</td>-->
+                                <td style="text-align:center">
+                                    <?php $video_y = $vo['video_verify']; ?>{$Think.config.VIDEO_RZSTATUS.$video_y} /
+                                    <?php $car_y   = $vo['car_verify']; ?>{$Think.config.car_RZSTATUS.$car_y}
+                                </td>
+                                <td style="text-align:center">{$vo.img_num}</td>
+                                <td style="text-align:center">
+                                    <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid'],'tag'=>'show'))}"  target="_blank" >{$vo.taginfo}</a></td>
+                                <td style="text-align:center">
+                                    <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid']))}" class="btn btn-primary btn-mini" target="_blank" >查看资料</a>
+
+                                </td>
+
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div> 

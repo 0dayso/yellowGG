@@ -1,0 +1,90 @@
+  
+<div id="content">
+     
+    <!--end-main-container-part-->
+    
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <form class="form-horizontal" id="form-search" style="width:500px;float:left">
+                        <div class="controls"> 
+                            <input type="text" name="keyword" id="form-search-key"  class="form-control" style="width:100px;float:left">
+                            &nbsp;<input type="submit" value="搜索" class="btn btn-primary btn-sm">
+                        </div>
+                    </form>
+                    <div class="btn btn-primary btn-mini mod-smg" style="float:right;margin-top:10px" id="add_mg">添加敏感词</div>
+                </div>
+
+                <div class="widget-title" style="clear:both"> 
+                    
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>敏感词</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.id}</td>
+                                <td style="text-align:center">{$vo.word}</td>
+                                <td style="text-align:center">
+                                    <a href="javascript:void(0)" mid="{$vo['id']}" title="{$vo['word']}" va="{:U('content_manage/mod_sensitive/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini mod-smg">修改</a>
+                                    <a href="{:U('content_manage/del_sensitive/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini" >删除</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+ 
+<script type="text/javascript" src="/Public/layer/layer.min.js"></script>
+<!--end-Footer-part-->
+<script type="text/javascript">
+    $(function(){
+        layer.use('extend/layer.ext.js');
+        $('.mod-smg').click(function(){
+            var url    = $(this).attr('va');
+            var title  = $(this).attr('title');
+            var id     = $(this).attr('mid');
+           
+            layer.prompt({title:"修改敏感词",val:title}, function(title){
+                $.post(url,{id:id,word:title},function(data){
+                    if(data==1){
+                        window.location.reload();
+                    }
+                });
+                
+            });
+        });
+
+        $('#add_mg').click(function(){
+            layer.prompt({title:"添加敏感词"}, function(title){
+                $.post("{:U('content_manage/add_sensitive')}",{word:title},function(data){
+                    if(data==1){
+                        window.location.reload();
+                    }
+                }); 
+                
+            });
+        });
+
+    });
+</script>
+ 

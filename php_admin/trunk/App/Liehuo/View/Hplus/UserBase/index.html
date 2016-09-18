@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="clearfix">
+            <form action="{:U()}" method="GET" class="filter form-inline pull-left">
+              <input type="hidden" name="act" value="filter">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">时间范围 <i class="caret"></i></button>
+                  <ul class="dropdown-menu date-time-ranges"></ul>
+                </div>
+                <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+                <span class="input-group-addon">到</span>
+                <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+              </div>
+              <div class="form-group">
+                <select name="type" class="form-control">
+                  <option value="">用户类型</option>
+<volist name="data['user_types']" id="v">
+                  <option value="{$key}"<php>echo $_REQUEST['type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                  <option value="-1"<php>echo $_REQUEST['type'] == '-1' ? ' selected' : '';</php>>付费用户</option>
+                  <option value="has_video"<php>echo $_REQUEST['type'] == 'has_video' ? ' selected' : '';</php>>有视频</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="sex" class="form-control">
+                  <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="score_range" class="form-control">
+                  <option value="">分值</option>
+                  <option value="9"<php>echo $_REQUEST['score_range'] == '9' ? ' selected' : '';</php>>9分+</option>
+                  <option value="8"<php>echo $_REQUEST['score_range'] == '8' ? ' selected' : '';</php>>8分</option>
+                  <option value="7"<php>echo $_REQUEST['score_range'] == '7' ? ' selected' : '';</php>>7分</option>
+                  <option value="6"<php>echo $_REQUEST['score_range'] == '6' ? ' selected' : '';</php>>6分</option>
+                  <option value="5"<php>echo $_REQUEST['score_range'] == '5' ? ' selected' : '';</php>>5分</option>
+                  <option value="0"<php>echo $_REQUEST['score_range'] == '0' ? ' selected' : '';</php>>违规</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="province" class="form-control">
+                  <option value="">省份</option>
+<php>
+$arr = D('LocationBase')->provinces ?: [];
+</php>
+<volist name="arr" id="v">
+                  <option value="{$v}"<php>echo $_REQUEST['province'] == (string)$v ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="order" class="form-control">
+                  <option value="">排序</option>
+                  <option value="uid"<php>echo $_REQUEST['order'] == 'uid' ? ' selected' : '';</php>>用户ID</option>
+                  <option value="score"<php>echo $_REQUEST['order'] == 'score' ? ' selected' : '';</php>>分值评级</option>
+                  <option value="expense"<php>echo $_REQUEST['order'] == 'expense' ? ' selected' : '';</php>>消费金额</option>
+                  <option value="balance"<php>echo $_REQUEST['order'] == 'balance' ? ' selected' : '';</php>>账户余额</option>
+                  <option value="login_time"<php>echo $_REQUEST['order'] == 'login_time' ? ' selected' : '';</php>>登陆时间</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-white dropdown-toggle dropdown-hover" data-toggle="dropdown">
+                    资料完善度 <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_desc" value="1"<php>echo $_REQUEST['has_desc'] == '1' ? 'checked' : '';</php>> 个人简介</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_home" value="1"<php>echo $_REQUEST['has_home'] == '1' ? 'checked' : '';</php>> 家乡城市</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_job_haunt" value="1"<php>echo $_REQUEST['has_job_haunt'] == '1' ? 'checked' : '';</php>> 职业/出没地</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_interest" value="1"<php>echo $_REQUEST['has_interest'] == '1' ? 'checked' : '';</php>> 兴趣</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_character" value="1"<php>echo $_REQUEST['has_character'] == '1' ? 'checked' : '';</php>> 性格</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_any_one" value="1"<php>echo $_REQUEST['has_any_one'] == '1' ? 'checked' : '';</php>> 任何一项</label></a></li>
+                    <li><a><label class="checkbox"><input type="checkbox" name="has_all_info" value="0"<php>echo $_REQUEST['has_all_info'] == '0' ? 'checked' : '';</php>> 没有资料</label></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <select name="search_field" class="form-control">
+                  <option value="">模糊搜索</option>
+                  <option value="uid"<php>echo $_REQUEST['search_field'] == 'uid' ? ' selected' : '';</php>>用户ID</option>
+                  <option value="phone"<php>echo $_REQUEST['search_field'] == 'phone' || !$_REQUEST['search_field'] ? ' selected' : '';</php>>手机号</option>
+                  <!--option value="nickname"<php>echo $_REQUEST['search_field'] == 'nickname' ? ' selected' : '';</php>>用户昵称</option-->
+                  <option value="description"<php>echo $_REQUEST['search_field'] == 'description' ? ' selected' : '';</php>>个人简介</option>
+                  <option value="pkg_channel"<php>echo $_REQUEST['search_field'] == 'pkg_channel' ? ' selected' : '';</php>>渠道号</option>
+                  <option value="device"<php>echo $_REQUEST['search_field'] == 'device' ? ' selected' : '';</php>>设备类型</option>
+                  <option value="device_model"<php>echo $_REQUEST['search_field'] == 'device_model' ? ' selected' : '';</php>>手机型号</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+              </div>
+              <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <div class="pull-right">
+              <!--a href="{:U('avatar_list?filter=scored')}" class="btn btn-success">打分记录</a-->
+<if condition="$_REQUEST['type'] == '1'">
+              <a href="{:U('virtual_users')}" class="btn btn-success">新增运营账号</a>
+              <a href="{:U('virtual_renew')}" class="btn btn-success">更新运营账号</a>
+</if>
+              <a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success">导出</a>
+              <div class="btn-group">
+                <span class="btn btn-white">日活：{$data['cnt_active']}</span>
+                <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th>用户ID</th>
+                  <th>用户昵称</th>
+                  <th>电话号码</th>
+                  <th>性别</th>
+                  <th>用户类型</th>
+                  <th>照片/视频数</th>
+                  <th>分数</th>
+                  <th>消费金额</th>
+                  <th>最后活跃</th>
+                  <th>注册时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+$type_css = 'default';
+$v['type'] == 1 && $type_css = 'success';
+$v['type'] == 2 && $type_css = 'danger';
+$v['type'] == 3 && $type_css = 'warning';
+$v['type'] == 4 && $type_css = 'primary';
+$alb = json_decode($v['album'],true) ?: [];
+</php>
+                <tr class="gradeX">
+                  <td>
+                    <span class="popover-avatar">{$v['uid']}</span>
+                    <b class="label label-danger">{:boolval($v['vip_level'] && $v['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$v['glory_grade'] ?: ''}</b>
+                  </td>
+                  <td title="{$v['nickname']}">
+                    <div class="td-content popover-hover">{$v['nickname_html'] ?: $v['nickname']}</div>
+                  </td>
+                  <td>
+<if condition="$v['phone']">{$v['phone']}</if>
+<if condition="$v['qq_open_id']">&nbsp;<i class="fa fa-2x fa-qq" style="color:#1BE;"></i></if>
+<if condition="$v['wx_open_id']">&nbsp;<i class="fa fa-2x fa-weixin" style="color:#0A0;"></i></if>
+                  </td>
+                  <td>{$Think.config.USER_SEX_IS.$sex}</td>
+                  <td><b class="label label-{$type_css}">{$data['user_types'][$v['type']]}</b></td>
+                  <td>
+                    <a href="{:U('view?uid='.$v['uid'].'&tab=tab-user-feed')}" target="_blank" class="label label-default">{:count($alb)}</a>
+                    <a href="{:U('view?uid='.$v['uid'].'&tab=tab-user-feed')}" target="_blank" class="label label-success">{:$ResourceModel->get_video_num($alb)}</a>
+                  </td>
+                  <td>{$v['score'] >= 0 ? (int)$v['score'] : '-'}</td>
+                  <td>{$v['total_charge'] ?: $v['total_expense'] ?: '-'}</td>
+                  <td>{$v['active_time'] ? date('Y-m-d H:i:s',$v['active_time']) : ($v['update_time'] ? date('Y-m-d H:i:s',$v['update_time']) : '-')}</td>
+                  <td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td>
+                  <td>
+                    <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-mini">查看资料</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

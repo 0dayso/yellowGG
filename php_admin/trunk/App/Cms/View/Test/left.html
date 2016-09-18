@@ -1,0 +1,25 @@
+<div id="sidebar">
+    <ul>
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'test'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>验证码管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'test'">style="display:block"</if>>
+        <li><a href="{:U('Test/user_verify_code')}">查看用户验证码</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'test'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>客服重复测试</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'test'">style="display:block"</if>>
+        <li><a href="{:U('Test/clear_test_data')}">重置测试数据</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'mass_data_test'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>批量用户测试</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'mass_data_test'">style="display:block"</if>>
+        <li><a href="{:U('MassDataTest/index')}">重置测试数据</a></li>
+        </ul>
+        </li>
+
+    </ul>
+</div>

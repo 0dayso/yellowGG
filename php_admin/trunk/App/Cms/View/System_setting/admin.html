@@ -1,0 +1,141 @@
+ 
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <ul class="inline">
+                        <li>
+                            <div>
+                                <form class="form-search">
+                                    <select name="search" id="search-type" class="form-control m-b" style="width:110px;float:left">
+                                        <option value="1">按aid</option>
+                                        <option value="2">按管理员</option>
+                                        <option value="3">按管理员组</option>
+                                    </select>
+                                    <div class="col-md-3"><input type="text" name="keyword" class="form-control" ></div> 
+                                    <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+                                </form>
+                            </div>
+                        </li>
+                        <li style="width:31%">
+                            <div>
+                                <form class="form-horizontal" id="add-admin" onsubmit="return false">
+                                    <div class="controls">
+                                        <div style="float:left;line-height:30px">管理员加组：</div>
+                                        <select id="select-admin" name="select-admin" class="form-control m-b" style="width:140px;float:left">
+                                            <option>请选择管理员</option>
+                                            <volist name="admin" id="vo">
+                                                <option value="{$vo.aid}">{$vo.nickname}</option>
+                                            </volist>
+                                        </select>
+
+                                        <select id="select-group" name="select-group" class="form-control m-b" style="width:150px;float:left">
+                                            <option>请选择管理员组</option>
+                                            <volist name="group" id="vo">
+                                                <option class="text" value="{$vo.group_id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>
+                                        <input type="submit" class="btn btn-primary btn-sm" value="添加" style="margin-left:4px" />
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <form class="form-horizontal">
+                                    <div class="controls"> 
+                                        <a href="{:U('SystemSetting/create_admin/')}" class="btn btn-primary btn-mini">创建管理员</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <form>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>aid</th>
+                                <th>管理员</th>
+                                <th>email</th>
+                                <th>管理员组</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="vo">
+                                <tr class="grade-X ">
+                                    <td style="text-align: center">{$vo.aid}</td>
+                                    <td style="text-align: center">{$vo.nickname}</td>
+                                    <td style="text-align: center">{$vo.email}</td>
+                                    <td style="text-align: left" >{$vo.group_name}</td>
+                                    <td style="text-align: center">
+                                        <a href="javascript:void(0)" class="btn btn-primary btn-mini gchange{$vo.aid}">修改</a>
+                                        <a link="{:U('SystemSetting/delete_admin/',array('aid'=>$vo['aid']))}" href="javascript:void(0)" name="管理员" class="del btn btn-primary btn-mini" >删除管理员</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pagination alternate">
+                <ul>
+                    <li style="text-align: center;color: #0000ff">{$page}</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div> 
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script>
+    $(function(){
+        $('#add-admin').on('submit',function(){
+            var aid=$('#select-admin').val();
+            var group_id=$('#select-group').val();
+
+            location.href="{:U('SystemSetting/add_admin')}?aid="+aid+"&group_id="+group_id;
+        });
+
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            BootstrapDialog.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?',function(action){
+                if(action){
+                    top.window.location.href=delLink;
+                }
+            });
+            return false;
+        });
+
+        $('.glsid').click(function(){
+            var u    = $(this).attr('u');
+            var str  = '';
+            $('.group-in'+u).each(function(i){
+                if( $('.group-in'+u).eq(i).prop('checked') == false ){
+                    str += $('.group-in'+u).eq(i).val()+',';
+                }   
+            });
+            if(str.substr(0,str.length-1) !=''){
+                $('.gchange'+u).attr('href',"{:U('SystemSetting/delete_admin_permission/')}"+'/aid/'+u+'/group_id/'+str.substr(0,str.length-1));
+            }
+        });
+
+        $('.btn-mini').click(function(){
+            if($(this).attr('href') == 'javascript:void(0)' ){
+                layer.alert('请选择权限！');
+            }
+        });
+
+    });
+
+</script> 

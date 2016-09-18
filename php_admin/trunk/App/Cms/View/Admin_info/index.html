@@ -1,0 +1,114 @@
+ 
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-title">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab1" onclick="showAdminInfo()">管理员资料</a></li>
+                    <li><a data-toggle="tab" href="#tab2" onclick="showAdminWorking()">上下班打卡</a></li>
+                    <li><a data-toggle="tab" href="#tab3" onclick="showActionLog()">操作记录</a></li>
+                </ul>
+            </div>
+
+            <div class="widget-content">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="tab1">
+                        <include file="Admin_info:admin_info" />
+                    </div>
+
+                    <div class="tab-pane fade in active" id="tab2">
+                        <include file="Admin_info:admin_working" />
+                    </div>
+
+                    <div class="tab-pane fade" id="tab3">
+                        <include file="Admin_info:admin_log" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script>
+    function showAdminInfo() {
+        $('.AdminInfo').show();
+    }
+    function showAdminWorking() {
+        $('.AdminWorking').show();
+        $('.AdminLog').hide();
+        $('.AdminInfo').hide();
+    }
+    function showActionLog() {
+        $('.AdminLog').show();
+        $('.AdminWorking').hide();
+        $('.AdminInfo').hide();
+    }
+
+    $(function(){
+        showAdminInfo();
+
+        $("#password").submit(function() {
+            var init_pwd = $('#init_pwd').val();
+            var change_pwd_first   = $('#change_pwd_first').val();
+            var change_pwd_confirm = $('#change_pwd_confirm').val();
+            confirm('确定要修改密码吗');
+
+            $.ajax({
+                url: "__CONTROLLER__/change_password",
+                type : "post",
+                data :{init_pwd:init_pwd,change_pwd_first:change_pwd_first,change_pwd_confirm:change_pwd_confirm},
+                success : function(data) {
+                    if(data.info=='操作成功'){
+                        bootbox.alert(data.info);
+                        commonAjaxSubmit("{:U('AdminInfo/index')}",'#password');
+                        /*location.href="{:U('AdminInfo/index')}";
+                        return false;*/
+                    }
+                    else{
+                        bootbox.alert(data.info);
+                        commonAjaxSubmit('','#confirm');
+                    }
+                },
+                error: function(data){
+                    if(data.info=='操作成功'){
+                        bootbox.alert('修改成功');
+                        return false;
+                    }
+                    commonAjaxSubmit('','#loginform');
+                }
+            });
+        });
+
+        $("#working").submit(function() {
+            var start_working   = $('#start_working').val();
+            var close_working   = $('#close_working').val();
+
+            $.ajax({
+                url: "__CONTROLLER__/check_on_work",
+                type : "post",
+                data :{start_working:start_working,close_working:close_working},
+                success : function(data) {
+                    if(data.info=='操作成功'){
+                        /*bootbox.alert(data.info);
+                        commonAjaxSubmit("{:U('AdminInfo/index')}",'#working');*/
+                        location.href="{:U('AdminInfo/index')}";
+                        //return false;
+                    }
+                    else{
+                        bootbox.alert(data.info);
+                        commonAjaxSubmit('','#confirm');
+                    }
+                },
+                error: function(data){
+                    if(data.info=='操作成功'){
+                        bootbox.alert('修改成功');
+                        return false;
+                    }
+                    commonAjaxSubmit('','#loginform');
+                }
+            });
+        });
+    });
+</script>
+ 

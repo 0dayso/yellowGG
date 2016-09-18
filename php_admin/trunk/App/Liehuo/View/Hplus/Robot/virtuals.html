@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="clearfix">
+            <form action="{:U()}" method="GET" class="form-inline pull-left">
+              <input type="hidden" name="act" value="filter">
+              <div class="input-prepend input-group">
+                <span class="add-on input-group-addon">日期范围</span>
+                <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+              </div>
+              <div class="form-group hide">
+                <select name="type" class="form-control">
+                  <option value="">用户类型</option>
+<volist name="data['user_types']" id="v">
+                  <option value="{$key}"<php>echo $_REQUEST['type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="sex" class="form-control">
+                  <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+              </div>
+              <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <div class="pull-right">
+              <a href="{:U('UserBase/virtual_users?type=1')}" class="btn btn-success">新增运营账号</a>
+              <a href="{:U('UserBase/virtual_renew')}" class="btn btn-success">更新运营账号</a>
+              <div class="btn-group">
+                <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th>用户ID</th>
+                  <th>用户昵称</th>
+                  <th>电话号码</th>
+                  <th>性别</th>
+                  <th>用户类型</th>
+                  <th>注册时间</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+$type_css = 'default';
+$v['type'] == 1 && $type_css = 'success';
+$v['type'] == 2 && $type_css = 'danger';
+$v['type'] == 3 && $type_css = 'warning';
+$v['type'] == 4 && $type_css = 'primary';
+$alb = json_decode($v['album'],true) ?: [];
+</php>
+                <tr class="gradeX">
+                  <td>
+                    <span class="popover-avatar">{$v['uid']}</span>
+                    <b class="label label-danger">{:boolval($v['vip_level'] && $v['vip_valid_end'] >= time()) ? 'v' : ''}{$v['glory_grade'] ?: ''}</b>
+                  </td>
+                  <td title="{$v['nickname']}">
+                    <div class="td-content popover-hover">{$v['nickname_html'] ?: $v['nickname']}</div>
+                  </td>
+                  <td>
+<if condition="$v['phone']">{$v['phone']}</if>
+<if condition="$v['qq_open_id']">&nbsp;<i class="fa fa-2x fa-qq" style="color:#1BE;"></i></if>
+<if condition="$v['wx_open_id']">&nbsp;<i class="fa fa-2x fa-weixin" style="color:#0A0;"></i></if>
+                  </td>
+                  <td>{$Think.config.USER_SEX_IS.$sex}</td>
+                  <td><b class="label label-{$type_css}">{$data['user_types'][$v['type']]}</b></td>
+                  <td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td>
+                  <td>
+                    <form action="{:U('remark')}" method="POST" class="form-inline">
+                      <input type="hidden" name="uid" value="{$v['uid']}">
+                      <div class="input-group">
+                        <input type="text" name="remark" value="{$v['remark']}" placeholder="备注..." class="form-control text-success">
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+                        </span>
+                      </div>
+                    </form>
+                  </td>
+                  <td>
+                    <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-mini">查看资料</a>
+                    <a href="{:U('UserBase/match_list?uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-mini">匹配</a>
+                    <a href="{:U('SnapChat/logs?uid='.$v['uid'])}" target="_blank" class="btn btn-mini btn-primary">历史</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$pager->show()}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

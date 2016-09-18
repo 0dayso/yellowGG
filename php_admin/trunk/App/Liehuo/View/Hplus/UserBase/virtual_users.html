@@ -1,0 +1,164 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.form-horizontal .control-label { width:auto; min-width:10em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('virtual_reg')}" method="POST" class="form-horizontal">
+          <input type="hidden" name="uid" value="{$data['item']['uid']}">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">用户类型</label>
+            <div class="col-sm-10">
+              <select name="type" class="form-control">
+<volist name="data['user_types']" id="v">
+                <option value="{$key}"{:boolval((isset($data['item']['type']) ? $data['item']['type'] : $_REQUEST['type']) == (string)$key) ? ' selected' : ''}>{$v}</option>
+</volist>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">昵称</label>
+            <div class="col-sm-10">
+              <input type="text" name="nickname" value="{$data['item']['nickname']}" placeholder="必填" maxlength="255" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">手机号</label>
+            <div class="col-sm-10">
+              <input type="text" name="phone" value="{$data['item']['phone']}" placeholder="必填" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+              <input type="text" name="password" value="{$data['item']['password']}" placeholder="必填" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">性别</label>
+            <div class="col-sm-10">
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+                <label class="radio radio-inline"><input type="radio" name="sex" value="{$key}"{:boolval($data['item']['sex'] == (string)$key) ? ' checked' : ''}>{$v}</label>
+</volist>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">头像</label>
+            <div class="col-sm-6">
+              <input type="text" name="album" value="{$data['item']['album']}" placeholder="必填" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <input type="file" name="file" class="image-upload-comm" data-url="{:U('upload_album')}" data-target="[name=album]">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">保存</button>
+              <a href="{:U('Robot/virtuals')}" class="btn btn-success">账号列表</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <hr>
+
+      <div class="clearfix hide">
+        <form action="{:U()}" method="GET" class="form-inline pull-left hide">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group hide">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+
+      <div class="table-responsive hide">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr class="text-nowrap">
+              <tr>
+                <th>用户ID</th>
+                <th>用户昵称</th>
+                <th>电话号码</th>
+                <th>性别</th>
+                <th>用户类型</th>
+                <th>照片/视频数</th>
+                <th>分数</th>
+                <th>消费金额</th>
+                <th>最后活跃</th>
+                <th>注册时间</th>
+                <th>操作</th>
+              </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+$type_css = 'default';
+$v['type'] == 1 && $type_css = 'success';
+$v['type'] == 2 && $type_css = 'danger';
+$v['type'] == 3 && $type_css = 'warning';
+$alb = json_decode($v['album'],true) ?: [];
+</php>
+              <tr class="gradeX">
+                <td>
+                  <span class="popover-avatar">{$v['uid']}</span>
+                  <b class="label label-danger">{:boolval($v['vip_level'] && $v['vip_valid_end'] >= time()) ? 'v' : ''}{$v['glory_grade'] ?: ''}</b>
+                </td>
+                <td title="{$v['nickname']}">
+                  <div class="td-content popover-hover">{$v['nickname_html'] ?: $v['nickname']}</div>
+                </td>
+                <td>
+<if condition="$v['phone']">{$v['phone']}</if>
+<if condition="$v['qq_open_id']">&nbsp;<i class="fa fa-2x fa-qq" style="color:#1BE;"></i></if>
+<if condition="$v['wx_open_id']">&nbsp;<i class="fa fa-2x fa-weixin" style="color:#0A0;"></i></if>
+                </td>
+                <td>{$Think.config.USER_SEX_IS.$sex}</td>
+                <td><b class="label label-{$type_css}">{$data['user_types'][$v['type']]}</b></td>
+                <td>
+                  <a href="{:U('view?uid='.$v['uid'].'&tab=tab-user-feed')}" target="_blank" class="label label-default">{:count($alb)}</a>
+                </td>
+                <td>{$v['score'] >= 0 ? (int)$v['score'] : '-'}</td>
+                <td>{$v['total_charge'] ?: $v['total_expense'] ?: '-'}</td>
+                <td>{$v['active_time'] ? date('Y-m-d H:i:s',$v['active_time']) : ($v['update_time'] ? date('Y-m-d H:i:s',$v['update_time']) : '-')}</td>
+                <td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td>
+                <td>
+                  <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-mini">查看资料</a>
+                </td>
+              </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+});
+</script>

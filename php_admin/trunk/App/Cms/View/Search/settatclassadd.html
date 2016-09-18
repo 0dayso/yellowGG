@@ -1,0 +1,120 @@
+
+
+
+
+
+<div id="content" class="ibox-content">
+    <a href="{:U('search/settatclass')}" class="btn btn-primary btn-sm" style="float:right">返回推荐列表</a>
+    <form role="form" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  >
+        <input type="hidden" name="id" value="{$_GET['id']}" >
+
+        <br>
+        <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">活动名称：</label>
+            <div class="col-sm-9">
+                <label class="radio-inline"  style="padding-left:0px">
+                    <input type="text" name="name" value="{$info.name}" class="form-control"  >
+                </label>
+            </div>
+        </div>
+        <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">展示时间：</label>
+            <div class="col-sm-9">
+                <label class="radio-inline" style="padding-left:0px">
+                    <input type="text" name="valid_begin" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                           class="laydate-icon form-control" placeholder="选择时间"
+                    <if condition="$info['valid_begin'] neq ''" >
+                        value="{$info['valid_begin']|date='Y-m-d H:i:s',###}"
+                        <else/>
+                        value=""
+                    </if>
+
+                    >
+                </label>
+                <label class="radio-inline" style="padding-left:0px">
+                    至
+                </label>
+                <label class="radio-inline" style="padding-left:0px">
+                    <input type="text" name="valid_end" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                           class="form-control laydate-icon" placeholder="选择时间"
+
+                    <if condition="$info['valid_end'] neq ''" >
+                        value="{$info['valid_end']|date='Y-m-d H:i:s',###}"
+                        <else/>
+                        value=""
+                    </if>
+
+                    >
+                </label>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+    </form>
+
+
+    <div class="form-group draggable ui-draggable">
+        <div class="col-sm-12 col-sm-offset-3">
+            <button class="btn btn-primary" type="submit" id="saved">下一步</button>
+        </div>
+    </div>
+
+
+
+
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#saved').click(function(){
+            var valid_begin = $('input[name="valid_begin"]').val();
+            var valid_end   = $('input[name="valid_end"]').val();
+            var id = "{$_GET['id']}";
+            if(typeof(valid_begin) == 'undefined' || typeof(valid_end)  == 'undefined' ){
+                layer.alert('请选择展示时间！');
+                return false;
+            }
+
+            $('.form-horizontal').submit();
+
+        });
+
+        // 删除用户
+        $('.delruser').click(function(){
+            var _this = $(this);
+            var id    = $(this).attr('a');
+            layer.confirm('确定要删除吗？', function(){
+                $.post("{:U('recommend/deluser')}",{id:id},function(data){
+                    if(data){
+                        _this.parent().parent().remove();
+                        layer.alert('删除成功！',1);
+                    }
+                });
+            });
+        });
+
+        // 添加用户
+        $('.adduser').click(function(){
+            var id = $('#id').val();
+
+            var indexsd = layer.prompt({title:"添加用户"}, function(title){
+                $.post("{:U('recommend/adduser')}",{id:id,uid:title},function(data){
+                    if(data=='ok'){
+                        window.location.href ='';
+                    }else{
+                        layer.alert('用户'+data+'已经存在！');
+                    }
+                });
+
+            });
+
+
+        });
+
+
+    });
+</script>
+ 

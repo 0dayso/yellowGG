@@ -1,0 +1,54 @@
+<div class="ibox-content">
+    <form role="form" action="{$action}" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  >
+
+        <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">输入UID：</label>
+            <div class="col-sm-9">
+                <textarea name="uid" id="dis" style="margin: 0px; width: 425px; height: 129px;"></textarea><br/>例如：50001,50002,50003
+            </div>
+        </div>
+        <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">金币：</label>
+            <div class="col-sm-3">
+                <input type="text" name="gold" id="gold" value="" class="form-control" placeholder="数量" >
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+    </form>
+    <div class="form-group draggable ui-draggable">
+        <div class="col-sm-12 col-sm-offset-3">
+            <button class="btn btn-primary" type="submit" id="saved">保存内容</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#saved').click(function(){
+            layer.confirm('你确定要放金币吗？',function () {
+
+                var gold = $('#gold').val();
+                var dis  = $('#dis').val();
+                dis = $.trim(dis);
+
+                if(dis == ''){
+                    layer.msg('请填用户');
+                    return false;
+                }
+
+                if(gold == ''){
+                    layer.msg('请填写金币');
+                    return false;
+                }
+                $('.form-horizontal').submit();
+            });
+        });
+
+
+    });
+</script>
+

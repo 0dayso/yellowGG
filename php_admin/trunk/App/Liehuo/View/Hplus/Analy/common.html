@@ -1,0 +1,167 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left{$hide_filter ? ' hide' : ''}">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="type" value="{$_REQUEST['type']}">
+          <input type="hidden" name="rdrs_type" value="{$_REQUEST['rdrs_type']}">
+          <input type="hidden" name="user_type" value="{$_REQUEST['user_type']}">
+          <input type="hidden" name="ad_serial" value="{$_REQUEST['ad_serial']}">
+          <input type="hidden" name="time_type" value="{$time_type ?: $_REQUEST['time_type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+<if condition="in_array(ACTION_NAME,['stat_retention','stat_retention_detail','hourly_slide'])">
+<elseif condition="in_array(ACTION_NAME,['been_slide','been_thumb','match_rate','daily_chat'])"/>
+          <div class="form-group">
+            <select name="user_type" class="form-control">
+              <option value="">用户类型</option>
+              <option value="0"<php>echo $_REQUEST['user_type'] == '0' ? ' selected' : '';</php>>老用户</option>
+              <option value="1"<php>echo $_REQUEST['user_type'] == '1' ? ' selected' : '';</php>>新用户</option>
+            </select>
+          </div>
+<else/>
+<if condition="$data['devices']">
+          <div class="form-group">
+            <select name="device" class="form-control">
+              <option value="">全部设备</option>
+<volist name="data['devices']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['device'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['channels']">
+          <div class="form-group">
+            <select name="ch_id" class="form-control">
+              <option value="">全部渠道</option>
+<volist name="data['channels']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['ch_id'] == (string)$key ? ' selected' : '';</php>>{$v['ch_name']}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['pkg_channels']">
+          <div class="form-group">
+            <select name="pkg_channel" class="form-control">
+              <option value="">全部包渠道</option>
+<volist name="data['pkg_channels']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pkg_channel'] == (string)$key ? ' selected' : '';</php>>{$v['ch_serial']}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['advers']">
+          <div class="form-group">
+            <select name="adver_id" class="form-control">
+              <option value="">全部广告</option>
+<php>$oss = ['安卓','IOS'];</php>
+<volist name="data['advers']" id="v">
+<php>$pkg = $data['packages'][$v['pkg_id']] ?: [];</php>
+              <option value="{$key}"<php>echo $_REQUEST['adver_id'] == (string)$key ? ' selected' : '';</php>>{$v['name'] ?: $v['ch_serial']} ({$oss[$pkg['pkg_device']]} {$pkg['pkg_version']})</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['packages']">
+          <div class="form-group hide">
+            <select name="pkg_id" class="form-control">
+              <option value="">全部包版本</option>
+<php>$oss = ['安卓','IOS'];</php>
+<volist name="data['packages']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pkg_id'] == (string)$key ? ' selected' : '';</php>>{$oss[$v['pkg_device']]} {$v['pkg_name']} ({$v['pkg_version']})</option>
+</volist>
+            </select>
+          </div>
+</if>
+</if>
+<if condition="$data['sexs']">
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<volist name="data['sexs']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['freq_types']">
+          <div class="form-group">
+            <select name="pay_freq_type" class="form-control">
+              <option value="">付费频率</option>
+<volist name="data['freq_types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pay_freq_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="ACTION_NAME == 'daily_user'">
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+</if>
+          <button type="submit" class="btn btn-primary">搜索</button>
+          <a href="{:U('',$all_params ?: [])}" class="btn btn-white">全部</a>
+        </form>
+        <div class="pull-right">
+<if condition="ACTION_NAME == 'adver_stat'">
+<if condition="$_REQUEST['rdrs_type'] == 'dt'">
+          <a href="{:U()}" class="btn btn-success">所有数据</a>
+          <a href="{:U('update_offline_daily')}" class="btn btn-primary tip" data-original-title="请将前一天的地推用户导入完毕再更新，更新很慢请耐心等待，请勿重复刷新，避免频繁操作">更新数据</a>
+<else/>
+          <a href="{:U('?rdrs_type=dt')}" class="btn btn-success">地推数据</a>
+</if>
+</if>
+          <span class="btn btn-white">记录数：{$pager ? $pager->totalRows : count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center an-auto-rowspan {$table_class ?: ''}">
+          <thead>
+            <tr>
+<volist name="data['cols']" id="k">
+              <th>{$k}</th>
+</volist>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr>
+<volist name="data['cols']" id="k">
+              <td<php>echo in_array($k,$auto_rowspan ?: []) ? ' class="auto-rowspan"' : '';</php>>{$v[$k]}</td>
+</volist>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$pager ? $pager->show() : $page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('td:contains(%)').css('background-image',function()
+  {
+    var the = $(this),
+        txt = the.text();
+    if(!txt) return false;
+    if(the.find('td').length) return false;
+    return 'linear-gradient(to right,#ded ' + txt + ',rgba(0,0,0,0) 0.01%)';
+  });
+
+});
+</script>

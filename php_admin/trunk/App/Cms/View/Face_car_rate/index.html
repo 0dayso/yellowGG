@@ -1,0 +1,73 @@
+ 
+<div id="content">
+        <form action="/index.php/face_car_rate/file" method="post" enctype="multipart/form-data" >
+            <input type="file" name="userzip" value="" >
+            <input type="submit" value="上传">
+        </form>
+     
+        <label>脸打分剩余{$count}条</label>
+        <if condition="!empty($userinfo)" >
+            <hr noshade="" color="#0066cc">
+            <p>
+            </p>
+            <div class="control-group">
+                <p>初见号:{$userinfo['uid']}</p>
+                <p>昵称:{$userinfo['nickname']}</p>
+                <p>年龄:{$userinfo['birthday']}</p>
+                <p>性别:<if condition="$userinfo.sex eq 0  " >男<else/>女</if></p>
+                <p>视频认证:<if condition="!empty($uvideo)" >已认证<else/>未认证</if></p>
+            </div>
+            <div class="control-group" >
+                <div style="width:810px;float:left" id="control-groupimg">
+                    <volist name="h_img" id="img" >
+                        <img src="{$Think.config.USER_HEAD_IMG}/{$img}" width="200px" height="200px" />
+                    </volist>
+                </div>
+
+                <div id="control-groupimg-t">
+                    <img style="margin-left:50px;cursor:pointer;float:left" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$uvideo}" width="200" height="200" />
+                </div>
+            </div>
+
+            <ul  class="nav nav-pills" style="clear:both; text-align: center; margin: 0 auto; padding: 0 0; width: 500px;">
+                <li><input type="button" class="rate-user" va="2" value="没有真人照"  ></li>
+                <li><input type="button" class="rate-user" va="4" value="丑"></li>
+                <li><input type="button" class="rate-user" va="7" value="一般"></li>
+                <li><input type="button" class="rate-user" va="8" value="好看"></li>
+            </ul>
+        <else/>
+            <div class="control-group" style="text-align: center;" >暂无评分用户！</div>
+        </if>
+        
+</div>
+
+ 
+
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //点击图片即可触发
+    layer.photosPage({
+        parent: '#control-groupimg',
+        title: '打分',
+        id: 112 //相册id，可选
+    });
+    //点击图片即可触发
+    layer.photosPage({
+        parent: '#control-groupimg-t',
+        title: '打分',
+        id: 112 //相册id，可选
+    });
+    $(function(){
+        $('.rate-user').click(function(){
+            var rate = $(this).attr('va');
+            var user = "{$userinfo['uid']}";
+            var pnum = "<?php echo count($h_img); ?>";
+            $.post("{:U('FaceCarRate/faceratepost')}",{uid:user,rate:rate,pnum:pnum},function(data){
+                if( data == 1 ){
+                    window.location.reload();
+                }
+            });
+        });
+    });
+</script>

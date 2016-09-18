@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('?download=1')}" method="POST" class="form-horizontal table-responsive">
+          <table class="table table-bordered table-striped table-form">
+            <col style="width:10em;">
+            <tr>
+              <th>时间范围</th>
+              <td>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm:ss">
+                    <span class="input-group-addon">到</span>
+                    <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm:ss">
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">快速选择 <i class="caret"></i></button>
+                      <ul class="dropdown-menu date-time-ranges"></ul>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>指定ID</th>
+              <td>
+                <div class="col-md-8">
+                  <textarea name="ids" rows="15" placeholder="每行一个UID，或者英文逗号分隔" class="form-control"></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="text-left">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary">导出</button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  $('.table tr').children(':last-child').attr('colspan',99);
+
+});
+</script>

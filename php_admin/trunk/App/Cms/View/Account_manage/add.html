@@ -1,0 +1,97 @@
+ 
+<div id="content">
+    
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <form class="form-horizontal" id="add_user" onsubmit="return false">
+                    <div class="control-group">
+                        <label class="control-label">昵称：</label>
+                        <div class="controls">
+                            <input type="text" class="input" size="150" id="nickname" name="nickname" /> *必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">性别：</label>
+                        <div class="controls">
+                            <select id="sex" name="sex" >
+                                <option selected="selected">男</option>
+                                <option >女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">生日：</label>
+                        <div class="controls">
+                            <!--<input type="date" id="birthday" name="birthday" /> *必须填写-->
+                            <input type="text" id="birthday" name="birthday"/>*必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">电话：</label>
+                        <div class="controls">
+                            <input type="text" id="phone" name="phone" > *必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">密码：</label>
+                        <div class="controls">
+                            <input type="text" id="password" name="password" > *必须填写，系统会对密码自动加密
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">职业：</label>
+                        <div class="controls">
+                            <input type="text" id="job" name="job" >
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">个性标签：</label>
+                        <div class="controls">
+                            <!--<input row="5" type="text" name="tags-content" id="tags-content">-->
+                            <textarea rows="5" name="tags-content" id="tags-content"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="text-align:left">
+                        <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+ 
+<script src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#birthday').datepicker({format:"yyyy-mm-dd"
+        });
+
+        $('#add_user').on('submit',function() {
+            var nickname = $('#nickname').val();
+            var sex      = $('#sex option:selected').val();
+            var birthday = $('#birthday').val();
+            var phone    = $('#phone').val();
+            var password = $('#password').val();
+            var reg_time = $('#reg_time').val();
+            var job      = $('#job').val();
+            var tags     = $('#tags-content').val();
+            var constellation = $('#constellation').val();
+            var type     = 'add';
+            
+            location.href="{:U('AccountManage/confirm')}?nickname="+nickname+"&sex="+sex+"&birthday="+birthday+"&phone="+phone+"&password="+password+"&reg_time="+reg_time+"&job="+job+"&tags="+tags+"&constellation="+constellation+"&type="+type;
+            return false;
+        });
+    });
+ 
+
+</script>
+ 

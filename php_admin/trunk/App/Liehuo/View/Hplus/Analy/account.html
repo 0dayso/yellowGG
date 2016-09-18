@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline" style="margin-bottom:20px;">
+        <input type="hidden" name="act" value="filter">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group">
+          <select name="device" class="form-control">
+            <option value="2">选择设备</option>
+            <option value="0"<php>echo $_REQUEST['device'] == '0' ? ' selected' : '';</php>>安卓</option>
+            <option value="1"<php>echo $_REQUEST['device'] == '1' ? ' selected' : '';</php>>IOS</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:none;">
+          <select name="channel" class="form-control">
+            <option value="0">渠道版本</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <span class="btn btn-white pull-right">记录数：{:count($data['list'])}</span>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>VIP人数</th>
+              <th>VIP金额</th>
+              <th>超级赞人数</th>
+              <th>超级赞金额</th>
+              <th>提现人数</th>
+              <th>提现金额</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$par = [
+  'stime' => $v['date'],
+  'etime' => $v['date'],
+];
+</php>
+            <tr>
+              <td>{$v['date']}</td>
+              <td>
+                <a href="{:U('UserBase/order_list?goods=vip&state=2',$par)}" target="_blank">{$v['vip_num']}</a>
+              </td>
+              <td>{:round($v['vip_sum'],2)}</td>
+              <td>
+                <a href="{:U('UserBase/order_list?goods=super_like&state=2',$par)}" target="_blank">{$v['like_num']}</a>
+              </td>
+              <td>{:round($v['like_sum'],2)}</td>
+              <td>
+                <a href="{:U('UserBase/cash_list?state=2&time_type=finish',$par)}" target="_blank">{$v['cash_num']}</a>
+              </td>
+              <td>{:round($v['cash_sum'],2)}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

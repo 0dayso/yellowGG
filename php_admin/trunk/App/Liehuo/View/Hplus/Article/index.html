@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group hide">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('edit')}" class="btn btn-success">新增文章</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr class="text-nowrap">
+              <th>ID</th>
+              <th>缩率图</th>
+              <th>标题</th>
+              <th>描述</th>
+              <th>阅读量</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td><img src="{$v[thumb]}" style="max-width:120px;"></td>
+              <td>
+                <div class="td-content">{$v['title']}</div>
+              </td>
+              <td>
+                <div class="td-content">{$v['desc']}</div>
+              </td>
+              <td>{$v['read_num']}</td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td class="text-nowrap">
+                <a href="{:U('view?id='.$v['id'])}" target="_blank" class="btn btn-success">查看</a>
+                <a href="{:U('edit?id='.$v['id'])}" target="_blank" class="btn btn-primary">编辑</a>
+                <a href="{:U('del?id='.$v['id'])}" class="btn btn-danger" onsubmit="return confirm('真的要这么做？')">删除</a>
+                <a href="{:U('Promo/mass_send?article_id='.$v['id'])}" target="_blank" class="btn btn-success">群发</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

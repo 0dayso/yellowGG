@@ -1,0 +1,31 @@
+<div id="sidebar">
+    <ul>
+
+        <!--<li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>帐号管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">style="display:block"</if>>
+        <li><a href="{:U('UserFactory/user_list',array('menu'=>'account_manage','type'=>'user_list'))}">用户列表</a></li>
+        <li><a href="{:U('UserFactory/push_user_list',array('menu'=>'account_manage','type'=>'user_list'))}">地推用户列表</a></li>
+        <li><a href="{:U('UserFactory/test_user_list',array('menu'=>'account_manage','type'=>'user_list'))}">测试用户列表</a></li>
+        </ul>
+        </li>-->
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>帐号管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">style="display:block"</if>>
+        <li><a href="{:U('User/index',array('menu'=>'account_manage','type'=>'all_user'))}">用户列表</a></li>
+        <li><a href="{:U('User/index',array('menu'=>'account_manage','type'=>'push_user'))}">地推用户列表</a></li>
+        <li><a href="{:U('User/index',array('menu'=>'account_manage','type'=>'test_user'))}">测试用户列表</a></li>
+        <li><a href="{:U('User/trend',array('menu'=>'account_manage','type'=>'trend_user'))}">账号注册趋势</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'closure'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>封禁帐号管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'closure'">style="display:block"</if>>
+        <li><a href="{:U('Closure/index')}">封禁用户列表</a></li>
+        </ul>
+        </li>
+
+    </ul>
+</div>

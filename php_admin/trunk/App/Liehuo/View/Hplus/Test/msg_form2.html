@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>Msg</title>
+</head>
+<body>
+
+<hr>
+
+<div class="container-fluid">
+  <form action="{:U('msg2')}" method="POST" target="api_ret" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">聊天类型</label>
+      <div class="col-sm-9">
+        <select name="chat_type" class="form-control">
+          <option value="1">系统消息</option>
+          <option value="2">产品消息</option>
+          <option value="3">普通消息</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息格式</label>
+      <div class="col-sm-9">
+        <select name="txt_type" class="form-control">
+          <option value="1">文本</option>
+          <option value="2">图片</option>
+          <option value="3">贴图</option>
+          <option value="4">语音</option>
+          <option value="5">位置</option>
+          <option value="100" selected>复合</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息类型</label>
+      <div class="col-sm-9">
+        <select class="form-control msg-json-select">
+          <option data-txt_type="1"   data-msg_type=""  data-json=''>普通文本</option>
+
+          <option data-chat_type="3" data-txt_type="2" data-msg_type="" data-json='
+{
+  "originPhotoUrl"    : "http://feed.chujianapp.com/20160313/f292fc044fd6ac67ef96e512231c56b4.jpg@480w",
+  "thumbnailPhotoUrl" : "http://feed.chujianapp.com/20160313/f292fc044fd6ac67ef96e512231c56b4.jpg"
+}'>图片消息</option>
+
+          <option data-txt_type="100" data-msg_type="7" data-json='
+{
+  "comment"              : "图文消息图文消息图文消息图文消息图文消息图文消息图文消息图文消息图文消息",
+  "sessionThumbImageUrl" : "http://feed.chujianapp.com/20160313/f292fc044fd6ac67ef96e512231c56b4.jpg",
+  "intent_name"          : "10002",
+  "show_tip"             : 1
+}'>打分消息</option>
+
+          <option data-txt_type="100" data-msg_type="8" data-json='
+[
+  {
+    "title" : "运营消息标题1",
+    "desc"  : "运营消息描述运营消息描述运营消息描述\n运营消息描述运营消息描述1454309020",
+    "link"  : "http://src.chujianapp.com/article/?id=2",
+    "thumb" : "http://feed.chujianapp.com/20160313/f292fc044fd6ac67ef96e512231c56b4.jpg"
+  }
+]'>运营消息</option>
+
+          <option data-txt_type="100" data-msg_type="10" data-json='
+[
+  {
+    "type"     : "text",
+    "content"  : "文本1",
+    "color"    : "000000",
+    "fontSize" : "14"
+  },
+  {
+    "type"     : "text",
+    "content"  : "文本2"
+  },
+  {
+    "type"     : "link",
+    "content"  : "链接1",
+    "url"      : "http://wwww.baidu.com/",
+    "color"    : "AA0000",
+    "fontSize" : "14"
+  },
+  {
+    "type"     : "link",
+    "content"  : "链接2",
+    "url"      : "http://wwww.baidu.com/"
+  },
+  {
+    "type"     : "intent",
+    "content"  : "应用内跳转",
+    "name"     : "30001",
+    "color"    : "AA6600",
+    "params"   :
+    {
+      "uid"      : 12200022,
+      "room_id"  : 123456,
+      "live_id"  : "1234567890123456",
+      "rtmp_url" : "rtmp://..."
+    }
+  },
+  {
+    "type"     : "icon",
+    "name"     : "icon_gift"
+  }
+]'>混排格式消息</option>
+
+          <option data-txt_type="100" data-msg_type="11" data-json='
+[
+  {
+    "type"     : "intent",
+    "content"  : "我开直播啦，你快来陪我啊",
+    "name"     : "30001",
+    "color"    : "AA6600",
+    "params"   : "{\\"uid\\":12200022,\\"room_id\\":123456,\\"live_id\\":\\"1234567890123456\\",\\"rtmp_url\\":\\"rtmp:\\/\\/...\\"}"
+  }
+]' data-cnmsg='
+{
+  "intent" : "30001",
+  "params" :
+  {
+    "uid" : 12200022
+  }
+}'>直播推送消息</option>
+
+          <option data-txt_type="1" data-msg_type="203" data-json='
+{
+  "uid"              : 10000001,     // 自己
+  "like_type"        : 1,            // 0:普通赞 1:超赞 2:金赞
+  "uid_nickname"     : "自己昵称",
+  "uid_resource"     : "自己头像",
+  "oid"              : 10000002,     // 对方
+  "oid_nickname"     : "对方昵称",
+  "oid_resource"     : "对方头像",
+  "match"            : 0,            // 0:主匹配 1:被动匹配 
+  "like_time"        : 01/01,        // 喜欢时间
+  "money"            : 100,          // 收到的钱或魅力值 
+  "user_nickname"    : "对方昵称",
+  "user_sex"         : 1,            // 性别 0:男 1:女
+  "user_age"         : 18,      
+  "user_description" : "个人简介",
+  "user_resource"    :               // 对方相册列表
+  [
+    "http://feed.chujianapp.com/20160615/de09a25fe5c6a9d501372f5d53c7c23f.jpg@640w_80Q_1pr.jpg",
+    "http://feed.chujianapp.com/20160419/76331ea37567d08ebb92694482166072.jpg@640w_80Q_1pr.jpg"
+  ],
+  "user_update_time" : "2分钟前",
+  "user_distance"    : "10km",
+  "user_area"        : "上海市长宁区",
+  "user_home"        : "邯郸",
+  "user_job"         : "IT",
+  "user_haunt"       : "夜总会",
+  "user_interest"    :
+  [
+    {
+      "id"             : 1,         // 兴趣分类ID
+      "interest_class" : "运动",    // 兴趣分类
+      "content"        :
+      [               
+        {
+          "interest_name" : "健身", // 兴趣名称
+          "common"        : 1       // 是否是共同兴趣
+        },
+        {
+          "interest_name" : "跨栏",
+          "common"        : 1
+        },
+      ]
+    }
+  ],
+  "user_communion_interests" : 3,               // 相同兴趣的个数
+  "user_character"           : ["邪恶","无耻"], // 性格
+  "user_constellation"       : "巨蟹座",
+  "get_money_user"           : 1,               // 1:自己 2:对方
+}'>匹配消息通知</option>
+
+          <option data-txt_type="1" data-msg_type="214" data-json='
+{
+  "diamond" : 888,
+  "glory"   : 999,
+  "glamour" : 1111
+}'>余额变动通知</option>
+
+          <option data-txt_type="100" data-msg_type="309" data-json='
+{
+  "uid"      : 10000,
+  "nickname" : "用户昵称",
+  "glamour"  : 8888,
+  "content"  : "{nickname} 进房。已贡献 {glamour} 魅力"
+}'>送过礼物的观众进房提醒</option>
+
+          <option data-txt_type="100" data-msg_type="216" data-json='任务已完成'>任务完成通知</option>
+
+          <option data-txt_type="100" data-msg_type="9" data-json='
+{
+  "gift_id"     : 3008,
+  "content"     : "酒窝暖男送给雪梨宝宝一个流星雨，快点击进入房间开启钻石宝箱！",
+  "content_lg"  : "酒窝暖男送给雪梨宝宝一个流星雨",
+  "content_sm"  : "快点击进入房间开启钻石宝箱！",
+  "fr_name"     : "酒窝暖男",
+  "to_name"     : "雪梨宝宝",
+  "to_uid"      : 12200001,
+  "room_id"     : 123456,
+  "live_id"     : "1234567890123456",
+  "pull_url"    : "rtmp://...",
+  "glory_grade" : 10,
+  "glory_level" : 2,
+  "animate"     : "fireworks"
+}'>全服礼物公屏</option>
+
+          <option data-txt_type="100" data-msg_type="406" data-json='
+{
+  "silent_count" : 3600
+}'>直播观众禁言</option>
+
+          <option data-txt_type="100" data-msg_type="408" data-json='
+{
+  "duration" : 3600
+}'>直播观众踢出</option>
+
+        </select>
+        <input type="text" name="msg_type" value="" class="form-control" placeholder="7:图文消息 8:运营消息 10:灰底混排 11:气泡混排">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">用户ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="uid" value="12200022" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">发送人ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="sender" value="10000" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息JSON</label>
+      <div class="col-sm-9">
+        <textarea name="json" rows="10" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">离线消息</label>
+      <div class="col-sm-9">
+        <input type="text" name="hint" value="离线消息离线消息离线消息" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">离线JSON</label>
+      <div class="col-sm-9">
+        <textarea name="cnmsg" rows="5" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-9">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+  <iframe src="about:blank" name="api_ret" width="100%" frameborder="0" scrolling="auto" class="api-ret"></iframe>
+
+</div>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+window.jQuery(function($)
+{
+  $('body')
+  .on('change','select.msg-json-select',function()
+  {
+    var sel = $(this).find('option:selected');
+    $.each(sel.data(),function(k,v)
+    {
+       $('[name="' + k + '"]').val($.trim(v));
+    });
+  });
+
+  $('select.msg-json-select').change();
+
+});
+</script>
+</body>
+</html>

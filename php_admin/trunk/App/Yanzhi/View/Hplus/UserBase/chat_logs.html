@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <form action="{:U()}" method="GET" class="form-inline">
+      <input type="hidden" name="act" value="filter">
+      <input type="hidden" name="sender" value="{$_REQUEST['sender']}">
+      <input type="hidden" name="recver" value="{$_REQUEST['recver']}">
+      <div class="input-prepend input-group">
+        <span class="add-on input-group-addon">日期范围</span>
+        <input type="text" value="" class="form-control date-range"
+               data-stime="{$_REQUEST['stime'] ?: date('Y-m-d')}"
+               data-etime="{$_REQUEST['etime']}">
+        <input type="hidden" name="stime" value="{$_REQUEST['stime'] ?: date('Y-m-d')}">
+        <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+      </div>
+      <div class="form-group" style="display:none;">
+        <select name="day" class="form-control" disabled>
+          <option value="1"<php>echo $_REQUEST['day'] == '1' ? ' selected' : '';</php>>最近1天</option>
+          <option value="3"<php>echo $_REQUEST['day'] == '3' ? ' selected' : '';</php>>最近3天</option>
+          <option value="7"<php>echo $_REQUEST['day'] == '7' ? ' selected' : '';</php>>最近7天</option>
+          <option value="15"<php>echo $_REQUEST['day'] == '15' ? ' selected' : '';</php>>最近15天</option>
+          <option value="30"<php>echo $_REQUEST['day'] == '30' ? ' selected' : '';</php>>最近30天</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select name="texttype" class="form-control">
+          <option value="">消息类型</option>
+          <option value="1"<php>echo $_REQUEST['texttype'] == '1' ? ' selected' : '';</php>>文字</option>
+          <option value="2"<php>echo $_REQUEST['texttype'] == '2' ? ' selected' : '';</php>>图片</option>
+          <option value="3"<php>echo $_REQUEST['texttype'] == '3' ? ' selected' : '';</php>>表情</option>
+          <option value="4"<php>echo $_REQUEST['texttype'] == '4' ? ' selected' : '';</php>>语音</option>
+          <option value="5"<php>echo $_REQUEST['texttype'] == '5' ? ' selected' : '';</php>>位置</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">搜索</button>
+      <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+    </form>
+    <hr>
+    <div class="chat-logs clearfix">
+<volist name="data['list']" id="v">
+<php>
+$is_self = $v['sender'] == $_REQUEST['uid'];
+</php>
+  <div class="media chat-msg{$is_self ? ' chat-myself' : ''}" data-id="{$v['smsid']}">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <small class="chat-time">{$v['time']}</small>
+        <a href="{:U('view?uid='.$v['sender'].'&tab=tab-user-chat')}" target="_blank" class="label label-primary">{$v['sender']}</a> 对
+        <a href="{:U('view?uid='.$v['recver'].'&tab=tab-user-chat')}" target="_blank" class="label label-primary">{$v['recver']}</a> 说：
+      </p>
+      <p class="chat-text">
+<if condition="$v['texttype'] == '2' && $v['text_json']['thumbnailPhotoUrl']">
+        <img src="{$v['text_json']['thumbnailPhotoUrl']}" data-src="{$v['text_json']['originPhotoUrl'] ?: $v['text_json']['thumbnailPhotoUrl']}" class="zoom">
+<elseif condition="$v['texttype'] == '3' && $v['text_json']['emoticonUrl']"/>
+        <img src="{$v['text_json']['emoticonUrl']}" title="{$v['text_json']['emoticonName']}">
+<elseif condition="$v['texttype'] == '4' && $v['text_json']['voiceUrl']"/>
+        <a href="{$v['text_json']['voiceUrl']}" target="_blank" class="label label-success jplayer-voice">[语音] {$v['text_json']['voiceTime']}s</a>
+<elseif condition="$v['texttype'] == '5' && $v['text_json']['locationAddress']"/>
+        <img src="{$v['text_json']['locationImageUrl']}" class="zoom">
+        <br>[位置] {$v['text_json']['locationAddress']}
+<elseif condition="$v['text_json'] && $v['text_json']['text']"/>
+        {$v['text_json']['text']}
+<else/>
+        {$v['text_html'] ?: $v['text']}
+</if>
+      </p>
+    </div>
+  </div>
+</volist>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$pager->show()}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script>window.JSON || document.write('<script src="//cdn.bootcss.com/json2/20150503/json2.min.js"><\/script>');</script>
+<script src="__PUBLIC__/js/app.comm.js"></script>

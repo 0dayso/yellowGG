@@ -1,0 +1,104 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th>
+              <th>广告序列号</th>
+              <th>渠道</th>
+              <th>安装包</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<php>
+$form = 'form_row_add';
+$oss = ['安卓','IOS'];
+</php>
+            <tr class="gradeX">
+              <td>添加</td>
+              <td>
+                <input type="text" name="name" value="" placeholder="选填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="ch_serial" value="" placeholder="唯一不可重复" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <select name="ch_id" form="{$form}" class="form-control">
+                  <option value="">选择渠道</option>
+<volist name="data['channels']" id="o">
+                  <option value="{$key}">{$o['ch_name']}</option>
+</volist>
+                </select>
+              </td>
+              <td>
+                <select name="pkg_id" form="{$form}" class="form-control">
+                  <option value="">选择包</option>
+<volist name="data['packages']" id="o">
+                  <option value="{$key}">{$oss[$o['pkg_device']]} {$o['pkg_name']} ({$o['pkg_version']})</option>
+</volist>
+                </select>
+              </td>
+              <td></td>
+              <td>
+                <form action="{:U('adver_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="">
+                  <button type="submit" class="btn btn-primary">添加</button>
+                </form>
+              </td>
+            </tr>
+<volist name="data['list']" id="v">
+<php>
+$form = 'form_row_'.$v['id'];
+</php>
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>
+                <input type="text" name="name" value="{$v['name']}" placeholder="选填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="ch_serial" value="{$v['ch_serial']}" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <select name="ch_id" form="{$form}" class="form-control">
+                  <option value="">选择渠道</option>
+<volist name="data['channels']" id="o">
+                  <option value="{$key}"<php>echo $v['ch_id'] == (string)$key ? ' selected' : '';</php>>{$o['ch_name']}</option>
+</volist>
+                </select>
+              </td>
+              <td>
+                <select name="pkg_id" form="{$form}" class="form-control">
+                  <option value="">选择包</option>
+<volist name="data['packages']" id="o">
+                  <option value="{$key}"<php>echo $v['pkg_id'] == (string)$key ? ' selected' : '';</php>>{$oss[$o['pkg_device']]} {$o['pkg_name']} ({$o['pkg_version']})</option>
+</volist>
+                </select>
+              </td>
+              <td>{$v['utime'] ? date('Y-m-d H:i:s',$v['utime']) : '-'}</td>
+              <td>
+                <form action="{:U('adver_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="{$v['id']}">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                <a href="{:U('channel_del?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

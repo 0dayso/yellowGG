@@ -1,0 +1,182 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div>
+        <form action="{:U()}" method="POST" enctype="multipart/form-data" class="form-inline">
+          <div class="form-group">
+            <label>选择图片</label>
+            <input type="file" name="feeds[]" multiple accept="image/jpeg,.jpeg,image/png,image/gif">
+          </div>
+          <div class="form-group">
+            <label>选择性别</label>
+            <select name="sex" class="form-control">
+              <option value="0"<php>echo $_REQUEST['sex'] == '0' ? ' selected' : '';</php>>男</option>
+              <option value="1"<php>echo $_REQUEST['sex'] == '1' ? ' selected' : '';</php>>女</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">新增</button>
+          <button type="button" class="btn btn-success act-user-reg-bat pull-right">批量注册</button>
+        </form>
+      </div>
+      <br>
+      <div class="form-inline">
+        <div class="form-group">
+          <label>昵称</label>
+          <input type="text" name="nickname" placeholder="英文逗号隔开" class="form-control" style="width:800px;">
+        </div>
+        <button class="btn btn-primary" data-set-bat="nickname">设置昵称</button>
+      </div>
+      <br>
+      <div class="form-inline">
+        <div class="form-group">
+          <label>手机</label>
+          <input type="text" name="phone" placeholder="英文逗号隔开" class="form-control" style="width:800px;">
+        </div>
+        <button class="btn btn-primary" data-set-bat="phone">设置手机号</button>
+      </div>
+      <hr>
+
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center list-user">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>图片</th>
+                  <th>创建时间</th>
+                  <th>昵称</th>
+                  <th>性别</th>
+                  <th>手机号</th>
+                  <th>密码</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+                <tr class="gradeX form-sub">
+                  <td>
+                    {$v['id']}
+                    <input type="hidden" name="feed_id" value="{$v['id']}">
+                  </td>
+                  <td>
+                    <img src="__FEED_IMG_ROOT__{$v['resource']}" alt="{$v['resource']}" style="max-height:80px;">
+                    <input type="hidden" name="resource" value="{$v['resource']}">
+                  </td>
+                  <td>{:date('Y-m-d H:i',$v['create_time'])}</td>
+                  <td>
+                    <input type="text" name="nickname" value="{$v['nickname']}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <select name="sex" class="form-control">
+                      <option value="0"<php>echo $v['sex'] == '0' ? ' selected' : '';</php>>男</option>
+                      <option value="1"<php>echo $v['sex'] == '1' ? ' selected' : '';</php>>女</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" name="phone" value="{$v['phone']}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <input type="text" name="password" value="" placeholder="选填" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <a class="btn btn-primary btn-mini act-user-reg">保存</a>
+                      <b class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></b>
+                      <ul class="dropdown-menu">
+                        <li><a href="{:U('virtual_del?feed_id='.$v['id'])}">删除</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+  $('body')
+  .on('click','.act-user-reg',function()
+  {
+    var the = $(this),
+        row = the.parents('.form-sub:first'),
+        dat = {};
+    if(the.is('.disabled,[disabled]')) return false;
+    row.find(':enabled').each(function(i)
+    {
+      var the = $(this),
+          nam = the.attr('name'),
+          val = the.val();
+      if(nam) dat[nam] = val;
+    });
+    the.addClass('disabled');
+    $.ajax(
+    {
+      url:'{:U('virtual_user_reg')}',
+      type:'POST',
+      data:dat,
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      if(data.status) row.remove();
+      else the.removeClass('disabled');
+      //data.info && alert(data.info);
+      data.info && require(['messenger-future'],function()
+      {
+        Messenger().post(
+        {
+          type:data.status == 1 ? 'success' : 'error',//info
+          message:data.info
+        });
+      });
+    })
+    .fail(function()
+    {
+      $(this).removeClass('disabled');
+    });
+  })
+  .on('click','.act-user-reg-bat',function()
+  {
+    var the = $(this),
+        tim = 0;
+    if(the.is('.disabled,[disabled]')) return false;
+    the.addClass('disabled');
+    $('.act-user-reg').each(function(i)
+    {
+      var the = $(this);
+      tim = 1000 * i;
+      setTimeout(function(){the.click();},tim);
+    });
+    setTimeout(function(){the.removeClass('disabled');},tim);
+  })
+  .on('click','[data-set-bat]',function()
+  {
+    var the = $(this),
+        typ = the.attr('data-set-bat') || '',
+        lst = $('.list-user [name="' + typ + '"]'),
+        ipt = the.parent().find('[name="' + typ + '"]'),
+        val = ipt.val() || '',
+        arr = val.split(/[,;]\s*/i) || [];
+    $.each(arr,function(i,v)
+    {
+      lst.eq(i).val(v);
+    });
+    return false;
+  });
+});
+</script>

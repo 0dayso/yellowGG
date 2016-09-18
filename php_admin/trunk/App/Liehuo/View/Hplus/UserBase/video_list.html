@@ -1,0 +1,193 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated.hover { animation-name:none; }
+.animated.hover.flip:hover { animation-name:flip; }
+.animated.hover.pulse:hover { animation-name:pulse; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <input type="hidden" name="type" value="{$_REQUEST['type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="audited" class="form-control">
+              <option value="">审核状态</option>
+<volist name="data['state_audit']" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['audited'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="user_type" class="form-control">
+              <option value="">用户类型</option>
+<volist name="data['user_types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['user_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+              <option value="-1"<php>echo $_REQUEST['user_type'] == '-1' ? ' selected' : '';</php>>付费用户</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <select name="score_range" class="form-control">
+              <option value="">分值</option>
+              <option value="9"<php>echo $_REQUEST['score_range'] == '9' ? ' selected' : '';</php>>9分+</option>
+              <option value="8"<php>echo $_REQUEST['score_range'] == '8' ? ' selected' : '';</php>>8分</option>
+              <option value="7"<php>echo $_REQUEST['score_range'] == '7' ? ' selected' : '';</php>>7分</option>
+              <option value="6"<php>echo $_REQUEST['score_range'] == '6' ? ' selected' : '';</php>>6分</option>
+              <option value="5"<php>echo $_REQUEST['score_range'] == '5' ? ' selected' : '';</php>>5分</option>
+              <option value="0"<php>echo $_REQUEST['score_range'] == '0' ? ' selected' : '';</php>>违规</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="province" class="form-control">
+              <option value="">省份</option>
+<php>
+$arr = D('LocationBase')->provinces ?: [];
+</php>
+<volist name="arr" id="v">
+              <option value="{$v}"<php>echo $_REQUEST['province'] == (string)$v ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="渠道、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+<if condition="$_REQUEST['audited'] eq '0'">
+          <a class="btn btn-success act-feed-audit-all">本页全部通过审核</a>
+</if>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="row list-feed">
+<volist name="data['list']" id="v">
+<php>
+$score_show = $v['score'] ?: '';
+$score_css  = 'default';
+$score_show >= 1 && $score_css = 'primary';
+$score_show >= 5 && $score_css = 'success';
+$score_show >= 8 && $score_css = 'danger';
+$score_timeout = $v['score_time'] ? ((int)$v['score_time'] - (int)$v['create_time']) : 0;
+//$score_timeout > 99 && $score_timeout = '99+';
+$usr = $data['users'][$v['uid']];
+$sex = $usr['sex'];
+</php>
+        <div class="feed-item col-xxs-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 col-auto-height" data-id="{$v['id']}">
+          <div class="thumbnail">
+<if condition="$v['type'] == 3">
+            <a><video src="__AVATAR_URL_ROOT__{$v['resource']}" poster="__AVATAR_URL_ROOT__{$v['thumb']}" preload="none" controls></a>
+<else/>
+            <a><img src="__AVATAR_URL_ROOT__{$v['resource']}"></a>
+</if>
+            <span class="feed-score label label-{$score_css}">{$score_show < 5 ? '' : $score_show}</span>
+            <div class="caption">
+              <p>
+                用户：
+<if condition="!$v['uid']">
+                <a>游客</a>
+<else/>
+                <a href="{:U('user_base/view?uid='.$v['uid'])}" target="_blank" class="popover-avatar">{$v['uid']}</a>
+                <b class="label label-{$sex ? 'danger' : 'success'}">{$Think.config.USER_SEX_IS.$sex}</b>
+</if>
+              </p>
+              <p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$v['create_time'])}</p>
+<if condition="$v['score_time']">
+              <p class="text-nowrap"><b>打分时间:</b>{:date('Y-m-d H:i:s',$v['score_time'])}</p>
+</if>
+<if condition="$v['audit_time']">
+              <p class="text-nowrap"><b>通过时间:</b>{:date('Y-m-d H:i:s',$v['audit_time'])}</p>
+</if>
+<if condition="$v['delete_time']">
+              <p class="text-nowrap"><b>删除时间:</b>{:date('Y-m-d H:i:s',$v['delete_time'])}</p>
+</if>
+<if condition="$v['audit_aid']">
+              <p class="text-nowrap"><b>审 核 人:</b>{$data['audit_admins'][$v['audit_aid']]['nickname'] ?: $v['audit_aid']}</p>
+</if>
+              <p class="text-center">
+                <a href="http://bs.baidu.com/adtest/27279a15e3556bee5c47d9fd31edb121.swf?flvurl=__AVATAR_URL_ROOT__{$v['resource']}&imgurl=__AVATAR_URL_ROOT__{$v['thumb']}&isplay=false" target="_blank" class="btn btn-sm btn-white hide">全屏</a>
+                <a href="http://image.baidu.com/n/pc_search?queryImageUrl=__AVATAR_URL_ROOT__{$v['thumb']}" target="_blank" class="btn btn-sm btn-white hide">查询盗图</a>
+<if condition="!$v['audited']">
+                <a href="{:U('avatar_audit?id='.$v['id'].'&audited=1')}" class="btn btn-sm btn-success act-feed-audit">审核</a>
+                <!--a href="{:U('avatar_audit?id='.$v['id'].'&audited=2')}" class="btn btn-sm btn-primary act-feed-audit">推荐</a-->
+</if>
+                <a href="{:U('user_base/view?uid='.$v['uid'].'&tab=tab-user-feed')}" target="_blank" class="btn btn-sm btn-danger">删除</a>
+                <a data-href="__AVATAR_URL_ROOT__{$v['resource']}" class="btn btn-sm btn-white auto-qrcode"><i class="fa fa-2x fa-qrcode"></i></a>
+              </p>
+            </div>
+          </div>
+        </div>
+</volist>
+      </div>
+    </div>
+<if condition="$_REQUEST['audited'] eq '0'">
+    <a class="btn btn-success act-feed-audit-all pull-right">本页全部通过审核</a>
+</if>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<include file="modal-feed-del"/>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+  // 视频二维码
+  $('.auto-qrcode').each(function()
+  {
+    var the = $(this),
+        url = the.data('href') || the.attr('href');
+    url && require(['jquery-qrcode'],function()
+    {
+      the.popover(
+      {
+        content:$('<div/>').qrcode(
+        {
+          width  : 200,
+          height : 200,
+          text   : url
+        }),
+        html:true,
+        trigger:'hover focus',
+        placement:'top',
+        animation:true,
+        delay:{hide:300,show:500}
+      });
+    });
+  });
+
+});
+</script>

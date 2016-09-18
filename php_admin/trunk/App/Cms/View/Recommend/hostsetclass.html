@@ -1,0 +1,125 @@
+<form class="form-horizontal" action="{:U('recommend/hostsetclass')}" id="form-search" method="get">
+<div class="controls"  >
+        <div class="col-sm-9" style="padding:0">
+            <label class="radio-inline" style="padding:0px;">
+                    <select name="tag_class_id">
+                        <option  >选择分类</option>
+                        {$option}
+                    </select>
+                    <select name="join">
+                        <option value="" <if condition="$post['join'] eq '' " >selected</if>>未加入</option>
+                        <option value="1" <if condition="$post['join'] eq 1 " >selected</if>>已加入</option>
+                    </select>
+            </label>
+            <input type="submit" class="btn btn-primary btn-sm clearurl" value="确定">
+        </div>
+
+    </div>
+</form>
+<br>
+
+<style>
+    .xxim_chatlist-list{width:100%;height:auto;display:block;clear:both;overflow: hidden;background-color: #DDD;padding:0}
+    .xxim_chatlist-list .xxim_childnode{width:300px;display:block;overflow:hidden;float:left;margin:0 auto;padding:0 auto}
+    .xxim_chatlist-list .xxim_childnode img{width:100px;height:100px;float:left;border: 4px solid #DDD5D5;}
+    .xxim_chatlist-list .xxim_childnode div{ width: 200px;height:70px; margin: 29px 0 0 0;float: left;}
+    .xxim_chatlist-list .xxim_childnode span{ display:block}
+</style>
+<ul class="xxim_chatlist-list"  ></ul>
+
+
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="text-align:center">推荐用户UID</th>
+            <th style="text-align:center">分类</th>
+            <th style="text-align:center">标签/数量</th>
+            <th style="text-align:center">加入分类状态</th>
+            <th style="text-align:center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list.list" id="vo" >
+            <tr class="gradeX">
+                <td style="text-align: center">
+                    <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid']))}"  target="_blank" >{$vo['uid']}</a>
+                </td>
+                <td style="text-align: center">{$vo['class_name']}</td>
+                <td style="text-align: center">
+                        {$vo.title}/{$vo.num}　
+                </td>
+                <td style="text-align: center">
+                    <if condition="$vo['join'] neq '' " >
+                        已加入
+                    </if>
+                </td>
+                <td style="text-align: center">
+                    <input type="submit" class="btn btn-primary btn-sm agingsuring" va="{$vo['uid']}"  value="查看">
+                    <if condition="$post['join'] eq 1 " >
+                        <input type="submit" class="btn btn-primary btn-sm del-items" did="{$vo['id']}"  value="删除">
+                    <else/>
+                        <input type="submit" class="btn btn-primary btn-sm add-items" info="{$vo['tag_class_id']}:{$vo['id']}:{$vo['uid']}"  value="加入">
+                    </if>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <div class="pagination alternate">
+        {$list.page}
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+        $('.add-items').click(function(){
+            var info = $(this).attr('info');
+            var _this = $(this);
+
+            $.post("{:U('recommend/add_items')}",{info:info},function(data){
+                if(data=='ok'){
+                    _this.parent().prev().text('已加入');
+                }else if(data=='have'){
+                    layer.alert('用户标签已添加过！');
+                }
+            });
+
+        });
+
+        $('.del-items').click(function(){
+            var id = $(this).attr('did');
+            var _this = $(this);
+            var al = layer.confirm('你确定要删除吗？',function(){
+                $.post("{:U('recommend/del_items')}",{id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.close(al);
+                    }
+                })
+            });
+        });
+
+        $('.agingsuring').click(function(){
+
+            var uid  = $(this).attr('va');
+
+            $.post("{:U('search/get_surging_html')}",{uid:uid},function(data){
+                var pageii = $.layer({
+                    type: 1,
+                    title: false,
+                    area: ['1000px', 'auto'],
+                    shift: 'top', //从左动画弹出
+                    page: {
+                        html: '<div id="addsurginged"  style="overflow:scroll;width:1000px;height:560px; padding:20px; border:1px solid #ccc; background-color:#eee;">'+data+'</div>'
+                    }
+                });
+            });
+
+
+        });
+
+
+
+    });
+</script>

@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="form-group">
+            <select name="closured" class="form-control">
+              <option value="">状态</option>
+              <option value="1"<php>echo $_REQUEST['closured'] == '1' ? ' selected' : '';</php>>已封禁</option>
+              <option value="0"<php>echo $_REQUEST['closured'] == '0' ? ' selected' : '';</php>>未封禁</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+          <span class="btn btn-white">已封禁：{$data['cnt_closured']}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户数</th>
+              <th class="text-left">设备ID</th>
+              <th>备注</th>
+              <th>封禁时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td><a href="{:U('index')}?device_id={$v['device_id']}" target="_blank" class="label label-default">{$v['cnt'] ?: ''}</a></td>
+              <td class="text-left">{$v['device_id']}</td>
+              <td>
+                <form action="{:U('device_remark')}" method="POST" class="form-inline">
+                  <input type="hidden" name="device_id" value="{$v['device_id']}">
+                  <div class="input-group">
+                    <input type="text" name="remark" value="{$data['rmks'][$v['device_id']]}" class="form-control text-success" placeholder="设备备注">
+                    <span class="input-group-addon">
+                      <label><input type="checkbox" name="white_list" value="1"<php>echo in_array($v['device_id'],$data['white_list']) ? 'checked' : '';</php>>白名单</label>
+                    </span>
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+                    </span>
+                  </div>
+                </form>
+              </td>
+              <td>{$v['closure_time'] ? date('Y-m-d H:i:s',$v['closure_time']) : '未封禁'}</td>
+              <td>
+<if condition="$v['closure_time']">
+                <a href="{:U('device_unclosure')}?device_id={$v['device_id']}" class="btn btn-primary" onclick="return confirm('真的要这么做？')">解封</a>
+<else/>
+                <a href="{:U('device_closure')}?device_id={$v['device_id']}" class="btn btn-danger" onclick="return confirm('真的要这么做？')">封禁</a>
+</if>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

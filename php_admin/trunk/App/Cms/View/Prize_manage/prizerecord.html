@@ -1,0 +1,201 @@
+ 
+
+    
+    
+    <script type="text/javascript" src="/Public/js/plugins/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="/Public/js/plugins/jqplot.barRenderer.min.js"></script>
+    <script type="text/javascript" src="/Public/js/plugins/jqplot.highlighter.min.js"></script>
+    <script type="text/javascript" src="/Public/js/plugins/jqplot.cursor.min.js"></script>
+    <script type="text/javascript" src="/Public/js/plugins/jqplot.pointLabels.min.js"></script>
+ 
+<div id="content">
+  
+      <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                 
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>奖品名称</th>
+                            <th>昨日兑换数量</th>
+                            <th>今日兑换数量</th>
+                            <th>历史兑换数量</th>
+                            <th>中奖率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:center">{$vo.prize}</td>
+                                <td style="text-align:center">{$vo.z}</td>
+                                <td style="text-align:center">{$vo.j}</td>
+                                <td style="text-align:center">{$vo.all}</td>
+                                <td style="text-align:center">{$vo.gl}%</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <volist name="list" id="vo">
+                    <li style="float:left;margin-left:4px">
+                        <if condition="$_GET['pid'] eq ''" >
+                            <button pid="{$vo.id}" class="btn <if condition='$i gt 1 ' >btn-primary</if> prize-y ">{$vo.prize}</button>
+                        </if>
+                        <if condition="$_GET['pid'] neq ''" >
+                            <button pid="{$vo.id}" class="btn <if condition='$vo["id"] neq  $_GET["pid"]' >btn-primary</if> prize-y ">{$vo.prize}</button>
+                        </if>
+
+                    </li>
+                </volist>
+
+                <li style="float:left;margin-left:10px">
+                    <input name="date" type="text" value="{$date}" id="test1" class="laydate-icon form-control" placeholder="选择时间">
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+    <div id="chart1" style="width:100%; height:400px"></div>
+
+  
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="quick-actions_homepage" id="pidval" pid='{$list[0]["id"]}'>
+        </div>
+        
+    </div> 
+ 
+ 
+<script src="/Public/layer/laydate/laydate.js"></script>
+  <script class="code" type="text/javascript">
+
+    var s1 = [{$str}];
+    var s2 = [{$str}];
+
+    $('.prize-y').click(function(){
+        var pid   = $(this).attr('pid');
+        $('.prize-y').addClass('btn-primary');
+        $(this).removeClass('btn-primary'); 
+        $('#pidval').attr('pid',pid);
+
+    });
+
+    laydate({
+        elem: '#test1',
+        format: 'YYYY-MM', // 分隔符可以任意定义，该例子表示只显示年月
+        festival: true, //显示节日
+        choose: function(datas){ //选择日期完毕的回调
+            var pid = $('#pidval').attr('pid');
+            if(pid ==''){
+                layer.alert('请选择奖品');
+                return false;
+            } 
+            location.href = "/index.php/prize_manage/prizerecord/pid/"+pid+"/date/"+datas;
+        }
+    }); 
+
+
+  
+
+  autozxtu(s1,s2);
+
+  function autozxtu(s1,s2){
+   
+    $(document).ready(function () {
+        
+
+        plot1 = $.jqplot("chart1", [s2, s1], {
+            // Turns on animatino for all series in this plot.
+            animate: true,
+            // Will animate plot on calls to plot1.replot({resetAxes:true})
+            animateReplot: true,
+            cursor: {
+                show: true,
+                zoom: true,
+                looseZoom: true,
+                showTooltip: false
+            },
+            series:[
+                {
+                    pointLabels: {
+                        show: true
+                    },
+                    renderer: $.jqplot.BarRenderer,
+                    showHighlight: false,
+                    yaxis: 'y2axis',
+                    rendererOptions: {
+                        // Speed up the animation a little bit.
+                        // This is a number of milliseconds.  
+                        // Default for bar series is 3000.  
+                        animation: {
+                            speed: 2500
+                        },
+                        barWidth: 15,
+                        barPadding: -15,
+                        barMargin: 0,
+                        highlightMouseOver: false
+                    }
+                }, 
+                {
+                    rendererOptions: {
+                        // speed up the animation a little bit.
+                        // This is a number of milliseconds.
+                        // Default for a line series is 2500.
+                        animation: {
+                            speed: 2000
+                        }
+                    }
+                }
+            ],
+            axesDefaults: {
+                pad: 0
+            },
+            axes: {
+                // These options will set up the x axis like a category axis.
+                xaxis: {
+                    tickInterval: 1,
+                    drawMajorGridlines: false,
+                    drawMinorGridlines: true,
+                    drawMajorTickMarks: false,
+                    rendererOptions: {
+                    tickInset: 0.5,
+                    minorTicks: 1
+                }
+                },
+                yaxis: {
+                    tickOptions: {
+                        formatString: "%'d"
+                    },
+                    rendererOptions: {
+                        forceTickAt0: true
+                    }
+                },
+                y2axis: {
+                    tickOptions: {
+                        formatString: "人%'d"
+                    },
+                    rendererOptions: {
+                        // align the ticks on the y2 axis with the y axis.
+                        alignTicks: true,
+                        forceTickAt0: true
+                    }
+                }
+            },
+            highlighter: {
+                show: true, 
+                showLabel: true, 
+                tooltipAxes: 'y',
+                sizeAdjust: 7.5 , tooltipLocation : 'ne'
+            }
+        });
+      
+    });
+
+}
+</script>

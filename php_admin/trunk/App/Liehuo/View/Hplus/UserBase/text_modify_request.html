@@ -1,0 +1,278 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+input.date-time { max-width:10em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="operation" value="{$_REQUEST['operation']}">
+          <div class="input-prepend input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+            <span class="input-group-addon">到</span>
+            <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+          </div>
+          <div class="form-group">
+            <select name="field_name" class="form-control">
+              <option value="">字段类型</option>
+              <option value="user_info"<php>echo $_REQUEST['field_name'] == 'user_info' ? ' selected' : '';</php>>用户资料</option>
+              <option value="msg_warn"<php>echo $_REQUEST['field_name'] == 'msg_warn' ? ' selected' : '';</php>>聊天(5位数字)</option>
+<volist name="null/*data['user_fields']*/" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['field_name'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="user_type" class="form-control">
+              <option value="">用户类型</option>
+<volist name="data['user_types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['user_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+              <option value="-1"<php>echo $_REQUEST['user_type'] == '-1' ? ' selected' : '';</php>>付费用户</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="50"<php>echo $_REQUEST['page_size'] == '50' ? ' selected' : '';</php>>50条</option>
+              <option value="100"<php>echo $_REQUEST['page_size'] == '100' ? ' selected' : '';</php>>100条</option>
+              <option value="200"<php>echo $_REQUEST['page_size'] == '200' ? ' selected' : '';</php>>200条</option>
+              <option value="500"<php>echo $_REQUEST['page_size'] == '500' ? ' selected' : '';</php>>500条</option>
+              <option value="1000"<php>echo $_REQUEST['page_size'] == '1000' ? ' selected' : '';</php>>1000条</option>
+              <option value="2000"<php>echo $_REQUEST['page_size'] == '2000' ? ' selected' : '';</php>>2000条</option>
+              <option value="20"<php>echo $_REQUEST['page_size'] == '20' ? ' selected' : '';</php>>20条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('setting/sensitive_words')}" target="_blank" class="btn btn-primary">敏感词库</a>
+<if condition="$_REQUEST['operation'] eq 0">
+          <a class="btn btn-success act-user-field-pass-all">本页全部通过审核</a>
+</if>
+          <a href="{:U('text_modify_clear')}" class="btn btn-danger">清理历史数据</a>
+          <span class="btn btn-white">队列：<b class="queue-count">-</b></span>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form id="form_closure" action="{:U('closure_bat')}" method="POST" class="form-inline pull-right" onsubmit="return confirm('真的要这么做？')">
+          <input type="text" name="remark" value="" placeholder="必填，备注..." class="form-control">
+          <label><input type="checkbox" name="has_device" value="1"> 同时封禁设备</label>
+          <button type="submit" class="btn btn-danger">批量封禁用户</button>
+        </form>
+        <form id="form_main" action="{:U('text_modify_clear_bat')}" method="POST" class="form-inline" onsubmit="return confirm('真的要这么做？')">
+          <input type="text" name="remark" value="" placeholder="必填，备注..." class="form-control">
+          <input type="text" name="msg" value="" placeholder="必填，话术..." class="form-control">
+          <button type="submit" class="btn btn-danger">批量清除用户资料</button>
+        </form>
+      </div>
+      <div id="main-table" class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th><label><input type="checkbox" class="check-all" form="form_main"> ID</label></th>
+              <th><label><input type="checkbox" class="check-all" form="form_closure" data-target="[form='form_closure'][name^='ids[']"> 用户ID</label></th>
+              <th>字段</th>
+              <th>内容</th>
+              <th>状态</th>
+              <th>创建时间</th>
+<if condition="$_REQUEST['operation'] != '0'">
+              <th>处理时间</th>
+</if>
+              <th>处理结果</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$url = U('view?uid='.$v['uid'].'&field='.$v['field_name']);
+$usr = $data['users'][$v['uid']] ?: [];
+$ism = $v['field_name'] == 'msg_warn';
+</php>
+            <tr>
+              <td>
+                <label><input type="checkbox" name="ids[{$v['id']}]" value="{$v['id']}"<php>echo in_array($v['operation'],[0]) && in_array($v['field_name'],['nickname','description']) ? '' : ' disabled';</php> form="form_main"> {$v['id']}</label>
+              </td>
+              <td>
+                <label><input type="checkbox" name="ids[{$v['uid']}]" value="{$v['uid']}" form="form_closure"></label>
+                <a href="{$url}" target="_blank" class="label label-{$usr['sex'] ? 'danger' : 'success'} popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid'] ?: ''}</a>
+                <b class="label label-danger">{:implode(' ',array_filter([
+                  boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : '',
+                  $usr['glory_grade'] ?: '',
+                  $data['contract_types'][$data['hosts'][$v['uid']]['contract_type']]['attrs']['name'],
+                ]))}</b>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt NOW_TIME)">
+                <b class="label label-danger">封</b>
+</if>
+              </td>
+              <td>{$data['user_fields'][$v['field_name']] ?: $v['field_name']}</td>
+              <td>
+                <div class="td-content{$ism ? ' popover-with-ajax' : ''}" data-href="{:U('get_chat_log',
+[
+  'sender'    => $v['uid'],
+  'stime'     => date('Y-m-d',strtotime($v['sub_time'])),
+  'etime'     => date('Y-m-d H:i:s',strtotime($v['sub_time']) + 180),
+  'texttype'  => 1,
+  'nosys'     => 1,
+  'page_size' => 10,
+])}" data-tpl="tpl-chat-log">{$v['field_value_html'] ?: $v['field_value']}</div>
+              </td>
+              <td>{$data['operation_status'][$v['operation']]}</td>
+              <td><php>echo strtotime($v['sub_time']) ? $v['sub_time'] : '-';</php></td>
+<if condition="$_REQUEST['operation'] != '0'">
+              <td><php>echo strtotime($v['pass_time']) ? $v['pass_time'] : '-';</php></td>
+</if>
+              <td>
+<if condition="$ism">
+                <a href="{:U('chat_logs?day=3&sender='.$v['uid'])}" target="_blank" class="btn btn-primary btn-sm">记录</a>
+
+</if>
+<if condition="$v['operation'] == 0">
+                <a href="{$url}" target="_blank" class="btn btn-primary btn-sm">处理</a>
+                <a href="{:U('text_modify_pass?id='.$v['id'])}" class="btn btn-success btn-sm act-user-field-pass">通过</a>
+<else/>
+                {$v['result'] ?: '-'}
+</if>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+<if condition="$_REQUEST['operation'] eq 0">
+        <a class="btn btn-success act-user-field-pass-all pull-right">本页全部通过审核</a>
+</if>
+        <div class="pagination alternate">
+          <ul>
+            <li style="text-align:center;color:#00f">{$page}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-chat-log">
+<div>
+<$
+$.each(list || [],function(i,v)
+{
+$>
+  <div>
+    <span class="label label-default"><$=v.time || ''$></span>
+    <$=v.text$>
+  </div>
+<$
+});
+$>
+</div>
+</script>
+
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body')
+  .on('reload','#main-table',function()
+  {
+    $(this).load('{:U('',$_GET)} #main-table',function()
+    {
+      $('.pagination').trigger('reload');
+    });
+    return false;
+  });
+
+  (function(fun)
+  {
+    window.notified_users || (window.notified_users = {});
+    setInterval(fun,1000 * 5);
+    fun();
+  })
+  (function()
+  {
+    return $.ajax(
+    {
+      url:'{:U('illegal_text_queue')}',
+      data:{ajax:1},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      data.info && require(['messenger-future'],function()
+      {
+        Messenger().post(
+        {
+          type:data.status == 1 ? 'success' : 'error',//info
+          message:data.info
+        });
+      });
+      if(data.status == 1)
+      {
+        $.each(dat.list || [],function(i,v)
+        {
+          var txt = v.text_checked || '',
+              wds = txt.match(/【.+?】/g),
+              uid = v.uid || 0,
+              tms = (parseInt(notified_users[uid] || 0) || 0) + 1;
+          uid && (notified_users[uid] = tms);
+          //console.log(notified_users);
+          if(v.type == 'msg'        && tms != 3) return false;
+          if(v.type == 'msg_repeat' && tms <= 5) return false;
+          window.Notification && Notification.requestPermission(function(permission)
+          {
+            var typ = '';
+            v.type == 'nickname'   && (typ = '【昵称】');
+            v.type == 'msg'        && (typ = '【聊天】');
+            v.type == 'msg_repeat' && (typ = '【重复】');
+            if(permission != 'granted') return false;
+            var ntf = new Notification(typ + '新的文字审核！' + wds.join(''),
+            {
+              body:v.text_checked || v.text,
+              icon:v.avatar
+            });
+            ntf.onshow = function()
+            {
+              ntf.close && setTimeout(function(){ ntf.close(); },5000);
+            };
+            ntf.onclick = function()
+            {
+              if(v.type == 'msg_repeat')
+              {
+                window.open('{:U('chat_logs?day=3')}' + '?uid=' + uid/*,'window_msg_repeat'*/);
+              }
+              else
+              {
+                $('#main-table').trigger('reload');
+                window.focus();
+              }
+            };
+          });
+        });
+        $('.queue-count').text(dat.count || 0);
+      }
+    })
+    .fail(function(jqXHR,textStatus,errorThrown)
+    {
+      console.log('ajax error');
+    });
+  });
+
+});
+</script>

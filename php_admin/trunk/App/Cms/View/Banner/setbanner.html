@@ -1,0 +1,95 @@
+   
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                    
+                    <a href="{:U('Banner/setbanneradd')}" class="btn btn-primary btn-sm" style="float:right">增加banner</a>
+                    
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">ID</th>
+                                    <th style="text-align:center">图片</th>
+                                    <th style="text-align:center">显示位置</th>
+                                    <th style="text-align:center">方式</th>
+                                    <th style="text-align: center">展示顺序</th>
+                                    <th style="text-align: center">展示时间</th>
+                                    <th style="text-align: center">点击量</th>
+                                    <th style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo.id}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <img src="{$Think.config.BANNER_PATH}banner/{$vo.thumb}" width="150" height="150"/>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <?php 
+                                                if($vo['page']==1)
+                                                    echo '动态最新';
+                                                elseif($vo['page']==0)
+                                                    echo '首页推荐';
+                                            ?>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <?php 
+                                                if($vo['type']==1){ 
+                                                    echo '用户集合';
+                                                }elseif($vo['type']==2) {
+                                                    echo '个人主页';
+                                                }elseif ($vo['type']==3) {
+                                                    echo '单个标签集合';
+                                                }elseif ($vo['type']==4) {
+                                                    echo '单个动态集合';
+                                                }else{
+                                                    echo 'web页面';
+                                                }
+                                            ?>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                             {$vo['index']} 
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo['valid_begin']|date='Y-m-d H:i:s',###} 至 {$vo['valid_end']|date='Y-m-d H:i:s',###}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            总点击量：{$vo['clicknums']}  　
+                                            点击次数：{$vo['user_clicknums']}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+
+                                        <a class="btn btn-primary btn-sm" href="{:U('banner/editbanner',array('id'=>$vo['id']))}">编辑</a>
+                                        <a class="btn btn-primary btn-sm" href="{:U('banner/showbanner',array('id'=>$vo['id'],'type'=>$vo['type']))}">查看</a>
+
+
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

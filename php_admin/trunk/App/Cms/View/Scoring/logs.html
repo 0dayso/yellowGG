@@ -1,0 +1,107 @@
+<style>
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+.table-striped > tbody > tr:nth-of-type(odd) { background-color:#efefef; }
+.table-hover > tbody > tr:hover { background-color:#ececec; }
+.table tr .auto-rowspan,
+.table tr .auto-rowspan-identic { vertical-align:middle; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <form action="{:U()}" method="GET" class="form-inline">
+            <input type="hidden" name="act" value="filter">
+            <div class="input-prepend input-group">
+              <span class="add-on input-group-addon">日期范围</span>
+              <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+              <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+              <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            </div>
+            <div class="form-group">
+              <select name="group_id" class="form-control">
+                <option value="">打分组</option>
+<volist name="data['assign_groups']" id="v">
+                <option value="{$v['id']}"<php>echo (string)$v['id'] == $_REQUEST['group_id'] ? ' selected' : '';</php>>{$v['name']}</option>
+</volist>
+              </select>
+            </div>
+            <div class="form-group">
+              <select name="range_id" class="form-control">
+                <option value="">打分班次</option>
+<volist name="data['assign_ranges']" id="v">
+                <option value="{$v['id']}"<php>echo (string)$v['id'] == $_REQUEST['range_id'] ? ' selected' : '';</php>>{$v['name']}</option>
+</volist>
+              </select>
+            </div>
+            <div class="form-group">
+              <select name="type" class="form-control">
+                <option value="">打分类型</option>
+<volist name="data['score_types']" id="v">
+                <option value="{$key}"<php>echo (string)$key == $_REQUEST['type'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="text" name="uid" value="{$_REQUEST['uid']}" placeholder="打分人ID" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">搜索</button>
+            <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center an-auto-rowspan-">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>动态ID</th>
+                  <th>发布时间</th>
+                  <!--th>动态图片</th-->
+                  <th>打分时间</th>
+                  <th>分数</th>
+                  <th>响应时间</th>
+                  <th>打分人ID</th>
+                  <th>打分团班次</th>
+                  <th>打分团分组</th>
+                  <th>类型</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+<php>
+$css = 'default';
+$v['type'] == '0' && $css = 'success';
+$v['type'] == '1' && $css = 'danger';
+$ctime = $v['create_time'] ?: $data['score_feeds'][$v['feed_id']]['create_time'];
+</php>
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td class="auto-rowspan"><a href="{:U('Feed_base/view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id']}</a></td>
+                  <td class="auto-rowspan-identic">{$ctime ? date('Y-m-d H:i:s',$ctime) : '-'}</td>
+                  <!--td>
+                    <php>echo $v['resource'] ? ('<img src="__FEED_IMG_ROOT__'.$v['resource'].'" height="80">') : '';</php>
+                  </td-->
+                  <td>{:date('Y-m-d H:i:s',$v['score_time'])}</td>
+                  <td>{$v['score']}</td>
+                  <td>{$v['timeout'] >= 0 ? $v['timeout'] : ($ctime ? ($v['score_time'] - $ctime) : '-')}</td>
+                  <td><a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+                  <td class="auto-rowspan-identic">{$data['assign_groups'][$v['group_id']]['name']}</td>
+                  <td class="auto-rowspan-identic">{$data['assign_ranges'][$v['range_id']]['name']}</td>
+                  <td><span class="text-{$css}">{$data['score_types'][$v['type']]}</span></td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

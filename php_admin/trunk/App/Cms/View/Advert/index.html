@@ -1,0 +1,52 @@
+<style>
+    .gradeX td{font-size:24px}
+</style>
+<form class="form-horizontal"  style="width:700px;float:left"   method="get">
+    <div class="controls">
+        <div class="col-md-3" style="padding-left:0px">
+            <input type="text" name="start" value="{$_GET['start']}" id="form-search-key" onclick="laydate()" class="laydate-icon form-control" placeholder="开始时间">
+        </div>
+        <div class="col-md-3" style="padding-left:0px">
+            <input type="text" name="end" value="{$_GET['end']}" id="form-search-key" onclick="laydate()" class="laydate-icon form-control" placeholder="结束时间">
+        </div>
+        <input type="submit" value="搜索" class="btn btn-primary btn-sm">
+    </div>
+</form>
+<form action="" method="post" style="margin-top: 50px" >
+    <div class="widget-content nopadding">
+        <table id="accusation_table" class="table table-bordered">
+            <thead>
+            <tr>
+                <th style="text-align:center">时间</th>
+                <th style="text-align:center">聊天</th>
+                <th style="text-align:center">动态</th>
+                <th style="text-align:center">认证通过</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="data.for" id="vo" key="i">
+                    <tr class="gradeX">
+                        <td style="text-align:center">{$vo}</td>
+                        <td style="text-align:center">总聊天量: {$data['data']['chat']['num'][$vo]['num']}  / 总人数: {$data['data']['chat']['man'][$vo]['num']}</td>
+                        <td style="text-align:center">总动态量: {$data['data']['surging']['num'][$vo]['num']}  / 总人数: {$data['data']['surging']['man'][$vo]['num']}</td>
+                        <td style="text-align:center">总认证量: {$data['data']['tag']['num'][$vo]['num']}  / 总人数: {$data['data']['tag']['man'][$vo]['num']}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="http://cdn.bootcss.com/highcharts/4.1.7/highcharts.js"></script>
+<script>
+window.report_data = {:json_encode($data)};
+jQuery(function($)
+{
+  // body...
+});
+</script>

@@ -1,0 +1,109 @@
+ 
+<div id="content">
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <div class="return" style="text-align:left">
+                    <span><a href="{:U('AccountManage/add',array('uid'=>$list['uid']))}"><input type="submit" class="btn btn-success submit" value="返回" /></a></span>
+                </div>
+                <hr noshade color="#0066cc">
+                <form class="form-horizontal" action="{:U('AccountManage/confirm',array('type'=>edit))}" id="add_user">
+                    <label>空间资料</label>
+                    <hr noshade color="#0066cc">
+                    <div class="control-group">
+                        <label class="control-label">初见号：</label>
+                        <div class="controls">
+                            <input style="border: 0" name="uid" value="{$list.uid}" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">昵称：</label>
+                        <div class="controls">
+                            <input name="nickname" value="{$list.nickname}"/> *修改时必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">性别：</label>
+                        <div class="controls">
+                            <select id="sex" name="sex" >
+                                <option selected="selected" value="0">男</option>
+                                <option value="1">女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">生日：</label>
+                        <div class="controls">
+                            <input type="text" name="birthday" id="birthday" value="{$list.birthday}"/>*修改时必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">电话：</label>
+                        <div class="controls">
+                            <input type="text" name="phone" id="phone" value="{$list.phone}"/> *修改时必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">密码：</label>
+                        <div class="controls">
+                            <input type="text" id="password" name="password" /> *修改时必须填写，系统会对密码自动加密
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">职业：</label>
+                        <div class="controls">
+                            <input type="text" id="job" name="job" value="{$list.job}">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">个性标签：</label>
+                        <div class="controls">
+                            <!--<textarea rows="5" id="tags-content" name="tags-content" value="{$list.tags}"></textarea>-->
+                            <input type="text" id="tags-content" name="tags" value="{$list.tags}">
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="text-align:left">
+                        <span><input type="submit" class="btn btn-success submit" value="确认修改" /></span>
+                    </div>
+                </form>
+
+                <form class="form-horizontal" action="{:U('AccountManage/upload_head_img',array('uid'=>$list['uid']))}" enctype="multipart/form-data" method="post">
+                    <label>上传图片</label>
+                    <hr noshade color="#0066cc">
+                    <p>
+                    <div class="control-group">
+                        <div class="controls">
+                            <volist name="head" id="vo">
+                                <img src="{$vo.path}">
+                                <input type="checkbox" class="head-img" id="{$vo.key}" name="{$vo.key}"/>
+                            </volist>
+                            <br>
+                            <input type="file" name="file" value="选择图片" />&nbsp;&nbsp;
+                            <input type="submit" value="确定" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+ 
+ 
+<script src="__PUBLIC__/datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $('#birthday').datepicker({
+            format: "yyyy-mm-dd"
+        });
+    });
+</script>
+ 

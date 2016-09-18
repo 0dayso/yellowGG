@@ -1,0 +1,47 @@
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                    
+                    <a href="" class="btn btn-primary btn-sm" style="float:right">新增库</a>
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">活动名称</th>
+                                    <th style="text-align:center">活动时间</th>
+                                    <th style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.report_type}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </form>
+                
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

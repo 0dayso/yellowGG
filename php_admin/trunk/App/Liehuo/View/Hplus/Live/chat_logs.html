@@ -1,0 +1,245 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="clearfix">
+      <form action="{:U()}" method="GET" class="form-inline">
+        <input type="hidden" name="act" value="filter">
+        <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+        <input type="hidden" name="room_id" value="{$_REQUEST['room_id']}">
+        <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+        <input type="hidden" name="sender" value="{$_REQUEST['sender']}">
+        <input type="hidden" name="recver" value="{$_REQUEST['recver']}">
+        <label><input type="checkbox" form="form_main" class="check-all" data-target="[name^='ids[']"> 全选</label>
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range"
+                 data-stime="{$_REQUEST['stime'] ?: date('Y-m-d')}"
+                 data-etime="{$_REQUEST['etime']}"
+                 data-limit="31">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime'] ?: date('Y-m-d')}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group" style="display:none;">
+          <select name="day" class="form-control" disabled>
+            <option value="1"<php>echo $_REQUEST['day'] == '1' ? ' selected' : '';</php>>最近1天</option>
+            <option value="3"<php>echo $_REQUEST['day'] == '3' ? ' selected' : '';</php>>最近3天</option>
+            <option value="7"<php>echo $_REQUEST['day'] == '7' ? ' selected' : '';</php>>最近7天</option>
+            <option value="15"<php>echo $_REQUEST['day'] == '15' ? ' selected' : '';</php>>最近15天</option>
+            <option value="30"<php>echo $_REQUEST['day'] == '30' ? ' selected' : '';</php>>最近30天</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select name="minor_type" class="form-control">
+            <option value="">消息类型</option>
+            <option value="1"<php>echo $_REQUEST['minor_type'] == '1' ? ' selected' : '';</php>>文本</option>
+            <option value="2"<php>echo $_REQUEST['minor_type'] == '2' ? ' selected' : '';</php>>表情</option>
+            <option value="3"<php>echo $_REQUEST['minor_type'] == '3' ? ' selected' : '';</php>>礼物</option>
+            <option value="4"<php>echo $_REQUEST['minor_type'] == '4' ? ' selected' : '';</php>>弹幕</option>
+            <option value="5"<php>echo $_REQUEST['minor_type'] == '5' ? ' selected' : '';</php>>喇叭</option>
+            <option value="100"<php>echo $_REQUEST['minor_type'] == '100' ? ' selected' : '';</php>>其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+      </form>
+      <form id="form_main" action="{:U('UserBase/closure_bat')}" method="POST" class="form-inline pull-right" onsubmit="return confirm('真的要这么做？')">
+        <input type="text" name="remark" value="" placeholder="必填，备注..." class="form-control">
+        <label><input type="checkbox" name="has_device" value="1"> 同时封禁设备</label>
+        <button type="submit" class="btn btn-danger">批量封禁</button>
+        <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+      </form>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+    <div class="chat-logs clearfix{$show_inline ? ' chat-logs-inline' : ''}">
+<volist name="data['list']" id="v">
+<php>
+$key = md5($v['sender'].$v['content'].$v['time']);
+$jso = $v['json'] ?: [];
+$is_self = $v['sender'] == $_REQUEST['uid'];
+$ser = $data['users'][$v['sender']] ?: [];
+$rer = $data['users'][$v['recver']] ?: [];
+$sex_color = ['success','danger','waring'];
+</php>
+  <div class="media chat-msg{$is_self ? ' chat-myself' : ''}" data-id="{$v['msgid']}" data-key="{$key}">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <label>
+          <input type="checkbox" name="ids[{$v['sender']}]" value="{$v['sender']}" form="form_main">
+          <small class="chat-time">{$v['time']}</small>
+        </label>
+        <a href="{:U('UserBase/view?uid='.$v['sender'].'&tab=tab-user-chat')}" target="_blank"
+           class="label label-{$sex_color[$ser['sex']] ?: 'primary'} popover-with-data"
+           data-placement="left"
+           data-uid="{$v['sender']}"
+           data-silence_ttl="{$v['silence_ttl']}"
+           data-original-title="{$ser['nickname']}"
+           data-tpl="tpl-popover-live-guest">{$v['sender']}</a>
+        <b class="label label-danger">{:boolval($ser['vip_level'] && $ser['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$ser['glory_grade'] ?: ''}</b>
+        在房间
+        <a href="{:U('index?room_id='.$v['live_chat_room_id'])}" target="_blank" class="label label-primary">{$v['live_chat_room_id']}</a>
+        说：
+      </p>
+      <div class="chat-text" data-json='{:json_encode($jso)}'>
+
+<if condition="$v['chat_minor_type'] == '3' && $jso['animate'] == 'like'">
+        <div><b class="text-warning">{$ser['nickname']}</b> 喜欢了主播 <i class="fa fa-heart heart-{$jso['gift_id']}"></i></div>
+
+<elseif condition="$v['chat_minor_type'] == '3'"/>
+        <div><b class="text-warning">{$ser['nickname']}</b> 送给主播一个礼物 {$jso['gift_id']}</div>
+
+<elseif condition="$v['chat_minor_type'] == '100' && $jso['type'] == 307"/>
+        宝箱结束通知
+
+<elseif condition="$v['chat_minor_type'] == '100' && in_array($jso['type'],[402,403,404,405,406,407])"/>
+<php>
+$arr =
+[
+  402 => '直播暂停',
+  403 => '重回直播',
+  404 => '主播意外退出',
+  405 => '封禁主播',
+  406 => '禁言用户',
+  407 => '主播解散直播',
+];
+</php>
+        <span class="text-danger">{$arr[$jso['type']]}:</span> {$jso['live_id']}
+
+<elseif condition="$v['chat_minor_type'] == '100' && in_array($jso['type'],[350,351,352,353,354,355])"/>
+<php>
+$arr =
+[
+  350 => '游戏创建',
+  351 => '游戏加入',
+  352 => '游戏预开始',
+  353 => '游戏开始',
+  354 => '游戏结束',
+  355 => '游戏筹集失败',
+];
+</php>
+        <span class="text-danger">{$arr[$jso['type']]}:</span> {$jso['live_id']}<br>
+<volist name="jso['json']['item_list']" id="g">
+        {$g['name']}<br>
+</volist>
+<if condition="$jso['json']['join_game_desc']">
+        {$jso['json']['join_game_desc']}
+</if>
+
+<elseif condition="$v['chat_minor_type'] == 5 && $v['content']"/>
+        <i class="fa fa-bullhorn fa-2x text-warning"></i>
+        <b class="label label-warning">喇叭消息</b>
+        {$v['content']}
+
+<elseif condition="$jso['json'] && $jso['json']['text']"/>
+        {$jso['json']['text']}
+
+<elseif condition="$jso['text']"/>
+        {$jso['text']}
+
+<else/>
+        {$v['text_html'] ?: $v['text'] ?: $v['content']}
+</if>
+      </div>
+    </div>
+  </div>
+</volist>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$pager ? $pager->show() : $page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-popover-live-guest">
+<div>
+  <h4><$=originalTitle$></h4>
+  <hr class="line sm">
+<$
+if(silence_ttl >= 1)
+{
+$>
+  <div class="text-danger">剩余<$=silence_ttl$>秒解除禁言</div>
+  <hr class="line sm">
+<$
+}
+$>
+  <div class="text-center">
+    <form action="{:U('dispose')}" class="form-inline ajax-with-msg">
+      <input type="hidden" name="act" value="silence">
+      <input type="hidden" name="uid" value="<$=uid$>">
+      <div class="form-group">
+        <select name="duration" class="form-control">
+          <option value="">禁言时长</option>
+<$
+arr =
+{
+  '120'    : '2分钟',
+  '1800'   : '30分钟',
+  '3600'   : '1小时',
+  '21600'  : '6小时',
+  '43200'  : '12小时',
+  '86400'  : '24小时',
+  '172800' : '48小时'
+};
+for(k in arr)
+{
+$>
+          <option value="<$=k$>"><$=arr[k]$></option>
+<$
+}
+$>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-danger">禁言</button>
+    </form>
+  </div>
+  <hr class="line sm">
+  <img src="{:U('UserBase/avatar')}?uid=<$=uid$>" style="max-width:200px;max-height:200px;">
+</div>
+</script>
+
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  (function()
+  {
+    var mls = $('.chat-msg[data-key]'),
+        kls = {};
+    mls.each(function()
+    {
+      var the = $(this),
+          key = the.data('key');
+      kls[key] || (kls[key] = the);
+    });
+    $.each(kls,function(key,the)
+    {
+      if(mls.filter('[data-key="' + key + '"]').length >= 2)
+      {
+        the.find('.media-body')
+        .append(
+          $('<a/>').addClass('chat-msg-group-toggle pull-left')
+          .attr(
+          {
+            'data-toggle' : 'collapse',
+            'data-target' : '[data-key="' + key + '"]:not(:first)'
+          })
+          .css(
+          {
+            'margin-left' : '1em',
+            'line-height' : 4
+          })
+          .html('<i class="fa fa-toggle-down"></i>')
+        );
+        the.nextAll('[data-key="' + key + '"]').addClass('collapse');
+      }
+    });
+  })();
+
+});
+</script>

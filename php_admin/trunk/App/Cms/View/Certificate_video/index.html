@@ -1,0 +1,171 @@
+<div id="content">
+ 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls"> 
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value=1>按初见号</option>
+                                <option value=2>按昵称</option>
+                                <option value=3>按提交时间</option>
+                            </select>
+                            <input type="hidden" name="type" value="{$type}">
+                            <div class="col-md-2"><input type="text" name="keyword" id="form-search-key" class="form-control"></div> 
+                            <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+                        </div>
+                    </form>
+                   
+
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <button type="button" class="btn btn-w-m btn-danger">注:红色为地推帐号</button>
+                </div>
+
+                <div>
+                    <form action="{:U('CertificateVideo/allocate_task_to_admin',array('type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="certificate_video_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">ID</th>
+                                    <th style="text-align:center">初见号</th>
+                                    <th style="text-align:center">昵称</th>
+                                    <th style="text-align:center">提交时间</th>
+                                    <if condition="$menu EQ 'task_hall' AND $type NEQ 'unallocated'">
+                                        <th style="text-align:center">分配给</th>
+                                    </if>
+                                    <if condition="$menu EQ 'task_hall' AND $type EQ 'allocated'">
+                                        <th style="text-align:center">分配时间</th>
+                                    </if>
+                                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                                        <th style="text-align:center">审核结果</th>
+                                        <th style="text-align:center">审核时间</th>
+                                        <th style="text-align:center">备注</th>
+                                    </if>
+                                    <if condition="($menu EQ 'admin_task') OR ($menu EQ 'task_hall' AND $type EQ 'processed')">
+                                        <th style="text-align:center">操作</th>
+                                    </if>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <if condition="($menu EQ 'task_hall') AND ($type NEQ 'processed')">
+                                            <td style="text-align: center">{$vo.id}
+                                            <input  type="checkbox"  name="{$vo.id}" class="input-ch" value="{$vo.id}:{$vo.certificate_video_id}"/>
+                                            </td>
+                                        <else />
+                                            <td style="text-align: center">{$vo.id}</td>
+                                        </if>
+
+                                        <td style="text-align: center">
+                                            <a style="text-decoration: underline" href="{:U('User/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid']))}" target="_blank">{$vo.uid}</a>
+                                        </td>
+                                        <if condition="$vo.user_status EQ 2">
+                                            <td style="text-align: center;color: #ff0000">
+                                                {$vo.nickname}
+                                            </td>
+                                            <else />
+                                            <td style="text-align: center">
+                                                {$vo.nickname}
+                                            </td>
+                                        </if>
+                                        <td style="text-align:center">{$vo.sub_time|date="Y-m-d H:i:s",###}</td>
+                                        <if condition="$menu EQ 'task_hall' AND $type NEQ 'unallocated'">
+                                            <td style="text-align: center">{$vo.allocated_to}</td>
+                                        </if>
+                                        <if condition="$menu EQ 'task_hall' AND $type EQ 'allocated'">
+                                            <td style="text-align: center">{$vo.allocate_time}</td>
+                                        </if>
+                                        <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                                            <td style="text-align: center">{$vo.result}</td>
+                                            <td style="text-align:center">{$vo.certificate_time}</td>
+                                            <td style="text-align: left;width: 30%">{$vo.remark}</td>
+                                        </if>
+                                        <if condition="($menu EQ 'admin_task') OR ($menu EQ 'task_hall' AND $type EQ 'processed')">
+                                            <td style="text-align: center">
+                                                <a href="{:U('CertificateVideo/show_single_request/', array('menu'=>$menu,'type'=>$type,'id'=>$vo['id'],'certificate_video_id'=>$vo['certificate_video_id']))}" class="btn btn-primary btn-mini" >审核</a>
+                                            </td>
+                                        </if>
+                                    </tr>
+                                </volist>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+                            <if condition="$menu eq 'task_hall' AND $type neq 'processed'">
+								<include file="Common:select_admin" />
+                            </if>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div>
+                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                        <!--<input type="hidden" id="list" value="{$list}" />-->
+                        <div style="float: right">
+                            <input type="submit" id="confirm" class="btn btn-w-m btn-warning" value="确认"/>
+                        </div>
+                    </if>
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var  arr  = [];
+        $("#certificate_video_table tbody tr td:nth-child(1)").each(function() {
+            arr.push($.trim($(this).html()));
+        });
+        var  content  =  arr.join(',');
+        var  list     =  content;
+
+        $('#confirm').click(function(){
+            location.href ="{:U('CertificateVideo/confirm_delete_request')}?list="+list;
+        });
+
+        $("#all").click(function(){
+            if($(this).checked){
+                $(".input-ch").each(function(i){
+                    $(".input-ch").eq(i).prop("checked",true);
+                    //$.uniform.update($(this));
+                });
+            }else{
+                $(".input-ch").each(function(i){
+                    $(".input-ch").eq(i).prop("checked",false);
+                    //$.uniform.update($(this));
+                });
+            }
+        });
+
+        $("#selectAll").click(function(){
+            $(".input-ch").each(function(i){
+                $(".input-ch").eq(i).prop("checked",true);
+                //$.uniform.update($(this));
+            });
+        });
+
+        $("#reverse").click(function(){
+            $(".input-ch").each(function(i){
+                //$(this).attr("checked",true);
+                $(".input-ch").eq(i).prop("checked",false);
+                //$.uniform.update($(this));
+            });
+        });
+    });
+</script>
+ 

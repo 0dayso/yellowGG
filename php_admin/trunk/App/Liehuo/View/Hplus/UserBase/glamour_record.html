@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="type" class="form-control">
+              <option value="">收支类型</option>
+<volist name="data['types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="备注、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1&page_size=export',$_GET)}" class="btn btn-success">导出</a>
+          <span class="btn btn-white">总金额：{$data['fee_total']}</span>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>收支类型</th>
+              <th>金额</th>
+              <th>余额</th>
+              <th>对方用户</th>
+              <th>记录时间</th>
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$usr = $data['users'][$v['uid']] ?: [];
+$osr = $data['users'][$v['oid']] ?: [];
+</php>
+            <tr>
+              <td>
+                <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-{$usr['sex'] ? 'danger' : 'success'} popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid'] ?: ''}</a>
+                <b class="label label-danger">{:implode(' ',array_filter([
+                  boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : '',
+                  $usr['glory_grade'] ?: '',
+                ]))}</b>
+              </td>
+              <td>{$data['types'][$v['type']] ?: $v['type']}</td>
+              <td>{$v['glamour']}</td>
+              <td>{$v['balance']}</td>
+              <td>
+                <a href="{:U('view?uid='.$v['oid'])}" target="_blank" class="label label-{$osr['sex'] ? 'danger' : 'success'} popover-avatar" data-original-title="{$osr['nickname']}">{$v['oid'] ?: ''}</a>
+                <b class="label label-danger">{:implode(' ',array_filter([
+                  boolval($osr['vip_level'] && $osr['vip_valid_end'] >= NOW_TIME) ? 'v' : '',
+                  $osr['glory_grade'] ?: '',
+                ]))}</b>
+              </td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td>{$v['remark']}</td>
+              <td>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

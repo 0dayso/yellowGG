@@ -1,0 +1,113 @@
+<style>
+table .form-inline { display:inline-block; }
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+td [name="sort"] { display:inline-block; max-width:100px; }
+.form-group{overflow:hidden;}
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        
+        <div class="form-group" >
+          <div class="col-sm-6">
+            <input type="text" name="image" value="" placeholder="图片" class="form-control">
+          </div>
+          <div class="col-sm-4">
+            <input type="file" name="file" class="image-upload-comm" data-url="{:U('setting/upload?type=images')}" data-target="[name=image]">
+          </div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="form-group">
+          <div class="col-sm-6">
+            <input type="text" name="voices" value="" placeholder="音频" class="form-control">
+          </div>
+          <div class="col-sm-4">
+            <input type="file" name="file" class="image-upload-comm" data-url="{:U('setting/upload?type=voices')}" data-target="[name=voices]">
+          </div>
+        </div>
+        <a href="{:U('index?sex=0')}" class="btn btn-danger" >男</a>
+        <a href="{:U('index?sex=1')}" class="btn btn-danger" >女</a>
+        <div style="clear:both;"></div>
+
+
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+	              <th>第几条回复</th>
+                <th>回复内容</th>
+                <th>内容类型</th>
+	              <th>回复停顿时间（秒）</th>
+	              <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<php>
+$form = 'form_table_row_add';
+</php>
+                <tr class="gradeX">
+                  <td>添加</td>
+                  <td><input type="text" name="num" value="" placeholder="唯一不可重复" form="{$form}" class="form-control input-sm"></td>
+                  <td>
+                      <input type="text" name="content" value="" placeholder="唯一不可重复" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <td>
+                      文本<input type="radio" name="c_type" value="1"  form="{$form}"  >
+                      音频<input type="radio" name="c_type" value="2"  form="{$form}"  >
+                      图片<input type="radio" name="c_type" value="3"  form="{$form}"  >
+                  </td>
+                  <td><input type="text" name="sleep" value="" placeholder="唯一不可重复" form="{$form}" class="form-control input-sm"></td>
+                  <td>
+                    <form action="{:U('set')}" method="POST" id="{$form}" class="form-inline">
+                      <input type="hidden" name="id" value="">
+                      <input type="hidden" name="sex" value="<?php echo $_GET['sex']; ?>">
+                      <button type="submit" class="btn btn-primary">添加</button>
+                    </form>
+                  </td>
+                </tr>
+<volist name="list" id="v">
+<php>
+$form = 'form_table_row_'.$v['id'];
+</php>
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  
+                  <if condition="$v.num eq 0 ">
+                      <td>匹配后</td>
+                  <else/>
+                      <td><input type="text" name="num" value="{$v['num']}" form="{$form}" class="form-control input-sm"></td>
+                  </if>
+                  
+
+
+                  <td><input type="text" name="content" value="{$v['content']}" form="{$form}" class="form-control input-sm"></td>
+                  <td>  
+                      文本<input type="radio" name="c_type" value="1"  form="{$form}" <if condition="$v.c_type eq 1 ">checked</if>  >
+                      音频<input type="radio" name="c_type" value="2"  form="{$form}" <if condition="$v.c_type eq 2 ">checked</if>  >
+                      图片<input type="radio" name="c_type" value="3"  form="{$form}" <if condition="$v.c_type eq 3 ">checked</if> >
+                  </td>
+                  <td><input type="text" name="sleep" value="{$v['sleep']}" form="{$form}" class="form-control input-sm"></td>
+                  <td>
+                    <form action="{:U('set')}" method="POST" id="{$form}" class="form-inline">
+                      <input type="hidden" name="id" value="{$v['id']}">
+                      <input type="hidden" name="sex" value="{$v['sex']}">
+                      <button type="submit" class="btn btn-primary">保存</button>
+                    </form>
+                    <a href="{:U('del?id='.$v['id'].'&sex='.$v['sex'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

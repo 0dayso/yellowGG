@@ -1,0 +1,72 @@
+<style>
+td:last-child .dropdown-menu { left:auto; right:0; min-width:inherit; }
+.text-center th { text-align:center; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>举报人UID</th>
+                  <th>被举报人UID</th>
+                  <th>动态ID</th>
+                  <th>举报类型</th>
+                  <th>举报时间</th>
+                  <th>受理时间</th>
+                  <th>操作状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td>
+                    <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid']}</a>
+                  </td>
+                  <td>
+                    <a href="{:U('User_base/view?uid='.$v['offender_uid'])}" target="_blank" class="label label-default">{$v['offender_uid']}</a>
+                  </td>
+                  <td>
+                    <a href="{:U('Feed_base/view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id'] ?: ''}</a>
+                  </td>
+                  <td>{$data[report_types][$v['report_type']]}</td>
+                  <td>{:date('Y-m-d H:i:s',$v['dtime'])}</td>
+                  <td>
+                    <span class="tip" data-original-title="{$v['remark']}">{$v['atime'] ? date('Y-m-d H:i:s',$v['atime']) :'-'}</span>
+                  </td>
+                  <td>
+                    <span class="tip" data-original-title="{$v['reason'] ? $data['accusation_reasons'][$v['reason']] : ''}">{$data['report_status'][$v['status']]}</span>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <a href="{:U('User_base/view?uid='.$v['offender_uid'].'&report_id='.$v['id'].'#/tab-user-closure')}" target="_blank" class="btn btn-primary btn-mini">封禁</a>
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+<if condition="$v['status'] == '0'">
+                        <li><a href="{:U('process?id='.$v['id'])}">标记已处理</a></li>
+</if>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>

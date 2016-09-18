@@ -1,0 +1,118 @@
+<div id="content">
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                <div>
+                    <form class="form-horizontal" id="form-search" method="GET">
+                        <div class="controls"> 
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value="">排序方式</option>
+                                <option value="u.id" <if condition="$_GET['search'] eq 'u.id' " >selected</if> >最新认证</option>
+                                <option value="u.thumb_up_cnt" <if condition="$_GET['search'] eq 'u.thumb_up_cnt' " >selected</if> >被赞最多</option>
+                            </select>
+                            <select   name="status" class="form-control m-b" style="width:110px;float:left;margin-left:10px">
+                                <option value=""   >选择用户类型</option>
+                                <option value="0" <if condition="$_GET['status'] eq '' || $_GET['status'] eq 0">selected</if> >真实用户</option>
+                                <option value="3" <if condition="$_GET['status'] eq 3 ">selected</if> >虚拟用户</option>
+                            </select>
+                            <select id="form-search-type" name="sex" class="form-control m-b" style="width:110px;float:left;margin-left:4px">
+                                <option value="">全部</option>
+                                <option value="0" <if condition="$_GET['sex'] eq '0' " >selected</if> >男</option>
+                                <option value="1" <if condition="$_GET['sex'] eq '1' " >selected</if> >女</option>
+                            </select>
+                            　　　　　　　<input type="checkbox" name="video_verify" value="1" id="form-search-key" <if condition="$_GET['video_verify'] eq '1' " >checked</if> >视频认证通过 
+
+                            <input type="text" name="tag" id="form-search-key"  style="width:100px;" placeholder="标签ID"> 
+                            <input type="text" name="uid" id="form-search-key"  style="width:100px;" placeholder="用户UID">
+                            <div class="col-md-2">
+                                <input type="text" name="start" class="laydate-icon form-control"
+                                       onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                       placeholder="开始时间"
+                                <if condition="$_GET['start'] neq ''" >value="{$_GET['start']}"</if>
+                                >
+                            </div>
+                            <div class="col-md-1" style="width:20px">--</div>
+                            <div class="col-md-2">
+                                <input type="text" name="end"   class="laydate-icon form-control"
+                                       onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                       placeholder="结束时间"
+                                <if condition="$_GET['start'] neq ''" >value="{$_GET['end']}"</if>
+                                >
+                            </div>
+
+                            <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                        </div>
+                    </form>
+
+                </div>
+                
+                <div>
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">手机号</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">认证标签 / 被赞次数</th>
+                                    <!-- <th style="text-align:center">被推荐次数 / 上次被推荐时间</th> -->
+                                    <th style="text-align:center">被推荐次数 </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($list['list'] as $key => $value) { ?>
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">
+                                            <a  target="_blank" href="/index.php/user/user_info/menu/account_manage/type/all_user/uid/<?php echo $value['uid']; ?>"><?php echo $value['uid']; ?></a>
+                                            <?php if($value['update']!=''){ ?>
+                                                <span title="动态更新" class="label label-primary"><?php echo $value['update']; ?></span>
+                                            <?php } ?>
+                                        </td>
+                                        <td style="text-align:center"><?php echo $value['phone']; ?></td>
+                                        <td style="text-align:center"><?php echo ($value['sex']==0)?'男':'女'; ?></td>
+                                        <td style="text-align:center">
+                                            <volist name="value.taglist" id="vo" >
+                                                {$vo.title}/<if condition="$vo.thumb_up_cnt eq ''" >0<else/>{$vo.thumb_up_cnt}</if>　
+                                            </volist>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <?php echo ($list['num'][$value['uid']]!='')?$list['num'][$value['uid']]:0; ?>/次
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                       
+                    </form>
+                </div>
+
+                <div>
+                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                        <!--<input type="hidden" id="list" value="{$list}" />-->
+                        <div style="float: right">
+                            <input type="submit" id="confirm" class="btn btn-primary btn-sm" value="确认"/>
+                        </div>
+                    </if>
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

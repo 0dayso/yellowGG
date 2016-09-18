@@ -1,0 +1,100 @@
+        <table class="table table-bordered table-striped table-hover text-center an-auto-rowspan">
+          <thead>
+            <col style="width:6.6em;">
+            <col style="width:6em;">
+            <col style="width:6em;">
+            <tr>
+              <th>日期</th>
+              <th colspan="2">类型</th>
+              <th class="text-left">数据</th>
+            </tr>
+          </thead>
+<volist name="data['list']" id="v">
+          <tbody>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户数据</td>
+              <td>新进用户</td>
+              <td class="text-left">{$v['cnt_reg']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户数据</td>
+              <td>总注册数</td>
+              <td class="text-left">{$v['cnt_reg_total']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户数据</td>
+              <td>去新DAU</td>
+              <td class="text-left" style="background-image:linear-gradient(to right,#ded <php>echo ($v['cnt_dau'] - $v['cnt_reg']) / $v['cnt_reg_total'] * 100;</php>%,rgba(0,0,0,0) 0.01%);">{$v['cnt_dau'] - $v['cnt_reg']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户数据</td>
+              <td>次留率</td>
+              <td class="text-left" style="background-image:linear-gradient(to right,#ded {$v['cnt_1st_rate'] * 100}%,rgba(0,0,0,0) 0.01%);">{$v['cnt_1st_rate'] * 100} %</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户行为</td>
+              <td>滑动人数</td>
+              <td class="text-left">{$v['cnt_slide_user']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户行为</td>
+              <td>滑动次数</td>
+              <td class="text-left">{$v['cnt_slide']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户行为</td>
+              <td>匹配人数</td>
+              <td class="text-left">{$v['cnt_match_user']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">用户行为</td>
+              <td>匹配次数</td>
+              <td class="text-left">{$v['cnt_match']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">推广数据</td>
+              <td>推广单价</td>
+              <td class="text-left">{$v['cnt_reg_cost']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">推广数据</td>
+              <td>推广数量</td>
+              <td class="text-left">{$v['cnt_reg']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">推广数据</td>
+              <td>推广总额</td>
+              <td class="text-left">{$v['cnt_fee']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">付费数据</td>
+              <td>人均费用</td>
+              <td class="text-left">{$v['cnt_pay_per']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">付费数据</td>
+              <td>付费人数</td>
+              <td class="text-left">{$v['cnt_pay_user'] ?: $v['cnt_charge_user'] ?: $v['cnt_buy_user']}</td>
+            </tr>
+            <tr>
+              <td class="auto-rowspan">{$v['dtime']}</td>
+              <td class="auto-rowspan">付费数据</td>
+              <td>付费总额</td>
+              <td class="text-left">{$v['cnt_pay_sums'] ?: $v['cnt_charge_sums'] ?: $v['cnt_buy_sums']}</td>
+            </tr>
+          </tbody>
+</volist>
+        </table>

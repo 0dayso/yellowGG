@@ -1,0 +1,74 @@
+ 
+<div id="content">
+   
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!-- <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <div style="line-height:37px" >&nbsp;封禁总人数：{$ret.count}</div>
+                </div> -->
+
+                <div class="col-lg-2" style="padding-left:0px">
+                    <div class="widget style1 lazur-bg">
+                        <div class="row vertical-align">
+                            <div class="col-xs-3">
+                                <i class="fa fa-ban fa-3x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <h2 class="font-bold">{$ret.count}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>电话号码</th>
+                            <th>注册时间</th>
+                            <th>性别</th>
+                            <th>封禁操作人</th>
+                            <th>举报内容</th>
+                            <th>被封时间</th>
+                            <th>备注</th>
+                            <th>被封来源</th>
+                            <th>封禁状态</th>
+                            <th>解封时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="ret.list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align:center">{$vo.phone}</td>
+                                <td style="text-align:center">{$vo.reg_time|date="Y-m-d H:i:s" ,###}</td>
+                                <td style="text-align:center"><if condition="$vo.sex eq 1  ">女<else/>男</if></td>
+                                <td style="text-align:center">{$vo.nickname}</td>
+                                <td style="text-align:center">{:C('STATE_ACCUSATION_PROCESS_REASONS')[$vo['reason']]}</td>
+                                <td style="text-align:center">{$vo.certificate_time}</td>
+                                <td style="text-align:center">{$vo.remark}</td>
+                                <td style="text-align:center"><if condition="$vo.c_from eq 1">举报</if><if condition="$vo.c_from eq 2">材料</if></td>
+                                <td style="text-align:center">{:C('STATE_ACCUSATION_PROCESS_STATES')[$vo['status']]}</td>
+                                <td style="text-align:center">{$vo.dblocking_time|date="Y-m-d H:i:s",###}</td>
+                                <td style="text-align:center">
+                                    <a href="{:U('Closure/undo_forbidden/', array('uid'=>$vo['uid']))}" class="btn btn-primary btn-mini" >解除封禁</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$ret.show}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 

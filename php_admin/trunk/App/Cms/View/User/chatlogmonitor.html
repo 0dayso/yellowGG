@@ -1,0 +1,104 @@
+ 
+<div id="content">
+     
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <form class="form-horizontal" id="form-search" style="width:700px;float:left" action="{:U('user/chatlogmonitor')}" method="get">
+                    <div class="controls" >
+                         
+                        <div class="col-md-3" style="padding-left:0px">
+                             <input type="text" name="date" value="{$data['date']}" id="form-search-key" onclick="laydate()" class="laydate-icon form-control" placeholder="选择时间" >
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="key"  value="{$data['key']}" id="form-search-key" placeholder="关键字" class="form-control">
+                        </div>
+                        <select name="texttype" style="padding: 6px 12px;width:110px;background-color:#FFF;background-image:none;border:1px solid #DADBDB;border-radius:1px;">
+                        <option value="">选择</option>
+                            <option value="2">图片</option>
+                        </select>
+                        <input type="submit" value="搜索" class="btn btn-primary btn-sm" >
+                    </div>
+                </form>
+                
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered" id="table-bordered">
+                        <thead>
+                        <tr>
+                            <th>聊天记录</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                         
+
+                        <?php require_once("./ThinkPHP/Library/Think/Emoji.class.php");  ?>
+					    <foreach name="chat" item="vo" >
+					    	<tr class="gradeX">
+							    <td>
+							    	 
+							    	{$vo.time} 　　
+									<if condition="$uid eq $vo['sender'] " >
+										Ta　　　　
+									<else/>
+                                        <a target="_bank" href="{:U('user/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['sender']))}">{$vo.sender}</a>　　
+									</if>
+									 
+									跟
+									   <if condition="$uid eq $vo['recver'] " >
+									   		Ta
+									   	<else/>
+                                            <a target="_bank" href="{:U('user/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['recver']))}">
+                                            {$vo.recver}</a>　　
+									   </if>
+									
+									说：　
+											<if condition="$vo['texttype'] eq 2 ">
+												<?php  $arr = json_decode($vo['text'],true);  ?>
+												<img src="<?php echo $arr['thumbnailPhotoUrl'] ?>" width="50" height="50">
+											<elseif condition="$vo['texttype'] eq 5 "/>
+												<?php  $arrjw = json_decode($vo['text'],true); ?>
+												<img src="<?php echo $arrjw['locationImageUrl'] ?>"  width="20" height="20">
+												经纬度：<?php echo $arrjw['locationLongitude'].','.$arrjw['locationLatitude'].' :'.$arrjw['locationAddress']; ?>
+											<else/>
+												<?php echo emoji_unified_to_html($vo['text']); ?>
+											</if>
+									
+								</td>
+							</tr>
+					    </foreach>
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+ 
+</div> 
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="/Public/rotate/js/jquery.rotate.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#table-bordered').on('click',function(){
+            //点击图片即可触发 聊天记录
+            layer.photosPage({
+                parent: '#table-bordered',
+                title: '聊天记录',
+                id: 112 //相册id，可选
+            });
+        });
+         
+
+    });
+</script>

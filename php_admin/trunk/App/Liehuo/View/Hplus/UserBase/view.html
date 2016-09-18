@@ -1,0 +1,878 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+* { margin:0;padding:0;list-style-type:none; }
+img,a { border:0; }
+.piccon { height:20px;margin:20px 0 0 0px; }
+.piccon li { float:left;padding:0 0px; }
+#preview { position:absolute;border:1px solid #ccc;background:#333;padding:5px;display:none;color:#fff; }
+/*覆盖层*/
+#overlay { position:absolute;background-color: rgb(119,119,119);opacity: 0.5;cursor: pointer;width:100%;height: 100%;top: 0px;left: 0px }
+/*弹出层*/
+#wrap { position:absolute;background-color: rgba(18,18,18,0.73);width: 100%;height:50%;/*top: 10%;*/ }
+.xubox_layer { top: 20px; }
+.pic-rotate { -webkit-transform: rotate(0deg);-webkit-transform-origin: 50% 50%;  }
+.row-fluid img { height:85%; }
+.tab-content { padding-top:10px; }
+.user-info th { text-align:right; }
+form.form-inline { display:inline-block; }
+</style>
+<php>
+$uid = (int)$data['item']['uid'];
+$dat = $data['item'] ?: [];
+$acc = $data['user_account'] ?: [];
+$loc = $data['user_location'] ?: [];
+</php>
+<div id="content">
+  <div class="container-fluid">
+    <div class="widget-box">
+      <div class="widget-title">
+        <ul id="myTab" class="nav nav-tabs">
+          <li><a href="#tab1" data-toggle="tab" class="tab-user-info">用户资料</a></li>
+          <li><a href="#tab2" data-toggle="tab" class="tab-user-feed">头像/相册 <span class="badge"><php>echo count($data['album']) + count($data['avatar_history']);</php></span></a></li>
+          <li><a href="{:U('chat_logs?uid='.$uid)}" target="_blank">聊天记录</a></li>
+          <li><a href="{:U('live/index?state=-1&uid='.$uid)}" target="_blank">直播记录</a></li>
+          <li><a href="#tab-user-closure" data-toggle="tab">警告降权</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              订单记录
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{:U('order_list?uid='.$uid)}" target="_blank">现金订单</a></li>
+              <li><a href="{:U('order_diamond_list?uid='.$uid)}" target="_blank">钻石订单</a></li>
+              <li><a href="{:U('order_list?ver=1&uid='.$uid)}" target="_blank">现金订单(旧)</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              账户流水
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{:U('glamour_record?uid='.$uid)}" target="_blank">魅力明细</a></li>
+              <li><a href="{:U('diamond_record?uid='.$uid)}" target="_blank">钻石明细</a></li>
+              <!--li><a href="{:U('fee_record?uid='.$uid)}" target="_blank">收支明细</a></li-->
+            </ul>
+          </li>
+          <li><a href="{:U('cash_list?uid='.$uid)}" target="_blank">提现记录</a></li>
+          <!--li><a href="{:U('like_list?uid='.$uid)}" target="_blank">赞/超赞记录</a></li-->
+          <li><a href="{:U('snap_chat/logs?sender='.$uid)}" target="_blank">瞬间记录</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              互动记录
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{:U('like_list?uid='.$uid)}" target="_blank">送赞记录</a></li>
+              <li><a href="{:U('like_list?oid='.$uid)}" target="_blank">被赞记录</a></li>
+              <li><a href="{:U('match_list?uid='.$uid)}" target="_blank">匹配列表</a></li>
+              <li><a href="{:U('black_list?uid='.$uid)}" target="_blank">解除匹配</a></li>
+              <li><a href="{:U('slide_list?uid='.$uid)}" target="_blank">滑动记录</a></li>
+              <li><a href="{:U('recommend_list?uid='.$uid)}" target="_blank">推荐列表</a></li>
+              <li><a href="{:U('dislikeme_list?uid='.$uid)}" target="_blank">不喜欢TA</a></li>
+              <li><a href="{:U('coupon_list?uid='.$uid)}" target="_blank">礼物记录</a></li>
+              <li><a href="{:U('activity/lucky_bags?uid='.$uid)}" target="_blank">烈火福袋</a></li>
+              <li><a href="{:U('live/follows?uid='.$uid)}" target="_blank">关注列表</a></li>
+              <li><a href="{:U('live/follows?oid='.$uid)}" target="_blank">粉丝列表</a></li>
+              <li><a href="{:U('live/gift_records?uid='.$uid)}" target="_blank">直播送礼</a></li>
+              <li><a href="{:U('live/gift_records?oid='.$uid)}" target="_blank">直播收礼</a></li>
+              <li><a href="{:U('live/task_records?uid='.$uid)}" target="_blank">任务完成记录</a></li>
+            </ul>
+          </li>
+          <li><a href="{:U('oper_logs?uid='.$uid)}" target="_blank">操作日志</a></li>
+        </ul>
+      </div>
+
+      <div class="widget-content">
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade in active" id="tab1">
+            <table class="table table-bordered user-info">
+              <col width="110">
+              <tr>
+                <th>用户ID</th>
+                <td>
+                  {$data['item']['uid']}
+                  <b class="label label-danger">{:boolval($data['user_account']['vip_level'] && $data['user_account']['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$data['user_account']['glory_grade'] ?: ''}</b>
+                  <b class="label label-danger">{$data['contract_types'][$data['live_host']['contract_type']]['attrs']['name']}</b>
+                  <div class="pull-right">
+<if condition="$data['live_manager']">
+                    <a href="{:U('Live/manager_set',['uid' => $data['item']['uid'],'del' => 1])}" class="btn btn-warning btn-sm ajax-with-msg">移出直播管理</a>
+<else/>
+                    <a href="{:U('Live/manager_set',['uid' => $data['item']['uid']])}" class="btn btn-warning btn-sm ajax-with-msg">加入直播管理</a>
+</if>
+                    <a data-rtmp="rtmp://live.hkstv.hk.lxdns.com/live/hks" class="btn btn-primary btn-sm act-live-play hide">直播</a>
+                    <a href="{:U('del_user_cache?uid='.$uid)}" class="btn btn-danger btn-sm">清除缓存</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>昵称</th>
+                <td>
+                  <label>
+                    <input type="checkbox" name="clear_info[nickname]" value="1">
+                  </label>
+                  <a class="editable-disabled required clear-field-key"
+                     data-type="text"
+                     data-name="nickname"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请输入新昵称：">{:htmlspecialchars($data['item']['nickname'])}</a>
+<if condition="$data['item']['nickname']">
+                  <a href="{:U('del_field?field=nickname&uid='.$uid)}" target="_blank" class="act-text-clear btn btn-danger btn-sm pull-right">清空</a>
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>手机号</th>
+                <td>
+                  <a class="editable required"
+                     data-type="text"
+                     data-name="phone"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请输入新手机号："
+                     data-validate="^1[34578]\d{9}$">{$data['item']['phone']}</a>
+<if condition="$data['item']['qq_open_id']">&nbsp;<i class="fa fa-lg fa-qq" style="color:#1BE;"></i></if>
+<if condition="$data['item']['wx_open_id']">&nbsp;<i class="fa fa-lg fa-weixin" style="color:#0A0;"></i></if>
+                </td>
+              </tr>
+              <tr>
+                <th>性别</th>
+                <td>
+                  <php>$sex = $data['item']['sex'];</php>
+                  <a class="editable"
+                     data-type="select"
+                     data-name="sex"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请选择性别："
+                     data-value="{$data['item']['sex']}"
+                     data-source="[{value:0,text:'男'},{value:1,text:'女'}]">{$Think.config.USER_SEX_IS.$sex}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>生日</th>
+                <td>
+                  {$data['item']['birthday'] ?: '-'} &nbsp;
+                  <php>
+if($birt = strtotime($data['item']['birthday']))
+{
+  echo (int)((NOW_TIME - $birt) / 60 / 60 / 24 / 365).'岁';
+}
+</php>
+                </td>
+              </tr>
+              <tr>
+                <th>设置密码</th>
+                <td>
+                  <form action="{:U('set_field')}" method="POST" class="form-inline">
+                    <input type="hidden" name="uid" value="{$data['item']['uid']}">
+                    <div class="form-group">
+                      <label></label>
+                      <input type="hidden" name="name" value="password">
+                      <input type="text" name="value" placeholder="设置新密码" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-danger">确定</button>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <th>个人简介</th>
+                <td>
+                  <label>
+                    <input type="checkbox" name="clear_info[description]" value="1">
+                    {:htmlspecialchars($data['item']['description'] ?: '-')}
+                  </label>
+<if condition="$data['item']['description']">
+                  <a href="{:U('del_field?field=description&uid='.$uid)}" target="_blank" class="act-text-clear btn btn-danger btn-sm pull-right">清空</a>
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>注册渠道</th>
+                <td>
+                  {$data['item']['pkg_channel'] ?: '-'} &nbsp;
+                  {$data['item']['device']} &nbsp;
+                  {$data['item']['device_model']} &nbsp;
+                  {$data['item']['device_version']}
+                </td>
+              </tr>
+              <tr>
+                <th>设备ID</th>
+                <td>
+                  <a href="{:U('device_list?device_id='.$data['item']['device_id'])}" target="_blank">{$data['item']['device_id']}</a>
+                  <a href="{:U('index')}?device_id={$data['item']['device_id']}" target="_blank" class="label label-default">{$data['item']['device_count']}</a>
+<if condition="$data['auth_data']['device_id'] && $data['auth_data']['device_id'] != $data['item']['device_id']">
+                  <br>
+                  <a href="{:U('device_list?device_id='.$data['auth_data']['device_id'])}" target="_blank">{$data['auth_data']['device_id']}</a>
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>注册时间</th>
+                <td>{$data['item']['reg_time'] ? date('Y-m-d H:i:s',$data['item']['reg_time']) : '-'}</td>
+              </tr>
+              <tr>
+                <th>最后登录</th>
+                <td>{$data['user_location']['update_time'] ? date('Y-m-d H:i:s',$data['user_location']['update_time']) : '-'}</td>
+              </tr>
+              <tr>
+                <th>活跃时间</th>
+                <td>{$data['item']['active_time'] ? date('Y-m-d H:i:s',$data['item']['active_time']) : '-'}</td>
+              </tr>
+              <tr>
+                <th>登录城市</th>
+                <td>
+                  {$data['user_location']['province']} {$data['user_location']['city']} {$data['user_location']['area']}
+                  （{$data['user_location']['lat']},{$data['user_location']['lng']}）
+                </td>
+              </tr>
+              <tr>
+                <th>APP版本</th>
+                <td>{$data['user_location']['app_version']}</td>
+              </tr>
+              <tr>
+                <th>家乡</th>
+                <td>
+                  {$data['home_city']['province'] ?: '-'} {$data['home_city']['city'] ?: '-'}
+                </td>
+              </tr>
+<if condition="$data['job_haunt']['haunt']">
+              <tr>
+                <th>常出没地</th>
+                <td>
+                  <label>
+                    <input type="checkbox" name="clear_info[haunt]" value="{$data['job_haunt']['haunt_id']}">
+                    {$data['job_haunt']['haunt'] ?: '-'}
+                  </label>
+                </td>
+              </tr>
+</if>
+<if condition="$data['job_haunt']['job']">
+              <tr>
+                <th>职业</th>
+                <td>
+                  <label>
+                    <input type="checkbox" name="clear_info[job]" value="{$data['job_haunt']['job_id']}">
+                    {$data['job_haunt']['job'] ?: '-'}
+                  </label>
+                </td>
+              </tr>
+</if>
+<if condition="$data['character']">
+              <tr>
+                <th>性格</th>
+                <td>
+<volist name="data['character']" id="v">
+                  <label>
+                    <span class="label label-default"><input type="checkbox" name="clear_info[character][{$v['id']}]" value="1">{$v['name']}</span> &nbsp;
+                  </label>
+</volist>
+                </td>
+              </tr>
+</if>
+              <tr>
+                <th>兴趣</th>
+                <td>
+                  <a href="{:U('del_fields?uid='.$uid)}" target="_blank" class="act-text-clear-bat btn btn-danger btn-sm pull-right">清空选中资料</a>
+<if condition="$data['interest']">
+                  <table class="table table-bordered" style="width:auto;">
+                    <tr>
+                      <th>分类</th>
+                      <td>兴趣</td>
+                    </tr>
+<volist name="data['interest_types']" id="type">
+<if condition="$data['interest'][$key]">
+                    <tr>
+                      <th>{$type}</th>
+                      <td>
+<volist name="data['interest'][$key]" id="v">
+                        <label>
+                          <span class="label label-default"><input type="checkbox" name="clear_info[interest][{$v['id']}]" value="1">{$v['name']}</span> &nbsp;
+                        </label>
+</volist>
+                      </td>
+                    </tr>
+</if>
+</volist>
+                  </table>
+<else/>
+-
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>收到赞</th>
+                <td>
+                  普通赞：{$data['user_account']['total_like']} &nbsp;
+                  超级赞：{$data['user_account']['total_super_like']} &nbsp;
+                  金星超赞：{$data['user_account']['total_gold_like']}
+                </td>
+              </tr>
+              <tr>
+                <th>剩余赞</th>
+                <td>
+                  <table class="table table-bordered text-center" style="width:auto;">
+                    <tr>
+                      <td><a href="{:U('zan_logs?uid='.$uid)}" target="_blank">类型</a></td>
+                      <td>合计</td>
+                      <td>免费</td>
+                      <td>付费</td>
+                    </tr>
+                    <tr>
+                      <td>普通赞</td>
+                      <td><a href="{:U('zan_logs?zan_type=like&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['zan']['total']}</a></td>
+                      <td><a href="{:U('zan_logs?zan_type=0&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['zan']['free']}</a></td>
+                      <td><a href="{:U('zan_logs?zan_type=3&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['zan']['fees']}</a></td>
+                    </tr>
+                    <tr>
+                      <td>超级赞</td>
+                      <td><a href="{:U('zan_logs?zan_type=super_like&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['super_zan']['total']}</a></td>
+                      <td><a href="{:U('zan_logs?zan_type=1&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['super_zan']['free']}</a></td>
+                      <td><a href="{:U('zan_logs?zan_type=2&uid='.$uid)}" target="_blank">{$data['item']['surp_like_times']['super_zan']['fees']}</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <th>道具仓库</th>
+                <td>
+                  <table class="table table-bordered text-center" style="width:auto;">
+                    <tr>
+                      <th>道具名称</th>
+<volist name="data['props']" id="v">
+<if condition="$gds = $data['goods'][$key] ?: []">
+                      <td>{$gds['name']}</td>
+</if>
+</volist>
+                    </tr>
+                    <tr>
+                      <th>剩余数</th>
+<volist name="data['props']" id="v">
+<if condition="$gds = $data['goods'][$key] ?: []">
+                      <td>{$v}</td>
+</if>
+</volist>
+                    </tr>
+                    <tr>
+                      <th>过期时间</th>
+<volist name="data['props']" id="v">
+<if condition="$gds = $data['goods'][$key] ?: []">
+                      <td>{:date('Y-m-d',$data['props'][$key.'_expire_time'])}</td>
+</if>
+</volist>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <th>账户</th>
+                <td>
+                  <table class="table table-bordered text-center" style="width:auto;">
+                    <tr>
+                      <th>钻石余额</th>
+                      <th>历史消费现金</th>
+                      <!--th>充值金额</th-->
+                      <th>可兑换魅力</th>
+                      <th>不可兑换魅力</th>
+                      <th>历史收到魅力</th>
+                      <th>直播收到魅力</th>
+                      <th>荣耀值</th>
+                      <th>荣耀等级</th>
+                      <th>历史消费钻石</th>
+                      <th>历史提现</th>
+                      <th>历史提现魅力</th>
+                      <th>历史兑换魅力</th>
+                      <th>现金余额</th>
+                      <th>账户版本</th>
+                    </tr>
+                    <tr>
+                      <td><a href="{:U('diamond_record?uid='.$uid)}" target="_blank">{$data['user_account']['diamond'] ?: '-'}</a></td>
+                      <td><a href="{:U('order_list?uid='.$uid)}" target="_blank">{$data['user_account']['total_expense'] ?: '-'}</a></td>
+                      <!--td>{$data['user_account']['total_charge'] ?: '-'}</td-->
+                      <td><a href="{:U('glamour_record?uid='.$uid)}" target="_blank">{:intval($data['user_account']['glamour'] - $data['user_account']['glamour_frozen']) ?: '-'}</a></td>
+                      <td>{$data['user_account']['glamour_frozen'] ?: '-'}</td>
+                      <td>{$data['user_account']['total_glamour'] ?: '-'}</td>
+                      <td>{$data['user_account']['total_live_glamour'] ?: '-'}</td>
+                      <td>{$data['user_account']['glory'] ?: '-'}</td>
+                      <td>{$data['user_account']['glory_grade'] ?: '-'}</td>
+                      <td><a href="{:U('order_diamond_list?uid='.$uid)}" target="_blank">{$data['user_account']['total_expense_diamond'] ?: '-'}</a></td>
+                      <td><a href="{:U('cash_list?uid='.$uid)}" target="_blank">{$data['user_account']['total_cash'] ?: '-'}</a></td>
+                      <td>{$data['user_account']['total_cash_glamour'] ?: '-'}</td>
+                      <td>{$data['user_account']['total_exchange_glamour'] ?: '-'}</td>
+                      <td>{$data['user_account']['balance'] ?: '-'}</td>
+                      <td>{$data['user_account']['account_ver'] ?: '-'}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <th>VIP状态</th>
+                <td>
+
+<if condition="$data['user_account']['vip_valid_end'] gt NOW_TIME">
+                  <b class="label label-danger" data-lvl="{$data['user_account']['vip_level']}">Vip</b>
+                  &nbsp; &nbsp; 剩余<php>echo (int)(($data['user_account']['vip_valid_end'] - NOW_TIME) / (60 * 60 * 24));</php>天
+                  &nbsp; &nbsp; 开通时间：{:date('Y-m-d H:i:s',$data['user_account']['vip_valid_begin'])}
+                  &nbsp; &nbsp; 到期时间：{:date('Y-m-d H:i:s',$data['user_account']['vip_valid_end'])}
+<else/>
+                  -
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>送赞/VIP</th>
+                <td>
+                  <form action="{:U('give')}" method="POST" class="form-inline">
+                    <input type="hidden" name="uid" value="{$data['item']['uid']}">
+                    <div class="form-group">
+                      <label><input type="radio" name="type" value="like" class="filter-fields"> 普通赞</label> &nbsp;
+                      <label><input type="radio" name="type" value="super_like" class="filter-fields"> 超级赞</label> &nbsp;
+                      <label><input type="radio" name="type" value="vip" class="filter-fields"> VIP</label> &nbsp;
+                      <label><input type="radio" name="type" value="glamour" class="filter-fields"> 魅力</label> &nbsp;
+                      <label><input type="radio" name="type" value="diamond" class="filter-fields"> 钻石</label> &nbsp;
+                      <label data-filter="diamond"><input type="checkbox" name="with_glory" value="1"> 赠送荣耀值 &nbsp;</label>
+                      <label><input type="radio" name="type" value="prop" class="filter-fields"> 道具</label> &nbsp;
+                      <label><input type="radio" name="type" value="live_effect" class="filter-fields"> 进场特效</label> &nbsp;
+                    </div>
+                    <div class="form-group" data-filter="prop">
+                      <select name="goods_id" class="form-control">
+                        <option value="{:Liehuo\\Model\\GoodsModel::BROADCAST}">广播</option>
+                        <option value="{:Liehuo\\Model\\GoodsModel::HOT_TICKET}">热门票</option>
+                      </select>
+                    </div>
+                    <div class="form-group" data-filter="live_effect">
+                      <select name="goods_id" class="form-control">
+<php>
+$arr = Liehuo\Model\GoodsModel::$goods_live_effects ?: [];
+</php>
+<volist name="arr" id="v">
+                        <option value="{$key}">{$v['name']}</option>
+</volist>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="num" placeholder="增加数量/天数" class="form-control">
+                    </div>
+                    <div class="form-group" data-filter="diamond glamour">
+                      <input type="text" name="remark" placeholder="备注，选填" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-danger">确定</button>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <th>用户类型</th>
+                <td>
+                  {$data['user_types'][$data['item']['type']]} &nbsp;
+<if condition="$data['item']['power']">
+                  <span class="label label-warning">特权用户</span>
+                  <a href="{:U('set_super_user?uid='.$uid.'&power=0')}" class="btn btn-warning btn-xs" onclick="return confirm('确定这么做？')">解除特权用户</a>
+<else/>
+                  <a href="{:U('set_super_user?uid='.$uid.'&power=1')}" class="btn btn-warning btn-xs" onclick="return confirm('确定这么做？')">开通特权用户</a>
+</if>
+                </td>
+              </tr>
+<if condition="in_array($data['item']['type'],[2,3]) || ($data['item']['dblocking_time'] gt NOW_TIME)">
+              <tr>
+                <th>解封时间</th>
+                <td>
+                  {$data['item']['dblocking_time'] ? date('Y-m-d H:i:s',$data['item']['dblocking_time']) : '-'} &nbsp;
+                  <span class="text-danger">{$data['accusation_states'][$data['accusation_last']['status']]}</span> &nbsp;
+                  <a href="{:U('view?uid='.$uid.'&tab=tab-user-closure')}"
+                     data-href="{:U('unclosure?uid='.$uid)}"
+                     class="btn btn-danger btn-xs"
+                     data-onclick="return confirm('确定这么做？')">解除</a>
+                </td>
+              </tr>
+</if>
+            </table>
+          </div>
+
+          <div class="tab-pane fade" id="tab2">
+<if condition="$data['album'][0]">
+            <h4>主头像</h4>
+            <div class="row list-feed">
+<php>
+$score_show = $data['item']['score'] >= 0 ? $data['item']['score'] : '';
+$score_css = 'default';
+$score_show >= 1 && $score_css = 'primary';
+$score_show >= 5 && $score_css = 'success';
+$score_show >= 8 && $score_css = 'danger';
+$avatar = $data['album'][0];
+$res = is_array($avatar) ? $avatar : ['resource' => $avatar];
+$src = $res['resource'];
+</php>
+              <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2" data-img="{$data['album'][0]}">
+                <div class="thumbnail">
+<if condition="$res['type'] == 3">
+                  <a><video src="__AVATAR_URL_ROOT__{$src}" poster="__AVATAR_URL_ROOT__{$res['thumb']}" preload="meta" controls></a>
+<else/>
+                  <a><img src="__AVATAR_URL_ROOT__{$src}"></a>
+</if>
+                  <!--span class="feed-score label label-{$score_css}">{$score_show}</span-->
+                  <div class="caption">
+<if condition="$data['avatars'][$src]['score_time']">
+                    <p class="text-nowrap"><b>打分时间:</b>{:date('Y-m-d H:i:s',$data['avatars'][$src]['score_time'])}</p>
+</if>
+                    <p class="text-center">
+                      <a href="http://image.baidu.com/n/pc_search?queryImageUrl=__AVATAR_URL_ROOT__{$src}" target="_blank" class="btn btn-sm btn-white">查询盗图</a>
+                      <a data-href="{:U('avatar_del?uid='.$uid)}" data-resource="{$src}" class="btn btn-sm btn-danger act-avatar-del" data-onclick="return confirm('这是用户的主头像，确定要删除吗？')">删除</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <form action="{:U('set_score')}" method="POST" class="form-block">
+                  <input type="hidden" name="uid" value="{$data['item']['uid']}">
+                  <div class="form-group">
+                    <label>最后一次评分：{$data['item']['score'] >= 0 ? $data['item']['score'] : '未评分'}</label>
+                    <input type="text" name="score" class="form-control" placeholder="修改分值">
+                  </div>
+                  <div class="form-group">
+                    <label>备注：</label>
+                    <input type="text" name="remark" class="form-control" placeholder="必填">
+                  </div>
+                  <div class="form-group">
+                    <label>打分团备注：</label>
+                    <input type="text" name="remark_scoring" value="{$data['remark_scoring']}" class="form-control" placeholder="选填">
+                  </div>
+                  <div class="form-group">
+                    <label>话术：</label>
+                    <input type="text" name="msg" class="form-control" placeholder="选填">
+                  </div>
+                  <button type="submit" class="btn btn-primary">修改分值</button>
+                  <a href="{:U('avatar_list?uid='.$uid)}" target="_blank" class="btn btn-success">更多</a>
+                </form>
+              </div>
+            </div>
+<php>unset($data['album'][0]);</php>
+</if>
+
+<if condition="$data['album']">
+            <div class="clearfix">
+              <h4 class="pull-left">相册</h4>
+              <a data-href="{:U('avatar_del?uid='.$uid)}" class="btn btn-sm btn-danger act-avatar-del-bat pull-left" style="margin-left:10px;">批量删除</a>
+            </div>
+            <div class="row list-feed list-album">
+<volist name="data['album']" id="v">
+<php>
+$res = is_array($v) ? $v : ['resource' => $v];
+$src = $res['resource'];
+</php>
+              <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-img="{$src}">
+                <div class="thumbnail">
+<if condition="$res['type'] == 3">
+                  <a><video src="__AVATAR_URL_ROOT__{$src}" poster="__AVATAR_URL_ROOT__{$res['thumb']}" preload="meta" controls></a>
+<else/>
+                  <a><img src="__AVATAR_URL_ROOT__{$src}"></a>
+</if>
+                  <div class="caption">
+<if condition="$data['avatars'][$src]['score_time']">
+                    <p class="text-nowrap"><b>打分时间:</b>{:date('Y-m-d H:i:s',$data['avatars'][$src]['score_time'])}</p>
+</if>
+                    <p class="text-center">
+                      <a href="http://image.baidu.com/n/pc_search?queryImageUrl=__AVATAR_URL_ROOT__{$src}" target="_blank" class="btn btn-sm btn-white">查询盗图</a>
+                      <a data-href="{:U('avatar_del?uid='.$uid)}" data-resource="{$src}" class="btn btn-sm btn-danger act-avatar-del">删除</a>
+                      <label><input type="checkbox" name="resource[]" value="{$src}"> 批量删除</label>
+                    </p>
+                  </div>
+                </div>
+              </div>
+</volist>
+            </div>
+</if>
+
+<if condition="$data['avatar_history']">
+            <div class="clearfix">
+              <h4 class="pull-left">历史照片（用户不再使用/用户自己删除）</h4>
+              <a href="{:U('avatar_clear?uid='.$uid)}" class="btn btn-sm btn-danger pull-left" onclick="return confirm('真的要这么做？')">批量删除</a>
+            </div>
+            <div class="row list-feed">
+<volist name="data['avatar_history']" id="v">
+<if condition="!$v['in_album']">
+              <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-img="{$v['resource']}">
+                <div class="thumbnail">
+<if condition="$v['type'] == 3">
+            <a><video src="__AVATAR_URL_ROOT__{$v['resource']}" poster="__AVATAR_URL_ROOT__{$v['thumb']}" preload="meta" controls></a>
+<else/>
+            <a><img src="__AVATAR_URL_ROOT__{$v['resource']}"></a>
+</if>
+                  <div class="caption">
+                    <p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$v['create_time'])}</p>
+<if condition="$v['score_time']">
+                    <p class="text-nowrap"><b>打分时间:</b>{:date('Y-m-d H:i:s',$v['score_time'])}</p>
+</if>
+<if condition="$v['delete_time']">
+                    <p class="text-nowrap"><b>删除时间:</b>{:date('Y-m-d H:i:s',$v['delete_time'])}</p>
+</if>
+                  </div>
+                </div>
+              </div>
+</if>
+</volist>
+            </div>
+</if>
+          </div>
+
+          <div class="tab-pane fade" id="tab3">
+          </div>
+
+          <div class="tab-pane fade" id="tab-user-chat">
+            <div>
+              <a class="btn btn-success get-chat-log" data-uid="{$data['item']['uid']}" data-day="7">最近7天</a>
+              <a class="btn btn-success get-chat-log" data-uid="{$data['item']['uid']}" data-day="30">最近30天</a>
+            </div>
+            <hr>
+            <div class="chat-logs"></div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-user-closure">
+            <form action="{:U('closure')}" method="POST" class="form-inline" style="width:100%;">
+              <input type="hidden" name="report_id" value="{$_REQUEST['report_id']}">
+              <input type="hidden" name="uid" value="{$data['item']['uid']}" placeholder="被举报人ID">
+              <div class="form-group">
+                <b class="label label-danger">{$data['contract_types'][$data['live_host']['contract_type']]['attrs']['name']}</b>
+              </div>
+              <div class="form-group">
+                <select name="status" class="form-control accusation-states">
+                  <option value="">封禁状态</option>
+<volist name="data['accusation_states']" id="v">
+                  <option value="{$key}">{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group hide">
+                <select name="reason" class="form-control">
+                  <option value="">封禁理由</option>
+<volist name="data['accusation_reasons']" id="v">
+                  <option value="{$key}">{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>备注：</label>
+                <input type="text" name="remark" placeholder="必填" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-primary">提交</button>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" name="msg2reporter" value="1" checked>
+                  是否给举报人发消息
+                </label>
+              </div>
+              <br><br>
+              <textarea name="msg" placeholder="必填，话术将以系统消息发送给用户" rows="1" class="form-control" style="width:100%;"></textarea>
+              <hr>
+            </form>
+            <div class="clearfix">
+              <h3 class="pull-left">警告/封禁记录</h3>
+              <a href="{:U('report_base/index?oid='.$uid)}" target="_blank" class="btn btn-primary pull-right">被举报记录</a>
+            </div>
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <!--th>举报记录ID</th-->
+                  <!--th>被封禁人ID</th-->
+                  <th>封禁状态</th>
+                  <!--th>封禁理由</th-->
+                  <th>备注</th>
+                  <th>话术</th>
+                  <th>举报人ID</th>
+                  <th>举报时间</th>
+                  <th>操作管理员</th>
+                  <th>操作时间</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['accusation_logs']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <!--td><a class="label label-default">{$v['report_id'] ?: ''}</a></td-->
+                  <!--td><a href="{:U('view?uid='.$v['oid'])}" target="_blank" class="label label-default">{$v['oid']}</a></td-->
+                  <td>{$data['accusation_states'][$v['status']]}</td>
+                  <!--td>{$data['accusation_reasons'][$v['reason']]}</td-->
+                  <td>
+                    <div class="td-content">{:htmlspecialchars($v['remark'])}</div>
+                  </td>
+                  <td>
+                    <div class="td-content popover-hover">{:htmlspecialchars($v['msg'])}</div>
+                  </td>
+                  <td><a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+                  <td>{$v['report_time'] ? date('Y-m-d H:i',$v['report_time']) : ''}</td>
+                  <td>{$data['accusation_admins'][$v['aid']]['nickname']}</td>
+                  <td>{$v['create_time'] ? date('Y-m-d H:i',$v['create_time']) : ''}</td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<include file="modal-avatar-del"/>
+
+<div id="modal-confirm" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-block" onsubmit="return confirm('真的要这么做？')">
+        <input type="hidden" name="resource">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">操作确认</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>备注：</label>
+            <input type="text" name="remark" placeholder="必填" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label>话术：</label>
+            <textarea name="msg" placeholder="必填，话术将以系统消息发送给用户" required class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-chat-log-item">
+<$
+G = $G('window');
+$>
+  <div class="media chat-msg<$=is_self ? ' chat-myself' : ''$>" data-id="<$=smsid$>">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <small class="chat-time"><$=time$></small>
+        <a class="label label-primary"><$=sender$></a> 对
+        <a class="label label-primary"><$=recver$></a> 说：
+      </p>
+      <p class="chat-text">
+<$
+if(texttype == '2' && text_json && text_json.thumbnailPhotoUrl)
+{
+$>
+        <img src="<$=text_json.thumbnailPhotoUrl$>" data-src="<$=text_json.originPhotoUrl || text_json.thumbnailPhotoUrl$>" class="zoom">
+<$
+}
+else
+{
+$>
+        <$==text_html || text$>
+<$
+}
+$>
+      </p>
+    </div>
+  </div>
+</script>
+
+<link rel="stylesheet" href="//cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
+<script src="//cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script>window.JSON || document.write('<script src="//cdn.bootcss.com/json2/20150503/json2.min.js"><\/script>');</script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  window.template && (function()
+  {
+    template.config('openTag','<$');
+    template.config('closeTag','$>');
+    template.helper('$G',function(key){ return eval(key); });
+  })();
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+  (function()
+  {
+    //$.fn.editable.defaults.mode = 'inline';
+    $('.editable').editable(
+    {
+      success : function(ret,val)
+      {
+        if(ret.status != 1) return ret.info || false;
+        else return {newValue:val};
+      }
+    })
+    .filter('.required').editable('option','validate',function(val)
+    {
+      if(!$.trim(val)) return '该字段不能为空！';
+    })
+    .end().filter('[data-validate]').editable('option','validate',function(val)
+    {
+      var the = $(this),
+          pat = the.attr('data-validate'),
+          arr = /^\/([^]+)\/([a-z]*)$/i.exec(pat) || [];
+      if(arr[0]) pat = new RegExp(arr[1],arr[2] || '');
+      else       pat = new RegExp(pat);
+      if(!pat.test(val)) return '格式错误！';
+    });
+  })();
+
+  $('body')
+  .on('change','select.accusation-states',function()
+  {
+    var the = $(this),
+        val = the.val(),
+        hds = {0:1,5:1,6:1,'-2':1,'-1':1},
+        ops = {'-3':1},
+        sld = hds[val] ? 'slideUp' : 'slideDown',
+        tip1 = ops[val] ? '选填' : '必填',
+        tip2 = !ops[val] ? '选填' : '必填',
+        obj = the.parents('form:first').find('[name="msg"]');
+    obj.attr('placeholder',function()
+    {
+      return obj.attr('placeholder').replace(tip2,tip1);
+    }).val('')[sld](500);
+  })
+
+  // 获取聊天记录
+  .on('click','.get-chat-log',function()
+  {
+    var the = $(this),
+        box = $('.chat-logs').empty(),
+        tip = box.find('.tip-msg'),
+        lst = $(),
+        uid = parseInt(the.attr('data-uid')) || 0,
+        day = parseInt(the.attr('data-day')) || 0;
+    tip.length || (tip = $('<h3/>').addClass('tip-msg').prependTo(box));
+    tip.html('加载中...');
+    $.ajax(
+    {
+      url:'{:U('get_chat_log')}',
+      data:{uid:uid,day:day},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      $.each(dat.list,function(i,v)
+      {
+        v.is_self = v.sender == uid;
+        lst = lst.add($(template('tpl-chat-log-item',v)).appendTo(box));
+      });
+      if(lst.length) tip.remove();
+      else tip.html('暂无记录！');
+    });
+  });
+
+});
+</script>

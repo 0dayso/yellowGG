@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <form id="form_main" action="{:U('unreads_bat')}" method="POST" class="form-inline pull-right">
+          <div class="form-group">
+            <input type="text" name="remark" value="" placeholder="备注，必填" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="msg" value="{$_REQUEST['msg']}" placeholder="话术..." class="form-control" style="min-width:500px;">
+          </div>
+          <button type="submit" class="btn btn-primary">提交</button>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </form>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>
+                <label><input type="checkbox" class="check-all" data-target="[name^='ids[']"></label>
+              </th>
+              <th>用户ID</th>
+              <th style="min-width:12em;">咨询时间</th>
+              <th>消息</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="row">
+            <tr>
+              <td>
+                <label><input type="checkbox" name="ids[{$row['sender']}]" value="{$row['time_unix']}" form="form_main"></label>
+              </td>
+              <td>
+                <a href="{:U('UserBase/view?uid='.$row['sender'])}" target="_blank" class="label label-default">{$row['sender'] ?: ''}</a>
+              </td>
+              <td>{$row['time_unix'] ? date('Y-m-d H:i:s',$row['time_unix']) : '-'}</td>
+              <td>
+<table class="table">
+<volist name="data['history'][$row['sender']]" id="v" offset="0" length="3">
+  <tr>
+    <td class="text-left">
+                <div class="td-content">
+<if condition="$v['texttype'] == '2' && $v['text_json']['thumbnailPhotoUrl']">
+  <img src="{$v['text_json']['thumbnailPhotoUrl']}" data-src="{$v['text_json']['originPhotoUrl'] ?: $v['text_json']['thumbnailPhotoUrl']}" class="zoom" style="max-height:80px;">
+<elseif condition="$v['texttype'] == '3' && $v['text_json']['emoticonUrl']"/>
+  <img src="{$v['text_json']['emoticonUrl']}" title="{$v['text_json']['emoticonName']}">
+<elseif condition="$v['texttype'] == '4' && $v['text_json']['voiceUrl']"/>
+  <a href="{$v['text_json']['voiceUrl']}" target="_blank" class="label label-success jplayer-voice">[语音] {$v['text_json']['voiceTime']}s</a>
+<elseif condition="$v['texttype'] == '5' && $v['text_json']['locationAddress']"/>
+  <img src="{$v['text_json']['locationImageUrl']}" class="zoom">
+  <br>[位置] {$v['text_json']['locationAddress']}
+<elseif condition="$v['text_json'] && $v['text_json']['text']"/>
+  {:htmlspecialchars($v['text_json']['text'])}
+<else/>
+  {:htmlspecialchars($v['text_html'] ?: $v['text'])}
+</if>
+                </div>
+    </td>
+  </tr>
+</volist>
+</table>
+              </td>
+              <td>
+                <a href="{:U('index?uid='.$v['sender'])}" target="_blank" class="btn btn-success">对话</a>
+                <a href="{:U('UserBase/chat_logs?filter=feedback&day=30&uid='.$v['sender'])}" target="_blank" class="btn btn-primary">聊天记录</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

@@ -1,0 +1,66 @@
+ 
+<div id="content">
+    
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <form class="form-horizontal" id="create-admin" onsubmit="return false">
+
+                    <div class="control-group">
+                        <label class="control-label">管理员昵称:</label>
+                        <div class="controls">
+                            <input type="text" name="nickname" id="nickname" /> *必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">email:</label>
+                        <div class="controls">
+                            <input type="text" name="email" id="email" /> *必须填写
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">密码:</label>
+                        <div class="controls">
+                            <input type="text" name="password" id="password" /> *必须填写，系统会对密码自动加密
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">备注信息:</label>
+                        <div class="controls">
+                            <input type="text" name="remark" id="remark" />
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">找回密码验证码:</label>
+                        <div class="controls">
+                            <input type="text" placeholder="请输入验证码" name="verify" id="verify" />
+                            <img src="{:U('Index/verify_code/')}"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();"  style="height:38px;cursor: pointer; vertical-align: middle;"/> *必须填写
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="text-align:left">
+                        <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 
+<script>
+    $(function(){
+        $('#create-admin').on('submit',function(){
+            var nickname=$('#nickname').val();
+            var email=$('#email').val();
+            var pwd=$('#password').val();
+            var remark=$('#remark').val();
+            var find_code=$('#verify').val();
+
+            location.href="{:U('SystemSetting/confirm_create_admin')}?nickname="+nickname+"&email="+email+"&pwd="+pwd+"&remark="+remark+"&find_code="+find_code;
+            return false;
+        });
+    });
+</script> 

@@ -1,0 +1,84 @@
+<style>
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <form action="{:U()}" method="GET" class="form-inline">
+            <input type="hidden" name="act" value="filter">
+            <div class="input-prepend input-group">
+              <span class="add-on input-group-addon">日期范围</span>
+              <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+              <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+              <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            </div>
+            <div class="form-group">
+              <select name="type" class="form-control">
+                <option value="">用户类型</option>
+<volist name="data['user_types']" id="v">
+                <option value="{$key}"<php>echo (string)$key == $_REQUEST['type'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="昵称、手机号..." class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">搜索</button>
+            <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+<if condition="$_REQUEST['type'] == '3'">
+            <a href="{:U('virtual_add')}" class="btn btn-success pull-right">新增运营账号</a>
+</if>
+          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>用户ID</th>
+                  <th>用户昵称</th>
+                  <th>电话号码</th>
+                  <th>性别</th>
+                  <th>用户类型</th>
+                  <th>注册时间</th>
+                  <th>最后登录</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+$type_css = 'default';
+$v['type'] == 1 && $type_css = 'success';
+$v['type'] == 2 && $type_css = 'danger';
+</php>
+                <tr class="gradeX">
+                  <td>{$v['uid']}</td>
+                  <td title="{$v['nickname']}">{$v['nickname_html']}</td>
+                  <td>{$v['phone']}</td>
+                  <td>{$Think.config.USER_SEX_IS.$sex}</td>
+                  <td><b class="label label-{$type_css}">{$data['user_types'][$v['type']]}</b></td>
+                  <td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td>
+                  <td>{$v['update_time'] ? date('Y-m-d H:i:s',$v['update_time']) : '-'}</td>
+                  <td>
+                    <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-mini">查看资料</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

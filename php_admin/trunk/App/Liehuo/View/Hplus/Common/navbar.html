@@ -1,0 +1,10 @@
+<div id="content-header">
+    <div id="breadcrumb">
+        <a href="{:U('Common/index')}"><i class="icon-home"></i>管理首页</a>
+        <volist name="nav_path" id="vo" >
+            <!--<a href="{:U($vo['url'])}">{$vo.title}</a>-->
+            <a href={$vo.url}>{$vo.title}</a>
+        </volist>
+    </div>
+</div>
+

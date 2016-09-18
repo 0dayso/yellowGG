@@ -1,0 +1,129 @@
+<if condition="$_GET['type'] eq '1' " >
+    用户集合 
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center">UID</th>
+                    <th style="text-align: center">点击次数</th>
+                    <th style="text-align: center">多少人发起聊天</th>
+                    <th style="text-align: center"> 与多少人聊天</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo" >
+                    <tr class="gradeX">
+                        <td style="text-align: center">
+                            <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['item']))}"  target="_blank" >{$vo['item']}</a>
+                        </td>
+                        <td style="text-align: center">{$vo['num']}</td>
+                        <td style="text-align: center">0 </td>
+                        <td style="text-align: center"> 0</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div> 
+<elseif condition="$_GET['type'] eq '4' "  />
+    动态集合
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center">动态ID</th>
+                    <th style="text-align: center">内容</th>
+                    <th style="text-align: center">点击次数</th>
+                    <th style="text-align: center">多少人发起聊天</th>
+                    <th style="text-align: center"> 与多少人聊天</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo" >
+                    <tr class="gradeX">
+                        <td style="text-align: center">{$vo['item']}</td>
+                        <td style="text-align: center">
+                            <img src="http://surging.chujian.im/{$vo['thumb']}" width="100" height="100">
+                        </td>
+                        <td style="text-align: center">{$vo['num']}</td>
+                        <td style="text-align: center">0</td>
+                        <td style="text-align: center">0</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div> 
+<elseif condition="$_GET['type'] eq '3' "  />
+    单个标签集合
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center">ID</th>
+                    <th style="text-align: center">点击次数</th>
+                    <th style="text-align: center">点击人数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo" >
+                    <tr class="gradeX">
+                        <td style="text-align: center">{$vo[0]['item']}</td>
+                        <td style="text-align: center">{$vo[0]['uid']}</td>
+                        <td style="text-align: center">{$vo[0]['uid']}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div> 
+<elseif condition="$_GET['type'] eq '2' "  />
+    个人主页
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center">UID</th>
+                    <th style="text-align: center">点击次数</th>
+                    <th style="text-align: center">多少人发起聊天</th>
+                    <th style="text-align: center"> 与多少人聊天</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo" >
+                    <tr class="gradeX">
+                        <td style="text-align: center">{$vo['item']}</td>
+                        <td style="text-align: center">{$vo['num']}</td>
+                        <td style="text-align: center">0</td>
+                        <td style="text-align: center">0</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div> 
+     
+<else/>
+    web页面
+    <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="text-align: center"> 地址</th>
+                    <th style="text-align: center">点击次数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="vo" >
+                    <tr class="gradeX">
+                        <td style="text-align: center">{$vo['item']}</td>
+                        <td style="text-align: center">{$vo['num']}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div> 
+     
+</if>
+<script src="/Public/layer/layer.min.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+          
+    });
+</script>

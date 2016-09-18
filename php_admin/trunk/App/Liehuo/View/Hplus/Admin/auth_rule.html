@@ -1,0 +1,96 @@
+<style>
+table .form-inline { display:inline-block; }
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+td [name="sort"] { display:inline-block; max-width:100px; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>排序</th>
+                  <th>权限标识</th>
+                  <th>描述</th>
+                  <!--th>附加规则</th-->
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<php>
+$form = 'form_auth_rule_add';
+</php>
+                <tr class="gradeX">
+                  <td>添加</td>
+                  <td>
+                    <input type="number" name="sort" value="" placeholder="选填" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <input type="text" name="name" value="" placeholder="唯一不可重复" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <input type="text" name="title" value="" placeholder="选填" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <!--td>
+                    <input type="text" name="condition" value="{$v['condition']}" form="{$form}" class="form-control input-sm">
+                  </td-->
+                  <td>
+                    <input type="text" name="group_name" value="{$v['group_name']}" form="{$form}" placeholder="选填，权限分组" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <form action="{:U('auth_rule_save')}" method="POST" id="{$form}" class="form-inline">
+                      <input type="hidden" name="id" value="">
+                      <button type="submit" class="btn btn-primary">添加</button>
+                    </form>
+                  </td>
+                </tr>
+<volist name="data['list']" id="v">
+<php>
+$form = 'form_auth_rule_'.$v['id'];
+</php>
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td>
+                    <input type="number" name="sort" value="{$v['sort']}" placeholder="选填" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <input type="text" name="name" value="{$v['name']}" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <input type="text" name="title" value="{$v['title']}" form="{$form}" class="form-control input-sm">
+                  </td>
+                  <!--td>
+                    <input type="text" name="condition" value="{$v['condition']}" form="{$form}" class="form-control input-sm">
+                  </td-->
+                  <td>
+                    <input type="text" name="group_name" value="{$v['group_name']}" form="{$form}" placeholder="选填，权限分组" class="form-control input-sm">
+                  </td>
+                  <td>
+                    <form action="{:U('auth_rule_save')}" method="POST" id="{$form}" class="form-inline">
+                      <input type="hidden" name="id" value="{$v['id']}">
+                      <button type="submit" class="btn btn-primary">保存</button>
+                    </form>
+                    <a href="{:U('auth_rule_del?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

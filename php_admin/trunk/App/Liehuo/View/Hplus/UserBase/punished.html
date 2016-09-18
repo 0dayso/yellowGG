@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <select name="state" class="form-control">
+              <option value="">处罚状态</option>
+<volist name="data['states']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['state'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="昵称、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>处罚状态</th>
+              <th>处理管理员</th>
+              <th>处理备注</th>
+              <th>反馈消息</th>
+              <th>来源</th>
+              <th>处理时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$log = $data['logs'][$v['uid']] ?: [];
+</php>
+            <tr class="gradeX">
+              <td><a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid']}</a></td>
+              <td>{$data['states'][$log['status']]}</td>
+              <td>{$data['admins'][$log['aid']]['nickname'] ?: $log['aid']}</td>
+              <td>{$log['remark']}</td>
+              <td>
+                <div class="td-content popover-hover">{$log['msg']}</div>
+              </td>
+              <td>{$log['report_id'] ? '举报' : '风控'}</td>
+              <td>{:date('Y-m-d H:i:s',$log['create_time'])}</td>
+              <td>
+                <a href="{:U('UserBase/view?uid='.$v['uid'].'&tab=tab-user-closure')}" target="_blank" class="btn btn-primary">解除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

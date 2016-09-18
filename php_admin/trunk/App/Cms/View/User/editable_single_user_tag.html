@@ -1,0 +1,210 @@
+<if condition="$user['status'] eq 3 " >
+ 
+        <form action="{:U('user/addtagapi')}" class="tagfrom" method="post"  enctype="multipart/form-data"  > 
+            <input type="hidden" name="uid" value="{$user['uid']}" >
+            <input type="hidden" name="nickname" value="{$user['nickname']}" >
+            <input type="hidden" name="password" value="{$user['phone']}" >
+            <input type="hidden" name="phone" value="{$user['phone']}" >
+            <input type="hidden" name="tag"  id="u-tag" value=""  >
+            <input type="hidden" name="tag_class_id"  id="post_tag_class_id" value=""  >
+            <input type="hidden" name="sex"
+                   <if condition="$user['sex'] eq '女'  " >
+                       value="1"
+                   <else/>
+                       value="0"
+                   </if>
+
+                    >
+        </form>
+        <select id="class_tag_id" class="form-control m-b" style="width:140px;float:left">
+            <option value="0">请选择分类</option>
+            {$select}
+        </select>
+        <button class="btn btn-primary" type="submit" id="saved-tag">添加标签</button>
+        <button class="btn btn-w-m btn-danger" type="submit" id="clear-tsurging">清理缓存</button>
+
+</if>
+
+<div class="user_tag" style="clear: both">
+            <div class="panel-heading">
+                <div class="panel-options">
+                    <ul class="nav nav-tabs">
+
+<volist name="authentication" id="vo">
+                    		<li class="<if condition='$i eq 1' >active</if>">
+	                    		<a href="#tab-{$i}" data-toggle="tab" class="tip" data-id="{$vo[0]['id']}" data-title="{$vo[0]['title']}" data-original-title="{$vo[0]['tag_class_name']}" aria-expanded="true">{$vo[0]['title']}</a>
+	                    	</li>
+</volist>
+                        <div class="pull-right">
+                          <a class="btn act-tag-edit btn-primary">修改</a>
+                          <a class="btn act-tag-del btn-danger">删除</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+ <style>
+.sg-desc { display:block; max-height:105px; overflow:hidden; }
+ </style>
+            <div class="tab-content widget-content nopadding">
+                <?php   $j=0; ?>
+                <volist name="authentication" id="vo" >
+
+                <?php $j++;  ?>
+                    <ul  id="tab-{$j}" class="tab-pane <if condition='$i eq 1' >active</if> ">
+                        <?php $miming = $vo['miming'];  unset($vo['miming']); ?>
+                        <volist name="vo" id="vos"  >
+                                <if condition="$vos['sg_id'] neq ''" >
+                                    <li class="u-v-s{$vos.sg_id}" style="width:200px;height:350px;display:block;float:left;margin:10px">
+                                        <img src="http://surging.chujian.im/<?php echo $vos['thumb']; ?>" width="200" height="200" >
+                                        <div class="sg-desc">描述:{$vos.description}</div>
+                                        <p>{$vos.create_time|date="Y-m-d H:i:s",###}  动态id：{$vos.sg_id}</p>
+                                        <p><input type="checkbox" class="btn btn-primary btn-xs surging-del" name="del-surging[]" value="{$vos.sg_id}"></p>
+
+                                    </li>
+                                </if>
+                        </volist>
+
+                        <volist name="miming" id="mvos"  >
+                                <li class="u-v-s{$mvos.sg_id}" style="width:200px;height:350px;display:block;float:left;margin:10px">
+                                    <img src="http://surging.chujian.im/{$mvos['thumb']}" width="200" height="200" >
+                                    <br>描述:{$mvos.description}
+                                    <p style="color:red">定时任务 ：{$mvos.timing_time|date="Y-m-d H:i:s",###}</p>
+                                </li>
+                        </volist>
+                        <div style="clear:both"></div>
+                        <if condition="$user['status'] eq 3 " >
+                            <form action="{:U('user/addtagimages')}" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  >
+                                <input type="hidden" name="uid"         value="{$user['uid']}" >
+                                <input type="hidden" name="user_tag_id" value="{$vo[0]['ut_id']}" >
+                                <input type="hidden" name="password"    value="{$user['phone']}" >
+                                <input type="hidden" name="phone"       value="{$user['phone']}" >
+                                <input type="hidden" name="type"        value="1" >
+                                <div class="form-group draggable ui-draggable">
+                                    <label class="col-sm-3 control-label">内容描述：</label>
+                                    <div class="col-sm-3">
+                                        <textarea type="text" name="description" class="form-control"  ></textarea>
+                                        @@符号隔开
+                                    </div>
+                                </div>
+                                <div class="form-group draggable ui-draggable">
+                                    <label class="col-sm-3 control-label">图片：</label>
+                                    <div class="col-sm-3">
+                                        <input type="file" name="thumb[]" class="form-control" multiple="true" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group draggable ui-draggable"   >
+                                    <label class="col-sm-3 control-label">定时发送时间：</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="send_time" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon form-control" placeholder="选择时间" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group draggable ui-draggable">
+                                    <div class="col-sm-12 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit" id="saved">添加动态</button>
+                                        <button class="btn btn-primary" type="submit" name="dstime" value="ttlime" >定时添加动态</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </if>
+                    </ul>
+
+                </volist>
+					
+            </div>
+ 
+</div>
+<style>
+    #accusation_tables .btn-default{float:left}
+</style>
+<div id="accusation_tables"  style="width:500px;display:none">
+    <p>
+        <button type="button" class="btn btn-w-m btn-default">
+            <input type="checkbox" value="1" name="reason" class="reason-in btn-default">色情传播
+        </button>
+        <button type="button" class="btn btn-w-m btn-primary">
+            <input type="checkbox" value="2" name="reason" class="reason-in btn-default">欺诈&amp;广告
+        </button>
+        <button type="button" class="btn btn-w-m btn-success">
+            <input type="checkbox" value="3" name="reason" class="reason-in btn-default">招嫖卖淫
+        </button>
+        <button type="button" class="btn btn-w-m btn-info">
+            <input type="checkbox" value="4" name="reason" class="reason-in btn-default">违法&amp;反动政治
+        </button>
+        <button type="button" class="btn btn-w-m btn-warning">
+            <input type="checkbox" value="5" name="reason" class="reason-in btn-default">其他
+        </button>
+        <button type="button" class="btn btn-w-m btn-danger">
+            <input type="checkbox" value="6" name="reason" class="reason-in btn-default">托
+        </button>
+        <button type="button" class="btn btn-w-m btn-success">
+            <input type="checkbox" value="7" name="reason" class="reason-in btn-default">骚扰
+        </button>
+    </p>
+    <button type="button" class="btn btn-primary " id="dels-query">确定</button>
+</div>
+<button class="btn btn-w-m btn-danger" id="del-surging">删除选中</button>
+
+<script>
+jQuery(function($)
+{
+
+  // tooltip
+  $('.tip').tooltip();
+
+  // 标签修改、删除
+  $('body')
+  .on('click','.user_tag .nav-tabs li a[data-id]',function()
+  {
+    var obj = $(this);
+    obj.parents('.nav-tabs:first')
+    .find('.act-tag-edit,.act-tag-del').attr({'data-id':obj.attr('data-id'),'data-title':obj.attr('data-title')});
+  })
+  .on('click','.user_tag .act-tag-edit',function()
+  {
+    var obj = $(this),
+        tid = obj.attr('data-id'),
+        old = obj.attr('data-title'),
+        tit = '';//$.trim(prompt('新标签名：',old));
+    layer.prompt({title:'新标签名：',value:old},function(tit)
+    {
+      if(!tit) layer.msg('操作取消');
+      else if(tit == old) layer.msg('标签名没有改变');
+      else $.post("{:U('Search/delete_tag')}",{id:tid,name:tit,type:1})
+      .done(function(data)
+      {
+        if(data == 'ok')
+        {
+          layer.msg('操作成功！');
+          location.href = '';
+        }
+        else layer.alert('操作失败！');
+      });
+    });
+    return false;
+  })
+  .on('click','.user_tag .act-tag-del',function()
+  {
+    var obj = $(this),
+        tid = obj.attr('data-id'),
+        tip = '确定删除标签【' + obj.attr('data-title') + '】？<br>\n此操作会同时删除该标签下的所有动态，且不可恢复。确认继续？';
+    layer.confirm(tip,function()
+    {
+      $.post("{:U('Search/delete_tag')}",{id:tid,type:2})
+      .done(function(data)
+      {
+        if(data == 'ok')
+        {
+          layer.msg('操作成功！');
+          location.href = '';
+        }
+        else layer.alert('操作失败！');
+      });
+    });
+    return false;
+  });
+  $('.user_tag .nav-tabs li a[data-id]').eq(0).trigger('click');
+});
+</script>

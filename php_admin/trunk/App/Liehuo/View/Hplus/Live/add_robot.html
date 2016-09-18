@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('?')}" method="POST" class="form-horizontal table-responsive">
+          <table class="table table-bordered table-striped table-form">
+            <col style="width:10em;">
+            <tr>
+              <th>指定ID</th>
+              <td>
+                <div class="col-md-8">
+                  <textarea name="uids" rows="15" placeholder="每行一个UID，或者英文逗号分隔" class="form-control"></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="text-left">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                  <a class="btn btn-white">在用机器人数：{$data['count_assign'] ?: '-'}</a>
+                  <a class="btn btn-white">空闲机器人数：{$data['count'] ?: '-'}</a>
+                  <a class="btn btn-white">总机器人数：{$data['cntlib'] ?: '-'}</a>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  $('.table tr').children(':last-child').attr('colspan',99);
+
+});
+</script>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>初见管理后台</title>
+    <include file="Common:intohead" />
+    <link rel="stylesheet" href="__PUBLIC__/datepicker/css/datepicker.css" />
+</head>
+<include file="Common:head" />
+<include file="Test:left" />
+<body>
+<div id="content">
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <!--<label>重置车辆认证数据</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">重置车辆认证测试数据：</label>
+                    <div class="controls">
+                        <a href="{:U('Test/clear_certificate_car_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>重置视频认证数据</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">重置视频认证测试数据</label>
+                    <div class="controls">
+                        <a href="{:U('Test/clear_certificate_video_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>重置举报及封禁数据</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">重置举报及封禁数据</label>
+                    <div class="controls">
+                        <a href="{:U('Test/clear_accusation_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                    <label class="control-label">复现多人举报统一人测试数据</label>
+                    <div class="controls">
+                        <a href="{:U('Test/insert_items_for_same_offender/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>重置文字审查测试数据</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">重置文字审查数据</label>
+                    <div class="controls">
+                        <a href="{:U('Test/clear_modify_user_info_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>重置用户反馈测试数据</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">重置用户反馈数据</label>
+                    <div class="controls">
+                        <a href="{:U('Test/clear_feedback_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>redis用户token删除测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">redis用户token删除测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/delete_user_token_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>protocol buffer测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">protocol buffer测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/protocol_buffer_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>redis往list里插数据测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">系统消息redis list测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/redis_list_push_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>从im服务器获取聊天信息测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">从im服务器获取聊天信息测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/get_im_server_data_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>查看聊天记录测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">查看聊天记录测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/get_chat_log_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>其他测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">temp测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/temp_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+                <!--<label>发送系统消息测试</label>-->
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">发送系统消息测试</label>
+                    <div class="controls">
+                        <a href="{:U('Test/send_system_message_test/')}" class="btn btn-primary btn-mini" >确认</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<include file="Common:foot" />
+</body>
+</html>

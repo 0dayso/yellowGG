@@ -1,0 +1,54 @@
+ 
+<div id="content">
+   
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls">搜索:
+                            <select id="form-search-type" name="search">
+                                <option value=1>按电话号</option>
+                            </select>
+                            <input type="text" name="keyword" id="form-search-key">
+                            <input type="submit" value="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>phone</th>
+                            <th>verify_code</th>
+                            <th>number</th>
+                            <th>status</th>
+                            <th>dtime</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.phone}</td>
+                                <td style="text-align:center">{$vo.code}</td>
+                                <td style="text-align:center">{$vo.num}</td>
+                                <td style="text-align:center">{$vo.status}</td>
+                                <td style="text-align:center">{$vo.dtime}</td>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div> 

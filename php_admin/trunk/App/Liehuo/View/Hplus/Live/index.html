@@ -1,0 +1,477 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+#content { padding-bottom:200px; }
+.sort-handle { cursor:move; }
+.webui-popover i.icon-refresh { background-image:none; }
+.list-feed .thumbnail img:hover { transform:none; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+<if condition="$data['states']">
+          <div class="form-group">
+            <select name="state" class="form-control">
+              <option value="">状态</option>
+              <option value="-1">不限</option>
+<volist name="data['states']" id="v">
+              <option value="{$key}"{:boolval((string)$key == $_REQUEST['state']) ? ' selected' : ''}>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['contract_types']">
+          <div class="form-group">
+            <select name="contract_type" class="form-control">
+              <option value="">签约类型</option>
+              <option value="-1">不限</option>
+<volist name="data['contract_types']" id="v">
+              <option value="{$key}"{:boolval((string)$key == $_REQUEST['contract_type']) ? ' selected' : ''}>{$v['attrs']['name']}</option>
+</volist>
+            </select>
+          </div>
+</if>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="12"{:boolval($_REQUEST['page_size'] == '12') ? ' selected' : ''}>12条</option>
+              <option value="24"{:boolval($_REQUEST['page_size'] == '24') ? ' selected' : ''}>24条</option>
+              <option value="60"{:boolval($_REQUEST['page_size'] == '60') ? ' selected' : ''}>60条</option>
+              <option value="120"{:boolval($_REQUEST['page_size'] == '120') ? ' selected' : ''}>120条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+<if condition="ACTION_NAME == 'hots'">
+          <a href="{:U('hot_reset')}" class="btn btn-success">重置热门排序</a>
+</if>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+
+      <div class="clearfix" style="margin-bottom:20px;">
+      </div>
+
+      <div class="row list-feed list-live auto-sortable" data-item=".live-item" data-handle=".sort-handle">
+<volist name="data['list']" id="v">
+<php>
+$img = $v['live_cover'] ?: U('UserBase/avatar?uid='.$v['uid']);
+$sho = $v['live_shot'] ?: ('http://img.quklive.com/broadcast/activity/'.$v['live_id'].'/screenshot.jpg');
+$lus = is_string($v['live_url']) ? json_decode($v['live_url'],true) : $v['live_url'];
+$hst = $data['hosts'][$v['uid']];
+$usr = $data['users'][$v['uid']];
+$sex = $usr['sex'];
+$sls = C('USER_SEX_IS') ?: [];
+</php>
+        <div class="live-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-uid="{$v['uid']}">
+          <div class="thumbnail">
+            <div class="corner-circle">
+<if condition="$v['hot_ticket_ttl']">
+              <span class="label label-danger tip" data-original-title="剩余{$v['hot_ticket_ttl']}秒">热门票</span>
+<else/>
+              <span class="label label-danger">{$v['hot_sort'] ? '热门' : ''}</span>
+</if>
+            </div>
+            <span class="feed-score label label-success tip" data-original-title="{$data['contract_types'][$hst['contract_type']]['remark'] ?: '签约状态'}">{$data['contract_types'][$hst['contract_type']]['attrs']['name'] ?: $hst['contract_type'] ?: ''}</span>
+            <a class="act-live-play"
+               data-rtmp="{$lus['rtmp_url']}"
+               data-hdl="{$lus['hdl_url']}"
+               data-hls="{$lus['hls_url']}"
+               data-record="{$lus['record_url']}"><img src="{$sho}" class="live-cover" data-original="{$img}" data-shot="{$sho}"></a>
+            <div class="caption">
+<if condition="$v['text']">
+              <p class="text-left"><b>描述：</b>{:htmlspecialchars($v['text'])}</p>
+</if>
+              <p class="text-nowrap">
+                <b>主播：</b>
+<if condition="!$v['uid']">
+                <a>游客</a>
+<else/>
+                <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid']}</a>
+                <b class="label label-{$sex ? 'danger' : 'success'}">{:array_get([Liehuo\\Model\\LiveHostModel::CONTRACT_TYPE_SIGN => '签约'],$hst['contract_type']) ?: $sls[$sex]}</b>
+                <b class="label label-danger">{:boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$usr['glory_grade'] ?: ''}</b>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt NOW_TIME)">
+                <b class="label label-danger">封</b>
+</if>
+</if>
+              </p>
+              <p class="text-nowrap popover-with-ajax" data-url="{:U('info?uid='.$v['uid'])}" data-tpl="tpl-live-info">
+                <b>主题：</b>
+                <b>{$v['live_title']}</b>
+                <b class="label label-{:array_get(['default','success','danger'],$v['live_state']) ?: 'default'}">{$data['states'][$v['live_state']]}</b>
+                <b class="label label-primary tip" data-original-title="峰值人数">{$v['peak_visitors'] ?: ''}</b>
+              </p>
+<if condition="$v['gold_index']">
+              <p class="text-nowrap popover-with-data"
+                 data-live_duration="{$v['live_duration']}"
+                 data-total_income="{$v['total_income']}"
+                 data-final_visitors="{$v['final_visitors_real']}"
+                 data-tpl="tpl-live-gold-index">
+                <span class="text-success"><b>吸金指数:</b>{:round($v['gold_index'],2) ?: ' - '}</span>
+              </p>
+</if>
+              <p class="text-nowrap clearfix">
+                <a href="{:U('guests?live_id='.$v['live_id'])}" target="_blank" class="text-default"><b>当前在线:</b>{$v['current_visitors'] ?: ' - '}</a>
+                <br>
+                <span class="pull-left"><b>最终访客:</b>{$v['final_visitors']} &nbsp;</span>
+<if condition="$v['total_income']">
+                <br>
+                <span class="pull-left"><b>礼物收入:</b>{$v['total_income']} &nbsp;</span>
+</if>
+              </p>
+              <p class="text-nowrap"><b>直播间ID:</b>{$v['live_id'] ?: ' - '}</p>
+              <p class="text-nowrap">
+                <a href="{:U('ReportBase/index?live_id='.$v['live_id'])}" target="_blank" class="pull-right text-danger"><b>举报:</b>{:count($data['reports'][$v['live_id']])}次 &nbsp;</a>
+                <b>聊天室ID:</b>{$v['live_chatroomid'] ?: ' - '}
+              </p>
+              <p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$v['time_begin'])}</p>
+<if condition="$v['time_end']">
+              <p class="text-nowrap"><b>结束时间:</b>{:date('Y-m-d H:i:s',$v['time_end'])}</p>
+</if>
+<if condition="$v['remark']">
+              <p class="text-left"><b>处理结果:</b>{:htmlspecialchars($v['remark'])}</p>
+</if>
+              <div class="text-center">
+                <div class="btn-group">
+                  <a href="{:U('edit?uid='.$v['uid'])}" target="_blank" class="btn btn-primary">{:array_get([Liehuo\\Model\\LiveHostModel::CONTRACT_TYPE_SIGN => '编辑'],$hst['contract_type']) ?: '签约'}</a>
+                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-hover" data-toggle="dropdown"><span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+<if condition="$lus['rtmp_url']">
+                    <li><a href="{$lus['iframe_url']}" target="_blank" class="act-live-play"
+                           data-rtmp="{$lus['rtmp_url']}"
+                           data-hdl="{$lus['hdl_url']}"
+                           data-hls="{$lus['hls_url']}"
+                           data-record="{$lus['record_url']}">观看直播</a></li>
+</if>
+<if condition="$lus['iframe_url'] && $v['live_state'] == (string)Liehuo\Model\LiveRecordModel::STATE_CLOSED || 1">
+                    <li><a href="{$lus['iframe_url']}" target="_blank" class="act-modal-iframe"
+                           data-size="1by1"
+                           data-src="{$lus['iframe_url']}">直播回放</a></li>
+</if>
+                    <li><a data-href="{:U('dispose')}" class="act-about-live-host" data-act="stop" data-uid="{$v['uid']}">主播停播</a></li>
+<if condition="$v['live_state'] == (string)Liehuo\Model\LiveRecordModel::STATE_LIVING">
+                    <li><a data-href="{:U('dispose')}" class="act-about-live-host" data-act="warn" data-uid="{$v['uid']}">警告主播</a></li>
+                    <li><a href="{:U('notices',['type' => Liehuo\\Model\\LiveNoticeModel::TYPE_ROOM,'live_id' => $v['live_id']])}" target="_blank">房间公告</a></li>
+<if condition="!$v['hot_sort']">
+                    <li><a href="{:U('hot_set?uid='.$v['uid'])}" target="_blank" class="ajax-with-msg">加入热门</a></li>
+<else/>
+                    <li><a href="{:U('hot_del?uid='.$v['uid'])}" class="ajax-with-msg">移出热门</a></li>
+</if>
+</if>
+                    <li><a href="{:U('guests?live_id='.$v['live_id'])}" target="_blank">观众列表</a></li>
+                    <li><a href="{:U('gift_records?live_id='.$v['live_id'])}" target="_blank">礼物记录</a></li>
+                    <li><a href="{:U('chat_logs',[
+  'room_id' => $v['live_chatroomid'],
+  'stime' => date('Y-m-d',$v['time_begin'] ?: $v['time_end']),
+  //'etime' => date('Y-m-d',$v['time_end'] ?: $v['time_begin']),
+])}" target="_blank">聊天记录</a></li>
+                  </ul>
+                </div>
+<if condition="in_array(ACTION_NAME,['hots'])">
+                <a class="btn btn-white sort-handle hide" data-sort="{$v['hot_sort']}"><i class="fa fa-arrows"></i></a>
+                <a href="{:U('hot_set',['uid' => $v['uid'],'top' => 1])}" class="btn btn-white tip" data-original-title="置顶" data-sort="{$v['hot_sort']}"><i class="fa fa-sort-asc"></i></a>
+</if>
+              </div>
+            </div>
+          </div>
+        </div>
+</volist>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$pager ? $pager->show() : $page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-block" onsubmit="return confirm('真的要这么做？')">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">操作确认</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>备注：</label>
+            <input type="text" name="remark" placeholder="必填" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label>话术：</label>
+            <textarea name="msg" placeholder="选填，话术将以系统消息发送给用户" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-comm" class="modal fade modal-auto-destroy" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-about-live-host" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <form action="{:U()}" method="POST" class="form-inline form-about-live-host">
+          <div class="form-group">
+            <select name="act" class="form-control filter-fields">
+              <option value="warn">警告</option>
+              <option value="stop">停播</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="uid" value="" placeholder="主播UID" class="form-control">
+          </div>
+          <div class="form-group" data-filter="warn">
+            <input type="text" name="msg" value="" placeholder="消息内容" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-warning" data-filter="warn">警告</button>
+          <div class="form-group" data-filter="stop">
+            <select name="duration" class="form-control">
+              <option value="">停播时长</option>
+<php>
+$arr =
+[
+  1      => '本次停播',
+  1800   => '30分钟',
+  3600   => '1小时',
+  21600  => '6小时',
+  43200  => '12小时',
+  86400  => '24小时',
+  172800 => '48小时',
+];
+</php>
+<volist name="arr" id="v">
+              <option value="{$key}"{:boolval((string)$key == $_REQUEST['duration']) ? ' selected' : ''}>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-danger" data-filter="stop">停播</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-live-info">
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tr>
+      <th>直播总次数</th>
+      <td><$=count.total_times || 0$></td>
+      <th>直播总时长</th>
+      <td><$=count.total_duration || 0$></td>
+    </tr>
+    <tr>
+      <th>进热门次数</th>
+      <td><$=(dispose.live_hot_set || {}).cnt || 0$></td>
+      <th>收礼总金额</th>
+      <td><$=count.total_income || 0$></td>
+    </tr>
+    <tr>
+      <th>停播次数</th>
+      <td><$=(dispose.live_stop || {}).cnt || 0$></td>
+      <th>警告次数</th>
+      <td><$=(dispose.live_warn || {}).cnt || 0$></td>
+    </tr>
+    <tr>
+      <th colspan="99">最近2次直播历史：</th>
+    </tr>
+    <tr>
+      <td colspan="2">
+<$
+if(v = records[0])
+{
+$>
+时间：<$=new _G.Date(_G.parseInt(v.time_end) * 1000 || 0).toLocaleString()$>
+<br>在线人数：<$=v.final_visitors$>
+<br>收礼金额：<$=v.total_income$>
+<br>关注人数：<$=v.total_followers$>
+<$
+}
+$>
+      </td>
+      <td colspan="2">
+<$
+if(v = records[1])
+{
+$>
+时间：<$=new _G.Date(_G.parseInt(v.time_end) * 1000 || 0).toLocaleString()$>
+<br>在线人数：<$=v.final_visitors$>
+<br>收礼金额：<$=v.total_income$>
+<br>关注人数：<$=v.total_followers$>
+<$
+}
+$>
+      </td>
+    </tr>
+  </table>
+</div>
+</script>
+
+<script type="text/html" id="tpl-live-gold-index">
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tr>
+      <th>直播时长</th>
+      <td><$=live_duration || 0$></td>
+    </tr>
+    <tr>
+      <th>收礼金额</th>
+      <td><$=total_income || 0$></td>
+    </tr>
+    <tr>
+      <th>真实进房人数</th>
+      <td><$=final_visitors || 0$></td>
+    </tr>
+  </table>
+</div>
+</script>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed1',
+    title:''
+  });
+
+  $('body')
+  .on('click','.act-about-live-host',function()
+  {
+    var the = $(this),
+        url = the.data('href') || the.attr('href'),
+        mod = $('#modal-about-live-host').modal(),
+        frm = mod.find('form:first').attr('action',url),//$('.form-about-live-host'),
+        dat = the.data();
+    $.each(dat || {},function(k,v)
+    {
+      frm.find('[name="' + k + '"]:enabled').val(v).change();
+    });
+    frm.find(':text:enabled:first').focus();
+    return false;
+  });
+
+  (function(fun)
+  {
+    $('img[data-shot]').each(function()
+    {
+      var the = $(this);
+      fun(the,fun);
+    });
+  })
+  (function(the,fun)
+  {
+    var tim = the.data('timer') ? 10 : 3;
+    if(the.data('no-shot')) return false;
+    var ter = setTimeout(function()
+    {
+      the.data('original') || the.data('original',the.attr('src'));
+      the.attr('src',the.data('shot') + '?_t=' + (new Date).getTime());
+      the
+      .one('load',function()
+      {
+        fun(the,fun);
+        //console.log([the,the.data('shot')]);
+      })
+      .one('error',function()
+      {
+        the.attr('src',the.data('original'));//.data('no-shot',1);
+        clearTimeout(ter);
+        //console.clear && console.clear();
+      });
+    },Math.floor(tim + tim * Math.random()) * 1000);
+    the.data('timer',ter);
+  });
+
+  (function()
+  {
+    var box = $('.auto-sortable');
+    box.length && require(['sortable'],function(Sortable)
+    {
+      box.each(function(i)
+      {
+        var the = $(this);
+        Sortable.create(this,
+        {
+          handle    : the.data('handle')    || null,
+          animation : the.data('animation') || 200,
+          onMove    : function(evt)
+          {
+            var the = $(evt.dragged || evt.item),
+                tar = $(evt.related);
+            //console.log({data:arguments});
+            $.ajax(
+            {
+              url:'{:U('hot_set')}',
+              type:'POST',
+              data:{ajax:1,uid:the.data('uid'),oid:tar.data('uid')},
+              dataType:'json'
+            })
+            .done(function(data)
+            {
+              data.info && require(['messenger-future'],function()
+              {
+                Messenger().post(
+                {
+                  type:data.status == 1 ? 'success' : 'error',//info
+                  message:data.info
+                });
+              });
+            });
+            $(window).trigger('resize');
+          }
+        });
+      });
+    });
+  })();
+
+});
+</script>

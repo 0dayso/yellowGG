@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group hide">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('discount_edit')}" class="btn btn-success">新增活动</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr class="text-nowrap">
+              <th>ID</th>
+              <th>商品</th>
+              <th>备注</th>
+              <th>配置</th>
+              <th>开始时间</th>
+              <th>结束时间</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>{$data['goods_list'][$v['goods_id']]['name'] ?: $v['goods_id']}</td>
+              <td>
+                <div class="td-content">{$v['remark']}</div>
+              </td>
+              <td>
+                <div class="td-content">
+<php>
+$als = is_array($v['attrs']) ? $v['attrs'] : (json_decode($v['attrs'],true) ?: []);
+echo implode('',array_map(function($k,$v)
+{
+  if(!$v) return '';
+  return $k.':'.$v.'<br>';
+},array_keys($als),$als));
+</php>
+                </div>
+              </td>
+              <td>{$v['discount_stime'] ? date('Y-m-d H:i:s',$v['discount_stime']) : '-'}</td>
+              <td>{$v['discount_etime'] ? date('Y-m-d H:i:s',$v['discount_etime']) : '-'}</td>
+              <td><i class="fa {:boolval($v['discount_stime'] <= time() && $v['discount_etime'] >= time()) ? 'fa-check text-success' : 'fa-close text-danger'}"></i></td>
+              <td class="text-nowrap">
+                <a href="{:U('discount_edit?id='.$v['id'])}" class="btn btn-primary">编辑</a>
+                <a href="{:U('discount_del?id='.$v['id'])}" class="btn btn-danger" onsubmit="return confirm('真的要这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

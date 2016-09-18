@@ -1,0 +1,55 @@
+<style>
+.text-center th { text-align:center; }
+</style>
+<div id="content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>列表</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </div>
+    </div>
+    <a href="{:U('add')}" class="btn btn-primary btn-sm pull-right">新增</a>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr class="gradeX">
+              <th>用户ID</th>
+              <th>昵称</th>
+              <th>手机号</th>
+              <th>所属分组</th>
+              <th>所属班次</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td>
+                <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid']}</a>
+              </td>
+              <td>{$data['users'][$v['uid']]['nickname']}</td>
+              <td>{$data['users'][$v['uid']]['phone']}</td>
+              <td>{$v['group_name']}</td>
+              <td>
+<volist name="data['group_ranges']" id="r">
+<if condition="$r['group_id'] eq $v['group_id']">{$r['range_name']}（{:date('H:i',$r['work_start'] + strtotime(date('Y-m-d')))} - {:date('H:i',$r['work_end'] + strtotime(date('Y-m-d')))}）<br></if>
+</volist>
+              </td>
+              <td>
+                <a href="{:U('edit?uid='.$v['uid'])}" class="btn btn-primary btn-mini">修改</a>
+                <a href="{:U('del?uid='.$v['uid'])}" class="btn btn-danger btn-mini" onclick="return confirm('确定这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</div>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/laydate/laydate.js"></script>

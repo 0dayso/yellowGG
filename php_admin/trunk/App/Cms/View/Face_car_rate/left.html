@@ -1,0 +1,29 @@
+<div id="sidebar">
+    <ul>
+
+   
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">active</if>
+        ">
+            <a href="#"> <i class="icon icon-th-list"></i>
+                <span>打分系统</span>
+            </a>
+                <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">style="display:block"</if>
+                >
+                <li>
+                    <a href="{:U('FaceCarRate/index',array('menu'=>'account_manage'))}">给脸打分</a>
+                </li>
+                <!-- <li>
+                    <a href="{:U('FaceCarRate/index',array('menu'=>'account_manage','rates'=>'no'))}">脸未打过分成员</a>
+                </li> -->
+                <li>
+                    <a href="{:U('FaceCarRate/car',array('menu'=>'account_manage'))}">给车打分</a>
+                </li>
+                 
+                </ul>
+            </li>
+ 
+        </li>
+
+    </ul>
+</div>

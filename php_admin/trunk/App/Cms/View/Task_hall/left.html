@@ -1,0 +1,40 @@
+<div id="sidebar">
+    <ul>
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>车辆认证</span> </a>
+        <ul <if condition="(strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall') OR (strtolower($Think.const.CONTROLLER_NAME) eq 'certificate_car')">style="display:block"</if>>
+        <li><a href="{:U('CertificateCar/index',array('menu'=>'task_hall','type'=>'unallocated'))}">待分配</a></li>
+        <li><a href="{:U('CertificateCar/index',array('menu'=>'task_hall','type'=>'allocated'))}">已分配</a></li>
+        <li><a href="{:U('CertificateCar/index',array('menu'=>'task_hall','type'=>'processed'))}">已处理</a></li>
+    </ul>
+    </li>
+
+    <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">active</if>">
+    <a href="#"><i class="icon icon-th-list"></i> <span>视频认证</span> </a>
+    <ul <if condition="(strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall') OR (strtolower($Think.const.CONTROLLER_NAME) eq 'certificate_video')">style="display:block"</if>>
+    <li><a href="{:U('CertificateVideo/index',array('menu'=>'task_hall','type'=>'unallocated'))}">待分配</a></li>
+    <li><a href="{:U('CertificateVideo/index',array('menu'=>'task_hall','type'=>'allocated'))}">已分配</a></li>
+    <li><a href="{:U('CertificateVideo/index',array('menu'=>'task_hall','type'=>'processed'))}">已处理</a></li>
+    </ul>
+    </li>
+
+    <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">active</if>">
+    <a href="#"><i class="icon icon-th-list"></i> <span>举报</span> </a>
+    <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">style="display:block"</if>>
+    <li><a href="{:U('Accusation/index',array('menu'=>'task_hall','type'=>'unallocated'))}">待分配</a></li>
+    <li><a href="{:U('Accusation/index',array('menu'=>'task_hall','type'=>'allocated'))}">已分配</a></li>
+    <li><a href="{:U('Accusation/index',array('menu'=>'task_hall','type'=>'processed'))}">已处理</a></li>
+    </ul>
+    </li>
+
+    <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">active</if>">
+    <a href="#"><i class="icon icon-th-list"></i> <span>用户反馈</span> </a>
+    <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'task_hall'">style="display:block"</if>>
+    <li><a href="{:U('FeedbackFactory/index',array('menu'=>'task_hall','type'=>'unallocated'))}">待分配</a></li>
+    <li><a href="{:U('FeedbackFactory/index',array('menu'=>'task_hall','type'=>'allocated'))}">已分配</a></li>
+    <li><a href="{:U('FeedbackFactory/index',array('menu'=>'task_hall','type'=>'processed'))}">已处理</a></li>
+    </ul>
+    </li>
+
+    </ul>
+</div>

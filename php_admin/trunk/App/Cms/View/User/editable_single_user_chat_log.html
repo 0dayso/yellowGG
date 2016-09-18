@@ -1,0 +1,48 @@
+<div style="display: none" class="ChatLog">
+	<button class="btn btn-success submit zday" day="7"  >最近7天</button>
+	<button class="btn btn-success submit zday" day="31"  >最近一个月</button>
+	<input  type="text" value="" name="day" style="width:30px;margin-top:12px"  />天
+	<button class="btn " id="yesday" >确定</button>
+
+	<button class="btn "   >该用户最多只有 <?php echo  intval((time() - intval($user['reg_time']))/84600); ?> 天聊天记录</button>
+    <p id="choatlog">聊天记录：</p>　
+    <?php require_once("./ThinkPHP/Library/Think/Emoji.class.php");  ?>
+    <foreach name="chat" item="vo" >
+	    <div class="chat-pl">
+	    	<p class="chat-pl-p">
+	    	{$vo.time} 　　
+			<if condition="$uid eq $vo['sender'] " >
+				Ta　　　　
+			<else/>
+				{$vo.sender}　　
+			</if>
+			</p>
+			<p class="chat-pl-p2">跟
+			   <if condition="$uid eq $vo['recver'] " >
+			   		Ta
+			   	<else/>
+			   		{$vo.recver}　　
+			   </if>
+			</p>
+			<p>说：　
+					<if condition="$vo['texttype'] eq 2 ">
+						<?php  $arr = json_decode($vo['text'],true);  ?>
+						<img src="<?php echo $arr['thumbnailPhotoUrl'] ?>" width="50" height="50">
+					<elseif condition="$vo['texttype'] eq 5 "/>
+						<?php  $arrjw = json_decode($vo['text'],true); ?>
+						<img src="<?php echo $arrjw['locationImageUrl'] ?>"  width="20" height="20">
+						经纬度：<?php echo $arrjw['locationLongitude'].','.$arrjw['locationLatitude'].' :'.$arrjw['locationAddress']; ?>
+					<else/>
+						<?php echo emoji_unified_to_html($vo['text']); ?>
+					</if>
+			</p>
+			</div><br/>
+
+    </foreach>
+</div>
+<style type="text/css">
+	.chat-pl{width:100%;height:20px;clear:both}
+	.chat-pl p{float: left;line-height:20px}
+	.chat-pl-p{width:250px}
+	.chat-pl-p2{width:100px}
+</style>

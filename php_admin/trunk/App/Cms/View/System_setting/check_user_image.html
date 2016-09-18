@@ -1,0 +1,78 @@
+ 
+<div id="content">
+    <!-- <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <div class="controls">
+                        <div style="text-align:center;width: 20%;height: 20%">
+                            <volist name="list" id="vo">
+                                <div style="width: 150%">
+                                    {$vo.today}共有：{$vo.user_cnt}注册,共上传{$vo.img_cnt}张图片,平均每人上传{$vo.img_avg}张图片
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+ 
+
+    <div class="widget-content nopadding">
+        <table class="table table-bordered" id="table-bordered">
+            <thead>
+                <tr><th>每日用户上传图片数量</th></tr> 
+            </thead>
+            <tbody>
+                <foreach name="list" item="vo" >
+                    <tr class="gradeX">
+                        <td>{$vo.today}共有：{$vo.user_cnt}注册,共上传{$vo.img_cnt}张图片,平均每人上传{$vo.img_avg}张图片</td>
+                    </tr>
+                </foreach>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div> 

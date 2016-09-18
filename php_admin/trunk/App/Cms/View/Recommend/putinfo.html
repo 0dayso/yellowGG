@@ -1,0 +1,75 @@
+<div id="content">
+  
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                    <td style="text-align:center">
+                        <a href="{:U('Recommend/putinfoadd')}" class="btn btn-primary btn-sm" style="float:right">增加推荐</a>
+                    </td>
+
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">编号</th>
+                                    <th style="text-align:center">展示时间</th>
+                                    <th style="text-align:center">推荐用户数量</th>
+                                    <th style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.id}</td>
+                                        <td style="text-align:center">
+                                            {$vo['valid_begin']|date='Y-m-d H:i:s',###} 至 {$vo['valid_end']|date='Y-m-d H:i:s',###}
+                                        </td>
+                                        <td style="text-align:center">{$vo.num}</td>
+                                        <td style="text-align:center">
+                                            <?php
+                                                    $now = time();
+                                                    $begin = $vo['valid_begin'];
+                                                    $end   = $vo['valid_end'];
+                                             ?>
+
+                                            <if condition="$vo.id eq 1" >
+                                                <a class="btn btn-w-m btn-danger" href="{:U('Recommend/putinfomodi',array('id'=>$vo['id']))}">编辑</a>
+                                                <a class="btn btn-primary btn-sm" href="{:U('Recommend/putinfomodi',array('id'=>$vo['id']))}">查看</a>
+                                            <else/>
+                                                <?php
+                                                    if( $now >= $begin && $now <= $end ){
+                                                ?>
+                                                    <a class="btn btn-w-m btn-danger" href="{:U('Recommend/putinfomodi',array('id'=>$vo['id']))}">编辑</a>
+                                                <?php } ?>
+                                                <a class="btn btn-primary btn-sm" href="{:U('Recommend/putinfomodi',array('id'=>$vo['id']))}">查看</a>
+                                            </if>
+
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+ 
+                    </form>
+                
+                 
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

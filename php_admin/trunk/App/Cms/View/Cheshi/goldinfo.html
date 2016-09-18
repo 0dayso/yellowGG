@@ -1,0 +1,71 @@
+<div id="content">
+    <!--breadcrumbs-->
+    
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!--<div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>{$formTitle}</h5>
+                </div>-->
+                 
+                
+                <div>
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">金币变化时间</th>
+                                    <th style="text-align: center">金币变化额度</th>
+                                    <th style="text-align: center">领取详情</th>
+                                    <th style="text-align: center">领取时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.report_type}</td>
+                                        <td style="text-align:center">查看详情td>
+                                        <td style="text-align:center">查看详情td>
+                                        <td style="text-align:center">查看详情td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                       
+                    </form>
+                </div>
+
+                <div>
+                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                        <!--<input type="hidden" id="list" value="{$list}" />-->
+                        <div style="float: right">
+                            <input type="submit" id="confirm" class="btn btn-primary btn-sm" value="确认"/>
+                        </div>
+                    </if>
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

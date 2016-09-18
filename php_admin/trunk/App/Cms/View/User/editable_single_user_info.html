@@ -1,0 +1,141 @@
+<div class="UserInfo">
+    <input type="hidden" id="uid" name="uid" value={$user.uid} />
+
+    <!--<if condition="$user['status'] EQ 1">
+        <br><br><br>
+        <label>清除用户缓存</label>
+        <hr noshade color="#0066cc">
+        <div class="row-fluid">
+            <a href="{:U('User/clear_user_cache/', array('menu'=>$menu,'type'=>$type,'uid'=>$user['uid']))}" class="btn btn-primary btn-mini">删除用户缓存</a>
+        </div>
+    </if>-->
+
+    <br><br><br>
+    <label><font color="red">更改用户状态，将帐号置为测试帐号时，清除帐号缓存及地理位置信息.</font></label>
+    <hr noshade color="#0066cc">
+    <div class="row-fluid">
+        <if condition="$user['status'] EQ 0">
+            该用户当前为正常用户
+            <elseif condition="$user['status'] EQ 1"/>
+            该用户当前为测试帐号
+            <elseif condition="$user['status'] EQ 2"/>
+            该用户当前为地推帐号
+            <elseif condition="$user['status'] EQ 3"/>
+            该用户是虚拟帐号
+            <else />
+            该用户已被封禁
+        </if>
+        <form action="{:U('User/change_user_state',array('uid'=>$user['uid']))}">
+            <select name="change_user_state">
+                <option value="normal">正常用户</option>
+                <option value="test">测试帐号</option>
+                <option value="push">地推用户</option>
+            </select>
+            <input type="submit" value="确认" />
+        </form>
+    </div>
+
+    <br><br><br>
+    <label>帐号资料</label>
+    <hr noshade color="#0066cc">
+    <div class="row-fluid">
+        <p>初见号：{$user.uid}</p>
+        <p>手机号: <input style="border: 0" id="phone" type="text" value="{$user.phone}" />　　　　　　
+                    <input id="change-phone" type="submit" value="变更手机号"  class="btn btn-primary btn-mini" />
+        </p>
+        <p>注册时间：{$user.reg_time|date="Y-m-d H:i:s",###}</p>
+        <p>当前状态：
+            <?php
+                $dbtime = time();
+                if( $user['dblocking_time'] > $dbtime ){
+                    echo '封禁';
+                }else{
+                    echo '正常';
+                }
+             ?>
+            </p>
+        <p>视频认证：
+            <if condition="$user.video_verify eq 0">
+                待处理
+            <elseif condition="$user.video_verify eq 1" />
+                通过认证
+            <else/>
+                未通过认证
+            </if>
+            <input id="undo-video-verify"　 type="submit" value="取消认证"　/></p>
+        <p>车辆认证：
+            <if condition="$user.car_verify eq 0">
+                待处理
+                <elseif condition="$user.car_verify eq 1" />
+                通过认证
+                <else/>
+                未通过认证
+            </if>
+            <input id="undo-car-verify" type="submit" value="取消认证"　　/></p>
+        <p style="width:300px">
+            <h1 style="font-size:14px;float:left;s">用户金币：</h1>
+            <button  type="button"      class="btn btn-danger m-r-sm" style="float:left;margin:10px">{$user.gold_coin_cnt}</button>
+            <input   id="gold_coin_cnt" class="form-control" type="text" value="" style="width:50px;float:left;margin:10px" />
+            <h1 style="font-size:14px;float:left">数量</h1>
+            <button  class="btn btn-primary btn-mini" style="float:left;margin-left:4px;margin:10px" id="changeg_add">增加</button>
+            <button  class="btn btn-primary btn-mini" style="float:left;margin-left:4px;margin:10px" id="changeg_j">扣除</button>
+        </p>
+        <div style="clear:both"></div>
+         
+        <p>最近登录时间：{$user.update_time|date='Y-m-d H:i:s',###}</p>
+    </div>
+    <if condition="$user.status eq 3"  >
+        <p style="width:300px">
+        <form action="{:U('user/latlngchange')}" method="post" >
+            <input type="hidden" name="uid" value="{$user.uid}">
+            <input type="hidden" name="phone" value="{$user.phone}">
+            <h1 style="font-size:14px;float:left;s">经度：</h1>
+            <input     class="form-control" type="text" name="lng" value="{$location.lng}" style="width:150px;float:left;margin:10px" />
+            <h1 style="font-size:14px;float:left">纬度：</h1>
+            <input    class="form-control" type="text" name="lat" value="{$location.lat}" style="width:150px;float:left;margin:10px" />
+            <button  class="btn btn-primary btn-mini" style="float:left;margin-left:4px;margin:10px"  >确定</button>
+        </form>
+        </p>
+    </if>
+    <br><br><br>
+    <label>空间资料</label>
+    <hr noshade color="#0066cc">
+    <div class="row-fluid">
+
+
+        <form action="{:U('User/modify_user_info',array('uid'=>$user['uid']))}" method="post" uid="{$user['uid']}" >
+        <p>用户昵称：<span style="border: 0" id="nickname" name="nickname" type="text" value=""  class="alert-upl" va="{$user.nickname}"  >{$emoji.nickname}</span></p>
+            <p>性别:<if condition="$user.sex eq 0">男<else/>女</if></p>
+            <p>出生日期:<input style="border: 0" id="birthday" name="birthday" type="text" value="{$user.birthday}" /></p>
+            <p>个性标签：<span style="border: 0"   name="tags" type="text"       class="alert-upl" va="{$user.tags}"     >{$emoji.tags}</span></p>
+            <p>职业： <span style="border: 0" id="job" name="job" type="text"   class="alert-upl" va="{$user.job}"  >{$emoji.job}</span></p>
+            <p>身高：{$user.height}</p>
+            <p>家乡：{$user.hometown}</p>
+            <p>个性签名：<span style="border: 0" id="signature" name="signature" type="text"   class="alert-upl" va="{$user.signature}"  >{$emoji.signature}</span></p>
+            <p>电影：<span style="border: 0"    id="movie" name="movie" type="text"            class="alert-upl" va="{$user.movie}"  >{$emoji.movie}</span></p>
+            <p>周末：<span style="border: 0"    id="weekend" name="weekend" type="text"        class="alert-upl" va="{$user.weekend}"  >{$emoji.weekend}</span></p>
+            <p>做菜：<span style="border: 0"    id="cooking" name="cooking" type="text"        class="alert-upl" va="{$user.cooking}"  >{$emoji.cooking}</span></p>
+            <p>旅行：<span style="border: 0"    id="travel" name="travel" type="text"          class="alert-upl" va="{$user.travel}"  >{$emoji.travel}</span></p>
+            <p>餐馆：<span style="border: 0"    id="restaurant" name="restaurant" type="text"  class="alert-upl" va="{$user.restaurant}"  >{$emoji.restaurant}</span></p>
+            <p>运动：<span style="border: 0"    id="sport" name="sport" type="text"            class="alert-upl" va="{$user.sport}"  >{$emoji.sport}</span></p>
+        </form>
+
+    </div>
+</div>
+
+<div id="alert-divck" style="display:none">
+    <div id="alert-name" style="width:240px;text-align: center;padding-left:2px;margin-left:2px;border:1px solid #333">
+
+    </div>
+    <div class="input_div">
+        <input type="checkbox" value="1" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.1}
+        <input type="checkbox" value="2" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.2}
+        <input type="checkbox" value="3" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.3}<br/>
+        <input type="checkbox" value="4" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.4}
+        <input type="checkbox" value="5" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.5}
+        <input type="checkbox" value="6" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.6}<br/>
+        <input type="checkbox" value="7" name="reason" >{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.7}
+    </div>
+    <br/ style="clear:both;margin-top:100px">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="qeuding-c" field="" name="" uid=""  >确定</button><button id="return-c" >取消</button>
+</div>

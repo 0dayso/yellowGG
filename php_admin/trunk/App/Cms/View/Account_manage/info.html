@@ -1,0 +1,324 @@
+
+<div id="content">
+    <!--breadcrumbs-->
+    <include file="Common:navbar" />
+    <!--End-breadcrumbs-->
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-title">
+                <ul id="myTab" class="nav nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#tab1" onclick="showUserInfo()">用户资料</a></li>
+                    <li><a data-toggle="tab" href="#tab2" onclick="showActionLog()">操作记录</a></li>
+                    <li><a data-toggle="tab" href="#tab3" onclick="showUserPic()">相册</a></li>
+                </ul>
+            </div>
+
+            <div class="widget-content">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="tab1">
+                        <div class="UserInfo">
+                            <label>空间资料</label>
+                            <hr noshade color="#0066cc">
+                            <div class="row-fluid">
+                                <p>用户昵称:{$user.nickname}</p>
+                                <p>性别:{$user.sex}</p>
+                                <p>出生日期:{$user.birthday}</p>
+                                <p>个性标签:{$user.tags}</p>
+                                <p>职业：{$user.job}</p>
+                            </div>
+
+                            <br><br><br>
+                            <label>帐号资料</label>
+                            <hr noshade color="#0066cc">
+                            <div class="row-fluid">
+                                <p>初见号：{$user.uid}</p>
+                                <p>注册时间：{$user.reg_time}</p>
+                                <p>手机号：{$user.phone}</p>
+                                <p>当前状态：</p>
+                                <p>用户权限：</p>
+                                <p>登录时间：</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab2">
+                        <div style="display: none" class="ActionLog">
+                            <p>视频认证操作记录：</p>
+                            <foreach name="video" item="vo" >
+                                管理员{$vo.aid}在{$vo.dtime}操作:{$vo.log}<br>
+                            </foreach>
+                            <br><br>
+                            <p>车辆认证操作记录：</p>
+                            <foreach name="car" item="vo" >
+                                管理员{$vo.aid}在{$vo.dtime}操作:{$vo.log}<br>
+                            </foreach>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade in active" id="tab3">
+                        <div style="display: none" class="UserPic">
+                            <form action="{:U('User/delete_head_img',array('uid'=>$user['uid']))}" method="post">
+                                <table>
+                                    <tr>
+                                        <foreach name="head1" item="vo1" >
+                                            <td>
+                                                <li>
+                                                    
+                                                    <img src="{$vo1.path}" />
+                                                </li>
+                                                <input type="checkbox" class="head-img" id="{$vo1.key}" name="{$vo1.key}"/>
+                                            </td>
+                                        </foreach>
+                                    </tr>
+                                    <tr>
+                                        <foreach name="head2" item="vo2" >
+                                            <td>
+                                                <li><a href="{$Think.config.USER_HEAD_IMG}/" rel="{$Think.config.USER_HEAD_IMG}/{$vo2.pic}-{$Think.config.USER_HEAD_IMG_ENLARGE_SIZE}.jpg" class="preview"><img src="{$Think.config.USER_HEAD_IMG}/{$vo2.pic}-{$Think.config.USER_HEAD_IMG_SIZE}.jpg" /></a></li>
+                                                <input type="checkbox" class="head-img" id="{$vo2.number}.pic" name="{$vo2.number}.pic"/>
+                                            </td>
+                                        </foreach>
+                                    </tr>
+                                </table>
+                                <br><br>
+                                <div class="form-actions" style="text-align:left">
+                                    <span><input type="submit" class="btn btn-success submit" value="确定删除" /></span>
+                                </div>
+                            </form>
+                        </div>
+                        <br><br><br>
+                        <div style="display: none" class="UserPic">
+                            <label>认证资料</label>
+                            <hr noshade color="#0066cc">
+                            <div>
+                                <if condition="($cvideo.status eq 1)">
+                                    视频认证:有    认证时间：{$cvideo.pass_time}
+                                    <ul class="inline">
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p1}.jpg" width="100" height="75" />
+                                        </a></li>
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p2}.jpg" width="100" height="75" />
+                                        </a></li>
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p3}.jpg" width="100" height="75" />
+                                        </a></li>
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p4}.jpg" width="100" height="75" />
+                                        </a></li>
+                                    </ul>
+                                    <else />无
+                                </if>
+                                <for start="1" end="10">
+                                    <br>
+                                </for>
+                            </div>
+                            <div>
+                                <if condition="($ccar.status eq 1)">
+                                    车辆认证:有    认证时间：{$ccar.pass_time}
+                                    <ul class="inline">
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_CAR_PIC}/{$ccar.p1}.jpg" width="100" height="75" />
+                                        </a></li>
+                                        <li><a onclick="afterClickPic()">
+                                            <img style="cursor:pointer" src="{$Think.config.CERTIFICATE_CAR_PIC}/{$ccar.p2}.jpg" width="100" height="75" />
+                                        </a></li>
+                                    </ul>
+                                    <else />无
+                                </if>
+                            </div>
+                            <div>
+                                <div style="display: none" id="overlay">
+                                </div>
+                                <div style="display: none" id="wrap">
+                                    <div id="myCarousel" class="carousel slide">
+                                        <div style="float: right">
+                                            <img style="cursor: pointer" src="__PUBLIC__/img/40_c.png" onclick="hideBoth()"/>
+                                        </div>
+
+                                        <div class="carousel-inner container-fluid">
+                                            <div class="active item row-fluid">
+                                                <img class="pic-rotate" id="video1" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p1}.jpg" />
+                                            </div>
+                                            <div class="item row-fluid">
+                                                <img class="pic-rotate" id="video2" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p2}.jpg"/>
+                                            </div>
+                                            <div class="item row-fluid">
+                                                <img class="pic-rotate" id="video3" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p2}.jpg"/>
+                                            </div>
+                                            <div class="item row-fluid">
+                                                <img class="pic-rotate" id="video4" src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$cvideo.p3}.jpg"/>
+                                            </div>
+
+                                            <if condition="($ccar.status eq 1)">
+                                                <div class="item row-fluid">
+                                                    <img class="pic-rotate" id="car1" src="{$Think.config.CERTIFICATE_CAR_PIC}/{$ccar.p1}.jpg" />
+                                                </div>
+                                                <div class="item row-fluid">
+                                                    <img class="pic-rotate" id="car2" src="{$Think.config.CERTIFICATE_CAR_PIC}/{$ccar.p2}.jpg"/>
+                                                </div>
+                                            </if>
+                                        </div>
+
+                                        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                                        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <for start="1" end="10">
+                            <br>
+                        </for>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="__PUBLIC__/cms/pic-enlarge/js/main.js" type="text/javascript"></script>
+<script src="__PUBLIC__/rotate/js/jquery.rotate.min.js" type="text/javascript"></script>
+<style>
+    *{margin:0;padding:0;list-style-type:none;}
+    img,a{border:0;}
+    .piccon{height:20px;margin:20px 0 0 0px;}
+    .piccon li{float:left;padding:0 0px;}
+    #preview{position:absolute;border:1px solid #ccc;background:#333;padding:5px;display:none;color:#fff;}
+
+    /*覆盖层*/
+    #overlay{
+        position:absolute;
+        background-color: rgb(119, 119, 119);
+        opacity: 0.5;
+        cursor: pointer;
+        width:100%;
+        height: 100%;
+        top: 0px;
+        left: 0px
+    }
+
+    /*弹出层*/
+    #wrap{
+        position:absolute;
+        background-color: rgba(18, 18, 18, 0.73);
+        width: 45%;
+        height: 80%;
+        top: 10%;
+        left: 40%;
+    }
+
+    .pic-rotate{
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: 50% 50%;
+    }
+</style>
+<script>
+    function showUserInfo() {
+        $('.UserInfo').show();
+    }
+    function showActionLog() {
+        $('.ActionLog').show();
+        $('.UserInfo').hide();
+        $('.UserPic').hide();
+    }
+    function showUserPic() {
+        $('.UserPic').show();
+        $('.ActionLog').hide();
+        $('.UserInfo').hide();
+    }
+
+    //点击图片弹出覆盖层及弹出框
+    function afterClickPic(){
+        $("#overlay").show();
+        $("#wrap").show();
+    }
+
+    //无论是点击覆盖层还是点击弹出层，都隐藏该弹出系列
+    function hideBoth(){
+        $("#overlay").hide();
+        $("#wrap").hide();
+    }
+
+    $(function(){
+        showUserInfo();
+
+        var video1 = 0;
+        $("#video1").rotate({
+            bind:
+            {
+                click: function(){
+                    video1 +=90;
+                    $(this).rotate({ animateTo:video1})
+                }
+            }
+        });
+
+        var video2 = 0;
+        $("#video2").rotate({
+            bind:
+            {
+                click: function(){
+                    video2 +=90;
+                    $(this).rotate({ animateTo:video2})
+                }
+            }
+        });
+
+        var video3 = 0;
+        $("#video3").rotate({
+            bind:
+            {
+                click: function(){
+                    video3 +=90;
+                    $(this).rotate({ animateTo:video3})
+                }
+            }
+        });
+
+        var video4 = 0;
+        $("#video4").rotate({
+            bind:
+            {
+                click: function(){
+                    video4 +=90;
+                    $(this).rotate({ animateTo:video4})
+                }
+            }
+        });
+
+        var car1 = 0;
+        $("#car1").rotate({
+            bind:
+            {
+                click: function(){
+                    car1 +=90;
+                    $(this).rotate({ animateTo:car1})
+                }
+            }
+        });
+
+        var car2 = 0;
+        $("#car2").rotate({
+            bind:
+            {
+                click: function(){
+                    car2 +=90;
+                    $(this).rotate({ animateTo:car2})
+                }
+            }
+        });
+
+        var car3 = 0;
+        $("#car3").rotate({
+            bind:
+            {
+                click: function(){
+                    car3 +=90;
+                    $(this).rotate({ animateTo:car3})
+                }
+            }
+        });
+    });
+
+</script>
+ 

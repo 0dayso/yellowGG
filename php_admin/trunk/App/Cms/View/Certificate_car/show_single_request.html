@@ -1,0 +1,183 @@
+ 
+<div id="content">
+ 
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                
+                <div class="ibox-content"  style="text-align:center;width: 100%;height: 60%;">
+                    <a class="fancybox" href="{$Think.config.CERTIFICATE_CAR_PIC}/{$list.p1}">
+                        <img src="{$Think.config.CERTIFICATE_CAR_PIC}/{$list.p1}" />
+                    </a>
+                    <a class="fancybox" href="{$Think.config.CERTIFICATE_CAR_PIC}/{$list.p2}">
+                        <img src="{$Think.config.CERTIFICATE_CAR_PIC}/{$list.p2}" />
+                    </a>
+                </div>
+                <style type="text/css">
+                    .ibox-pp{width:50%;height:50px;float:left;text-align: center;margin:0 auto}
+
+                </style>
+                <div class="ibox-content"  style="text-align:center;width: 100%;height: 60%;">
+                    <form action="{:U('certificate_car/user_car_pic_mod')}" method="post" enctype="multipart/form-data" >
+                        <input type="hidden" name="uid"  value="{$list.uid}" >
+                        <input type="hidden" name="curl" value="<?php $img = explode('/',$list['p1']);echo $img[0].'/'.$img[1]; ?>" >
+                        <div class="ibox-pp"><input type="file" name="p1" value="" style="float:right" ></div>
+                        <div class="ibox-pp"><input type="file" name="p2" value="" ></div>
+                        <input type="submit" class="btn btn-w-m btn-info" value="确定修改">
+                    </form>
+                </div>
+                
+                <form class="form-horizontal" id="certificate" name="certificate" onsubmit="return false">
+                    <input type="hidden" id="id"   value="{$list.id}" />
+                    <input type="hidden" id="menu" value="{$menu}" />
+                    <input type="hidden" id="type" value="{$type}" />
+                    <input type="hidden" id="uid"  value="{$list.uid}" />
+                    <input type="hidden" id="certificate_car_id" value="{$list.certificate_car_id}" />
+ 
+                    <table id="certificate_video_table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">车主UID</th>
+                                <th style="text-align:center">车主汽车信息</th>
+                                <th style="text-align:center">选择汽车信息</th>
+                                <th style="text-align:center">备注</th>
+                                <th style="text-align:center">审核</th>
+                                <th style="text-align:center">自定义消息</th>
+                                <th style="text-align:center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align: center">
+                                    <if condition="$list.user_status EQ 2">
+                                        <a href="{:U('User/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$list['uid']))}" target="_blank">{$list.uid}(地推用户)</a>
+                                    <else />
+                                        <a href="{:U('User/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$list['uid']))}" target="_blank">{$list.uid}</a>
+                                    </if>
+                                </td>
+                                <td>
+                                    <input style="border: 0;color: #90111a" value="{$list.car_brand_name}--{$list.car_model_name}" readonly/>
+                                </td>
+                                <td>
+                                    <select  class="form-control m-b" name="car_brand" id="car_brand">
+                                        <if condition="$list.car_brand_name eq null"><option value="0">选择汽车品牌</option></if>
+                                        <volist name="brand" id="vo">
+                                            <option value="{$vo.id}:{$vo.name}">{$vo.name}</option>
+                                        </volist>
+                                    </select>  &nbsp;
+                                    <select  class="form-control m-b" name="car_model" id="car_model">
+                                        <if condition="$list.show_car_model EQ '1'">{$list.all_car_model}</if>
+                                    </select>  &nbsp;
+                                    <input type="text" id="new_car_model" name="new_car_model" placeholder="其他车型" >
+                                </td>
+                                <td>
+                                    <input type="text" id="remark" name="remark"  class="form-control" >
+                                </td>
+                                <td>
+                                    <select id="status" name="status" class="form-control m-b">
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.1}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.2}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.3}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.4}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.5}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.6}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.7}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.8}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_CAR_STATUS_TEXT.9}</option>
+                                    </select>
+                                </td>
+                                <td >
+                                    <textarea name="myquite" id="myquite" class="form-control"></textarea>
+                                </td>
+                                <td align="center">
+                                    <input type="submit" class="btn btn-w-m btn-info" value="确定" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+ 
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+<!--放大图片-->
+<script src='__PUBLIC__/cms/justifiedgallery.js'></script>
+<script src='__PUBLIC__/cms/jquery.swipebox.min.js'></script>
+<script src='__PUBLIC__/cms/jquery.colorbox-min.js'></script>
+<script>
+    $().ready(function() {
+        $('#remotetest').justifiedGallery({rel: 'gal0'}).on('jg.rowflush', function () {
+            $(this).find('a').colorbox({
+                maxWidth : '100%',
+                maxHeight : '100%',
+                opacity : 0.8,
+                transition : 'elastic',
+                current : ''
+            });
+        });
+    });
+
+    $('#car_brand').change(function(){
+        var url = "{:U('Car/get_car_model')}";
+        var brand = $(this).val();
+        $.get(url,{brand:brand},function(str){
+            $('#car_model').html(str);
+        });
+    });
+
+    $('#certificate').on('submit',function(){
+        var menu        = $('#menu').val();
+        var type        = $('#type').val();
+        var uid         = $('#uid').val();
+        var brand       = $('#car_brand').val();
+        var model       = $('#car_model').val();
+        var new_car_model = $('#new_car_model').val();
+        var status      = $('#status').val();
+        var remark      = $('#remark').val();
+        var certificate_car_id = $('#certificate_car_id').val();
+        var id          = $('#id').val();
+        var myquite     = $('#myquite').val();
+   
+
+        var confirm_submit = confirm("确定提交?");
+        if(!confirm_submit){
+            return false;
+        }
+
+        $.ajax({
+            url : '__CONTROLLER__/submit_certificate',
+            type : "post",
+            data: {menu:menu, type:type, uid:uid, certificate_car_id:certificate_car_id, brand:brand, model:model, new_car_model:new_car_model, status:status, remark:remark,id:id,myquite:myquite},
+            success : function(data) {
+                if(data.info=='操作成功'){
+                    if(menu == 'task_hall'){
+                        location.href="{:U('CertificateCar/index',array('menu'=>'task_hall','type'=>'processed'))}";
+                    }
+                    else if(menu == 'admin_task'){
+                        location.href="{:U('CertificateCar/index',array('menu'=>'admin_task','type'=>'unprocessed'))}";
+                    }
+                    else{
+                        bootbox.alert('页面错误');
+                    }
+                }
+                else{
+                    bootbox.alert(data.info);
+                    commonAjaxSubmit('','#loginform');
+                }
+            },
+            error: function(data){
+                if(data.status=='1'){
+                    bootbox.alert('地址有误');
+                    return false;
+                }
+                commonAjaxSubmit('','#loginform');
+            }
+        });
+    });
+</script>
+ 

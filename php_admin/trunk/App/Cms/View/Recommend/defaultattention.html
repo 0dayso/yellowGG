@@ -1,0 +1,153 @@
+<form class="form-horizontal" id="form-search" method="post">
+    <div class="controls"  >
+        <div class="col-sm-9" style="padding:0">
+            <label class="radio-inline" style="padding:0px;width:100%">
+                <input type="text" name="item"  class="laydate-icon form-control" placeholder="用户uid" value="">
+            </label>
+        </div>
+        性别推荐<select name="sex">
+            <option value="0" selected>男</option>
+            <option value="1">女</option>
+        </select>
+        <input type="submit" class="btn btn-primary btn-sm" value="确定">
+    </div>
+</form>
+<br>
+<div class="form-horizontal"   method="post">
+    <div class="controls"  >
+        <div class="col-sm-2" style="padding:0">
+            <label class="radio-inline" style="padding:0px;width:100%">
+                <input type="text"  id="searchp" class="form-control"  placeholder="用户手机号" value="">
+            </label>
+        </div>
+        <input type="submit" class="btn btn-primary btn-sm" id="searchuser" value="搜索用户"><button class="btn btn-danger m-r-sm" id="closes">关闭</button>
+    </div>
+</div>
+<style>
+    .xxim_chatlist-list{width:100%;height:auto;display:block;clear:both;overflow: hidden;background-color: #DDD;padding:0}
+    .xxim_chatlist-list .xxim_childnode{width:300px;display:block;overflow:hidden;float:left;margin:0 auto;padding:0 auto}
+    .xxim_chatlist-list .xxim_childnode img{width:100px;height:100px;float:left;border: 4px solid #DDD5D5;}
+    .xxim_chatlist-list .xxim_childnode div{ width: 200px;height:70px; margin: 29px 0 0 0;float: left;}
+    .xxim_chatlist-list .xxim_childnode span{ display:block}
+</style>
+<ul class="xxim_chatlist-list"  ></ul>
+
+
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="text-align:center">推荐用户UID</th>
+            <th style="text-align:center">分类/标签/数量</th>
+            <th style="text-align:center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list" id="vo" >
+            <?php //printr($vo); ?>
+            <tr class="gradeX">
+                <td style="text-align: center">
+                    <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid']))}"  target="_blank" >{$vo['uid']}</a>
+                </td>
+                <td style="text-align: center">
+                    <volist name="vo.taglist" id="vos" >
+                        {$vos.class_name}/{$vos.title}/{$vos.num}
+                        <input type="radio" name="{$vos.uid}" <if condition="$vos['id'] eq $vo['checked']">checked</if> value="{$vos.id}">　
+                    </volist>
+                </td>
+                <td style="text-align: center">
+                    <input type="submit" class="btn btn-primary btn-sm add-content" did="{$vo['id']}" u="{$vo.uid}" uid="{$vo.uid}"  value="确定标签">
+                    <input type="submit" class="btn btn-primary btn-sm del-items" did="{$vo['id']}"  value="删除">
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+        $('.add-content').click(function(){
+            var uid   = $(this).attr('uid');
+            var r_u   = $(this).attr('did');
+            var radio = $(this).attr('u');
+            var id = $('input[name="'+radio+'"]:checked ').val();
+            if(typeof(id)=='undefined'){
+                layer.msg('请选择标签');
+                return false;
+            }
+
+            var _this = $(this);
+            var al = layer.confirm('你确定要将该标签设定为默认推荐吗？',function(){
+                $.post("{:U('recommend/addrecommendtag')}",{id:r_u,tag:id,uid:uid},function(data){
+                    layer.close(al);
+                    if(data=='ok'){
+                        layer.msg('添加完成！');
+                    }else if(data=='error'){
+                        layer.alert('参数错误');
+                    }else{
+                        layer.msg('添加失败！');
+                    }
+                })
+            });
+        });
+
+        $('.del-items').click(function(){
+            var id = $(this).attr('did');
+            var _this = $(this);
+            var al = layer.confirm('你确定要删除吗？',function(){
+                $.post("{:U('recommend/del_items')}",{id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.close(al);
+                    }
+                })
+            });
+        });
+
+        $('.agingsuring').click(function(){
+
+            var uid = $(this).attr('va');
+            var id  = "{$id}";
+            $.post("{:U('search/get_surging_html')}",{uid:uid,id:id,where:'recommend_id'},function(data){
+                var pageii = $.layer({
+                    type: 1,
+                    title: false,
+                    area: ['1000px', '570px'],
+                    shift: 'top', //从左动画弹出
+                    page: {
+                        html: '<div style="width:1000px;height:560px; padding:20px; border:1px solid #ccc; background-color:#eee;overflow:scroll;" id="addsurginged">'+data+'</div>'
+                    }
+                });
+            });
+
+
+        });
+
+
+        $('#searchuser').click(function(){
+
+            var index = layer.load('搜索中...', 3);
+
+            var search = $('#searchp').val();
+            if(search !='' ){
+                $.post("{:U('search/ajaxsearchuser')}",{phone:search},function(data){
+                    if(data!=''){
+                        $('.xxim_chatlist-list').show();
+                        $('.xxim_chatlist-list').empty();
+                        $('.xxim_chatlist-list').append(data);
+                    }
+                    layer.close(index);
+                });
+            }
+        });
+
+
+        $('#closes').click(function(){
+            $('.xxim_chatlist-list').hide();
+        });
+
+
+
+    });
+</script>

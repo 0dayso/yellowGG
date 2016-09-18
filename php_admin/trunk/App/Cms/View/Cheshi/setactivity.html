@@ -1,0 +1,67 @@
+<div id="content">
+ 
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+              
+                <div>
+                    <form class="form-horizontal" id="form-search" method="GET">
+                        <div class="controls"> 
+                            <div style="float:left;line-height:35px">选择库：</div>
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value="1">被赞最多</option>
+                            </select>　
+                            选择时间：
+                            <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" placeholder="选择时间">
+                            至
+                            <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" placeholder="选择时间">
+                            <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                        </div>
+                    </form>
+
+                </div>
+                
+                <div>
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">认证标签 / 被赞次数 / 获得金币</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.report_type}</td>
+                                       　
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                       
+                    </form>
+                </div>
+ 
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

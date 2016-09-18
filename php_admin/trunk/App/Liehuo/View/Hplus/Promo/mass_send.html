@@ -1,0 +1,219 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.form-horizontal .control-label { width:auto; min-width:7em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+
+        <form action="{:U('mass_send_post')}" method="POST" class="form-horizontal" onsubmit="return confirm('真的要这么做？')">
+          <div class="form-filter" data-action="{:U('mass_send_count')}">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">筛选类型</label>
+              <div class="col-sm-10">
+                <select name="model" class="form-control filter-fields">
+<php>
+$arr =
+[
+  'uids'         => '指定用户',
+  'UserBase'     => '注册用户',
+  'LocationBase' => '登录用户',
+  'active'       => '活跃用户',
+];
+</php>
+<volist name="arr" id="v">
+                  <option value="{$key}"<php>echo $_REQUEST['model'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="uids">
+              <label class="col-sm-2 control-label">用户ID</label>
+              <div class="col-sm-10">
+                <textarea name="uids" placeholder="必填，逗号或者换行分隔" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase active">
+              <label class="col-sm-2 control-label">时间范围</label>
+              <div class="col-sm-10">
+                <div class="input-prepend input-group" style="display:block;">
+                  <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                  <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                  <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+                </div>
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase">
+              <label class="col-sm-2 control-label">性别</label>
+              <div class="col-sm-10">
+                <select name="sex" class="form-control">
+                  <option value="">不限</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase">
+              <label class="col-sm-2 control-label">头像评分</label>
+              <div class="col-sm-10">
+                <select name="score_rank" class="form-control">
+                  <option value="">不限</option>
+<php>
+$arr =
+[
+  'pass' => '合格',
+  'fail' => '不合格/未评分',
+];
+</php>
+<volist name="arr" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['score_rank'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase">
+              <label class="col-sm-2 control-label">包版本号</label>
+              <div class="col-sm-10">
+                <select name="app_version" class="form-control">
+                  <option value="">不限</option>
+<volist name="data['versions']" id="v">
+                  <option value="{$v}"<php>echo $_REQUEST['app_version'] == (string)$v ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="LocationBase">
+              <label class="col-sm-2 control-label">设备类型</label>
+              <div class="col-sm-10">
+                <select name="app_type" class="form-control">
+                  <option value="">不限</option>
+<php>$oss = ['安卓','IOS'];</php>
+<volist name="oss" id="v">
+                  <option value="{$key}"<php>echo $_REQUEST['app_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase">
+              <label class="col-sm-2 control-label">用户资料</label>
+              <div class="col-sm-10">
+                <label class="checkbox checkbox-inline"><input type="checkbox" name="has_all_info" value="0"<php>echo $_REQUEST['has_all_info'] == '0' ? 'checked' : '';</php>> 没有资料</label>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">筛选人数</label>
+            <div class="col-sm-10">
+              <b class="filter-user-count btn btn-white"></b>
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">发送类型</label>
+            <div class="col-sm-10">
+              <select name="send_type" class="form-control filter-fields" data-type="send-type">
+<php>
+$arr =
+[
+  'text'    => '文本',
+  'graphic' => '图文',
+  'article' => '文章',
+];
+</php>
+<volist name="arr" id="v">
+                  <option value="{$key}"<php>echo $_REQUEST['send_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" data-send-type="text graphic">
+            <label class="col-sm-2 control-label">消息内容</label>
+            <div class="col-sm-10">
+              <textarea name="content" placeholder="必填" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group" data-send-type="graphic">
+            <label class="col-sm-2 control-label">图片路径</label>
+            <div class="col-sm-10">
+              <input type="text" name="image" value="" placeholder="必填" class="form-control">
+            </div>
+          </div>
+          <div class="form-group" data-send-type="article">
+            <label class="col-sm-2 control-label">文章</label>
+            <div class="col-sm-10">
+              <input type="hidden" name="article_id" value="{$data['article']['id']}">
+              <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" name="title" value="{$data['article']['title']}" placeholder="{$data['article']['title']}" class="form-control">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">图片</span>
+                <input type="text" name="thumb" value="{$data['article']['thumb']}" placeholder="{$data['article']['thumb']}" class="form-control">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">描述</span>
+                <input type="text" name="desc" value="{$data['article']['desc']}" placeholder="{$data['article']['desc']}" class="form-control">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">链接</span>
+                <input type="text" name="link" value="{$data['article']['link'] ?: $data['article']['article_link']}" placeholder="{$data['article']['link'] ?: $data['article']['article_link']}" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">发送</button>
+              <a href="{:U('UserBase/oper_logs?type=msg_send_bat')}" target="_blank" class="btn btn-success">群发记录</a>
+              <a href="{:U('Article/index')}" class="btn btn-success">文章列表</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+  $('body')
+  .on('change','.form-filter :enabled:not(option)',function()
+  {
+    var the = $(this).parents('.form-filter:first'),
+        url = the.data('action'),
+        dat = {};
+    the.find('[name]:enabled:not(option)').not(':checkbox:not(:checked),:radio:not(:checked)')
+    .each(function()
+    {
+      var the = $(this),
+          key = the.attr('name'),
+          val = the.val();
+      dat[key] = val;
+    });
+    $('.filter-user-count').html('<i class="fa fa-spinner fa-spin fa-1x"></i>');
+    $.ajax(
+    {
+      url:url,
+      type:'POST',
+      data:dat,
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      $('.filter-user-count').text('今日活跃：' + dat.today_active_count + ' / 总人数：' + dat.count);
+    })
+    .fail(function(jqXHR,textStatus,errorThrown)
+    {
+      console.log(jqXHR);
+      alert('获取用户失败，可能筛选的用户数量过多，请缩小筛选返回！\n' + jqXHR.responseText);
+    });
+  });
+
+});
+</script>

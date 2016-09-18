@@ -1,0 +1,92 @@
+<div style="display: none" class="AccusationLog">
+    <div class="control-group">
+    <if condition="$accusation_request.id GT '0' AND $accusation_request.process EQ 'yes'">
+        <div class="controls">
+            <div style="float: left">
+                <form action="{:U('Closure/closure',array('id'=>$accusation_request['id']))}" id="closure-f">
+                    <input type="hidden" name="c_from" value="1" >
+                    <select id="accusation_reason" class="accusation_reason" name="accusation_reason">
+                        <option value=0>请选择</option>
+                        <option value=4>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.4}</option>
+                        <option value=6>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.6}</option>
+                        <option value=7>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.7}</option>
+                        <option value=1>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.1}</option>
+                        <option value=2>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.2}</option>
+                        <option value=3>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.3}</option>
+                        <option value=5>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.5}</option>
+                    </select>
+                    <select id="accusation_status" class="accusation_status" name="accusation_status">
+                        <option value=1>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.1}</option>
+                        <option value=2>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.2}</option>
+                        <option value=3>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.3}</option>
+                        <option value=4>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.4}</option>
+                        <option value=5>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.5}</option>
+                        <option value=6>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.6}</option>
+                    </select>
+                    备注：<input type="text" id="accusation_remark" name="accusation_remark" />
+                    <input type="button" value="确认" id="submit-f" />
+                </form>
+            </div>
+        </div>
+    <else />
+        <div class="controls">
+            <!-- <a href="{:U('Closure/undo_forbidden',array('uid'=>$user['uid']))}" class="btn btn-primary btn-mini">取消封禁</a>
+            <a href="{:U('Closure/forever_forbidden',array('uid'=>$user['uid']))}" class="btn btn-primary btn-mini">永久封禁</a> -->
+            <form action="{:U('Closure/closure',array('uid'=>$user['uid'],'url'=>'closure'))}" id="closure-f">
+            <input type="hidden" name="c_from" value="2" >
+                <select id="accusation_reason" class="accusation_reason" name="accusation_reason">
+                    <option value=0>请选择</option>
+                    <option value=4>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.4}</option>
+                    <option value=6>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.6}</option>
+                    <option value=7>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.7}</option>
+                    <option value=1>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.1}</option>
+                    <option value=2>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.2}</option>
+                    <option value=3>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.3}</option>
+                    <option value=5>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.5}</option>
+                </select>
+                <select id="accusation_status" class="accusation_status" name="accusation_status">
+                    <option value=1>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.1}</option>
+                    <option value=2>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.2}</option>
+                    <option value=3>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.3}</option>
+                    <option value=4>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.4}</option>
+                    <option value=5>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.5}</option>
+                    <option value=6>{$Think.config.STATE_ACCUSATION_PROCESS_STATES.6}</option>
+                </select>
+                备注：<input type="text" id="accusation_remark" name="accusation_remark" />
+                <input type="button" value="确认" id="submit-f" />
+            </form>
+            
+        </div>
+    </if>
+
+        <div class="controls" id="requestlog6">
+            <!--<p>举报及封禁历史记录：</p>-->
+            <!--<table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>举报用户</th>
+                    <th>被举报用户</th>
+                    <th>处理管理员</th>
+                    <th>处理原因</th>
+                    <th>处理状态</th>
+                    <th>处理备注</th>
+                    <th>受理时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="accusation" id="vo">
+                    <tr class="gradeX">
+                        <td style="text-align: center">{$vo.uid}</td>
+                        <td style="text-align:center">{$vo.offender_uid}</td>
+                        <td style="text-align:center">{$vo.aid}</td>
+                        <td style="text-align:center">{$vo.reason}</td>
+                        <td style="text-align:center">{$vo.status}</td>
+                        <td style="text-align:center">{$vo.remark}</td>
+                        <td style="text-align:center">{$vo.certificate_time}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>-->
+        </div>
+    </div>
+</div>

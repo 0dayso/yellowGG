@@ -1,0 +1,183 @@
+
+
+
+
+
+<div id="content" class="ibox-content">
+    <a href="{:U('Recommend/putinfo')}" class="btn btn-primary btn-sm" style="float:right">返回推荐列表</a>
+
+	<form role="form" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  > 
+	    <input type="hidden" name="id" value="{$_GET['id']}" >
+        <if condition="empty($list)" >
+            <!--<div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">导入用户：</label>
+                <div class="col-sm-9">
+                    <label class="radio-inline" style="padding-left:0px">
+                        <textarea name="uid" style="margin: 0px; width: 425px; height: 129px;"></textarea> 50001,50002,50003,50004,50005
+                    </label>
+                </div>
+            </div>-->
+        <else/>
+
+            <input type="hidden" value="{$list[0]['id']}" id="id" >
+             <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">修改用户：</label>
+                <div class="col-sm-9">
+                    <label class="radio-inline" style="padding-left:0px;width:430px">
+                         <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align:center">被查看次数</th>
+                                </tr>
+                                </thead>
+                                <tbody id="td-list">
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">
+                                            <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid']))}"  target="_blank" >{$vo.uid}</a>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <if condition="$vo['sex'] eq 0 " >男<else/>女</if>
+                                        </td>
+                                        <td style="text-align:center">{$vo.clicknums}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                    </label>
+                </div>
+            </div>
+        </if>
+
+	    <br>
+
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">展示时间：</label>
+                <div class="col-sm-9">
+                    <label class="radio-inline" style="padding-left:0px">
+                        <input type="text" name="valid_begin" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                               class="laydate-icon form-control" placeholder="选择时间"
+                                <if condition="$list[0]['valid_begin'] neq ''" >
+                                    value="{$list[0]['valid_begin']|date='Y-m-d H:i:s',###}"
+                                    <else/>
+                                    value=""
+                                </if>
+
+
+                                >
+                    </label>
+                    <label class="radio-inline" style="padding-left:0px">
+                        至
+                    </label>
+                    <label class="radio-inline" style="padding-left:0px">
+                        <input type="text" name="valid_end" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                               class="form-control laydate-icon" placeholder="选择时间"
+
+                                <if condition="$list[0]['valid_end'] neq ''" >
+                                    value="{$list[0]['valid_end']|date='Y-m-d H:i:s',###}"
+                                    <else/>
+                                    value=""
+                                </if>
+
+
+                                >
+                    </label>
+                </div>
+            </div>
+
+
+        <div class="hr-line-dashed"></div>
+	</form>
+
+    
+    
+    <div class="form-group draggable ui-draggable">
+        <div class="col-sm-12 col-sm-offset-3">
+            <button class="btn btn-primary" type="submit" id="saved">下一步</button>
+        </div>
+    </div>
+  
+
+
+
+</div>
+ <script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+ <script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#saved').click(function(){
+            var valid_begin = $('input[name="valid_begin"]').val();
+            var valid_end   = $('input[name="valid_end"]').val();
+ 			var id = "{$_GET['id']}";
+
+
+
+                if(typeof(valid_begin) == 'undefined' || typeof(valid_end)  == 'undefined' ){
+                    layer.alert('请选择展示时间！');
+                    return false;
+                }
+
+            $('.form-horizontal').submit();
+
+            /*if(id=='' || id !='1'){
+                // js判断时间有没有叠加
+                $.post("{:U('search/judgetime')}",{id:id,valid_begin:valid_begin,valid_end:valid_end,type:'RecommendUserGroup'},function(data){
+                    if(data=='have'){
+                        layer.msg('对不起，时间和其它的banner有冲突！');
+                        return false;
+                    }else if(data=='ok'){
+                        $('.form-horizontal').submit();
+                    }else{
+                        layer.msg(data);
+                        return false;
+                    }
+                });
+            }else{
+                $('.form-horizontal').submit();
+            }*/
+
+
+
+
+        });
+
+        // 删除用户
+        $('.delruser').click(function(){
+            var _this = $(this);
+            var id    = $(this).attr('a');
+            layer.confirm('确定要删除吗？', function(){
+                $.post("{:U('recommend/deluser')}",{id:id},function(data){
+                    if(data){
+                        _this.parent().parent().remove();
+                        layer.alert('删除成功！',1);
+                    }
+                });
+            }); 
+        });
+
+        // 添加用户
+        $('.adduser').click(function(){
+            var id = $('#id').val();
+       
+            var indexsd = layer.prompt({title:"添加用户"}, function(title){
+                $.post("{:U('recommend/adduser')}",{id:id,uid:title},function(data){
+                    if(data=='ok'){
+                        window.location.href ='';
+                    }else{
+                        layer.alert('用户'+data+'已经存在！');
+                    }
+                });
+                 
+            });
+
+
+        });
+
+
+    });
+</script>
+ 

@@ -1,0 +1,134 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="filter form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <input type="hidden" name="ver" value="{$_REQUEST['ver']}">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">时间范围 <i class="caret"></i></button>
+              <ul class="dropdown-menu date-time-ranges"></ul>
+            </div>
+            <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+            <span class="input-group-addon">到</span>
+            <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+          </div>
+          <div class="form-group">
+            <select name="goods" class="form-control">
+              <option value="">商品类型</option>
+              <option value="diamond"<php>echo $_REQUEST['goods'] == 'diamond' ? ' selected' : '';</php>>钻石</option>
+              <option value="like"<php>echo $_REQUEST['goods'] == 'like' ? ' selected' : '';</php>>普通赞</option>
+              <option value="super_like"<php>echo $_REQUEST['goods'] == 'super_like' ? ' selected' : '';</php>>超级赞</option>
+              <option value="vip"<php>echo $_REQUEST['goods'] == 'vip' ? ' selected' : '';</php>>会员</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="pay_type" class="form-control">
+              <option value="">支付方式</option>
+<volist name="data['pay_types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pay_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="state" class="form-control">
+              <option value="">订单状态</option>
+<volist name="data['order_states']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['state'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="备注、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1&page_size=export',$_GET)}" class="btn btn-success">导出</a>
+          <a href="{:U('order_top?state=2')}" class="btn btn-success">排行榜</a>
+          <span class="btn btn-white">总额：{$data['order_total']}</span>
+          <span class="btn btn-white">人数：{$data['order_count_user']}</span>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>订单号</th>
+              <th>用户ID</th>
+              <th>性别</th>
+              <th>商品名称</th>
+              <th>交易金额</th>
+              <th>支付方式</th>
+              <th>交易状态</th>
+              <th>下单时间</th>
+              <th>付款时间</th>
+              <th>订单备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sexs = C('USER_SEX_IS');
+$usr = $data['users'][$v['uid']] ?: [];
+$cls = ['warning','info','success','danger'];
+</php>
+            <tr class="{$cls[$v['state']] ?: 'default'}">
+              <td>{$v['id']}</td>
+              <td>
+                <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid'] ?: ''}</a>
+                <b class="label label-danger">{:boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$usr['glory_grade'] ?: ''}</b>
+              </td>
+              <td>{$sexs[$usr['sex']]}</td>
+              <td>{$v['goods_name'] ?: $v['goods_id'] ?: ''}</td>
+              <td>{$v['fee']}</td>
+              <td>{$data['pay_types'][$v['pay_type']]}</td>
+              <td>{$data['order_states'][$v['state']]}</td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td>{$v['pay_time'] ? date('Y-m-d H:i:s',$v['pay_time']) : '-'}</td>
+              <td>
+                {$v['remark']}
+<if condition="$v['pay_data']">
+                <div class="td-popover animated fadeIn"><php>
+$pdt = is_array($v['pay_data']) ? $v['pay_data'] : (json_decode($v['pay_data'],true) ?: []);
+if($pdt['goods']) echo implode('<br>',array_filter(array_map(function($k,$v)
+{
+  if($v) return $k.':'.$v;
+},array_keys($pdt['goods']),$pdt['goods'])));
+</php></div>
+</if>
+              </td>
+              <td>
+<if condition="$v['state'] == '0' && $v['pay_data']">
+                <a href="{:U('?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">重新验证</a>
+</if>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

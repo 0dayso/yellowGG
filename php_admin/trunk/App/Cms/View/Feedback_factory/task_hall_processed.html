@@ -1,0 +1,57 @@
+ 
+<div id="content">
+  
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <input type="hidden" id="menu" value="{$menu}" />
+                    <input type="hidden" id="type" value="{$type}" />
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'index'">等待审核<else />用户回收站</if></h5>-->
+                </div>
+
+                <div>
+                    <div class="widget-content nopadding">
+                        <table id="accusation_table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">初见号</th>
+                                <th style="text-align: center">反馈内容</th>
+                                <th style="text-align: center">反馈时间</th>
+                                <th style="text-align: center">最后对话时间</th>
+                                <th style="text-align: center">分配时间</th>
+                                <th style="text-align: center">分配给</th>
+                                <th style="text-align: center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="vo">
+                                <tr class="gradeX">
+                                    <td style="text-align: center">{$vo.uid}</td>
+                                    <td style="text-align: center">{$vo.feedback_content}</td>
+                                    <td style="text-align: center">{$vo.start_time}</td>
+                                    <td style="text-align: center">{$vo.end_time}</td>
+                                    <td style="text-align: center">{$vo.allocate_time}</td>
+                                    <td style="text-align: center">{$vo.allocated_to}</td>
+                                    <td style="text-align: center">
+                                        <a href="{:U('FeedbackFactory/check_user_feedback/',array('menu'=>$menu,'type'=>$type,'uid'=>$vo['uid']))}" class="btn btn-primary btn-mini">查看</a></td>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div> 

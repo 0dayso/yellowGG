@@ -1,0 +1,79 @@
+   
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                    
+                    <a href="{:U('search/host')}" class="btn btn-primary btn-sm" style="float:right">增加活动</a>
+                    
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">ID</th>
+                                    <th style="text-align:center">图片</th>
+                                    <th style="text-align:center">方式</th>
+                                    <th style="text-align: center">位置</th>
+                                    <th style="text-align: center">展示时间</th>
+                                    <th style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo.id}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <img src="{$Think.config.BANNER_PATH}{$vo.pic}" width="150" height="150"/>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <?php 
+                                                if($vo['banner_type']==1){ 
+                                                    echo '认证集合';
+                                                }elseif($vo['banner_type']==2 || $vo['banner_type']==3) {
+                                                    echo '用户集合';
+                                                }elseif ($vo['banner_type']==4) {
+                                                    echo '个人主页';
+                                                }else{
+                                                    echo 'web';
+                                                }
+                                            ?>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <if condition="$vo['position'] eq 1" >
+                                                banner1
+                                            <else/>
+                                                banner2
+                                            </if>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo['valid_begin']|date='Y-m-d H:i:s',###} 至 {$vo['valid_end']|date='Y-m-d H:i:s',###}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <a class="btn btn-primary btn-sm" href="{:U('banner/editbanner',array('id'=>$vo['id']))}">编辑</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

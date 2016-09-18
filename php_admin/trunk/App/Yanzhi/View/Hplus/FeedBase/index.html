@@ -1,0 +1,147 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated.hover { animation-name:none; }
+.animated.hover.flip:hover { animation-name:flip; }
+.animated.hover.pulse:hover { animation-name:pulse; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div>
+            <form action="{:U()}" method="GET" class="form-inline" style="margin-bottom:20px;">
+              <input type="hidden" name="act" value="filter">
+              <div class="input-prepend input-group">
+                <span class="add-on input-group-addon">日期范围</span>
+                <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+              </div>
+              <div class="form-group">
+                <select name="audited" class="form-control">
+                  <option value="">审核状态</option>
+<volist name="data['feed_audit']" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['audited'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="uid" class="form-control">
+                  <option value="">用户类型</option>
+                  <option value="-1"<php>echo $_REQUEST['uid'] == '-1' ? ' selected' : '';</php>>注册用户</option>
+                  <option value="0"<php>echo $_REQUEST['uid'] == '0' ? ' selected' : '';</php>>游客</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="sex" class="form-control">
+                  <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+                  <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="score" class="form-control">
+                  <option value="">分值</option>
+                  <option value="8"<php>echo $_REQUEST['score'] == '8' ? ' selected' : '';</php>>8分及以上</option>
+                  <option value="5"<php>echo $_REQUEST['score'] == '5' ? ' selected' : '';</php>>5分及以上</option>
+                  <option value="-5"<php>echo $_REQUEST['score'] == '-5' ? ' selected' : '';</php>>5分以下</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="province" class="form-control">
+                  <option value="">省份</option>
+<php>
+$arr = array('上海','北京','广东','江苏','浙江','安徽','山东','辽宁','陕西','四川','山西','湖南','湖北','云南','黑龙江','新疆');
+</php>
+<volist name="arr" id="v">
+                  <option value="{$v}"<php>echo $_REQUEST['province'] == (string)$v ? ' selected' : '';</php>>{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+              </div>
+              <button type="submit" class="btn btn-primary">搜索</button>
+              <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+<if condition="$_REQUEST['audited'] eq '0'">
+              <a class="btn btn-success act-feed-audit-all pull-right">本页全部通过审核</a>
+</if>
+            </form>
+          </div>
+          <div class="row list-feed">
+<volist name="data['list']" id="v">
+<php>
+$score_show = $v['score'] ?: $v['base_score'];
+$score_css = 'default';
+$score_show >= 1 && $score_css = 'primary';
+$score_show >= 5 && $score_css = 'success';
+$score_show >= 8 && $score_css = 'danger';
+$score_timeout = $v['base_score_time'] ? ((int)$v['base_score_time'] - (int)$v['create_time']) : 0;
+//$score_timeout > 99 && $score_timeout = '99+';
+</php>
+            <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-id="{$v['id']}">
+              <div class="thumbnail">
+                <a><img src="__FEED_IMG_ROOT__{$v['resource']}"></a>
+                <span class="feed-score label label-{$score_css}">{$score_show}</span>
+                <div class="caption">
+                  <p>
+                    用户：
+<if condition="!$v['uid']">
+                    <a>游客</a>
+<else/>
+                    <a href="{:U('user_base/view?uid='.$v['uid'].'&tab=tab-user-feed')}" target="_blank">{$v['uid']}</a>
+</if>
+                  </p>
+                  <p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$v['create_time'])}</p>
+<if condition="$data['feed_logs'][$v['id']]">
+                  <p class="text-nowrap"><b>通过时间:</b>{:date('Y-m-d H:i:s',$data['feed_logs'][$v['id']]['log_time'])}</p>
+</if>
+<if condition="$score_timeout">
+                  <p class="text-nowrap"><b>打分耗时:</b>{$score_timeout}</p>
+</if>
+                  <p>{$v['text']}</p>
+                  <p class="text-center">
+                    <a href="{:U('view?id='.$v['id'])}" target="_blank" class="btn btn-sm btn-primary">详情</a>
+<if condition="!$v['audited']">
+                    <a href="{:U('audit?id='.$v['id'])}" target="_blank" class="btn btn-sm btn-success act-feed-audit">审核</a>
+</if>
+                    <a data-href="{:U('del?id='.$v['id'])}" class="btn btn-sm btn-danger act-feed-del">删除</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+</volist>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<include file="modal-feed-del"/>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+jQuery(function($)
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+});
+</script>

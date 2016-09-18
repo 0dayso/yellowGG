@@ -1,0 +1,123 @@
+<style>
+.gradeX td,.gradeX th { text-align:center; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title"><span class="icon"><i class="icon-th"></i></span></div>
+        <div class="widget-content nopadding">
+          <form id="form-filter" action="?"></form>
+          <form action="{:U('recommend2')}" method="POST">
+            <div class="clearfix">
+              <div class="form-inline pull-left">
+                <select name="grade" form="form-filter" class="form-control change-submit">
+                  <option value="">标签等级</option>
+                  <option value="1"<php>echo $_REQUEST['grade'] == '1' ? ' selected' : '';</php>>1级</option>
+                  <option value="2"<php>echo $_REQUEST['grade'] == '2' ? ' selected' : '';</php>>2级</option>
+                  <option value="3"<php>echo $_REQUEST['grade'] == '3' ? ' selected' : '';</php>>3级</option>
+                  <option value="4"<php>echo $_REQUEST['grade'] == '4' ? ' selected' : '';</php>>4级</option>
+                </select>
+              </div>
+              <div class="form-inline pull-right">
+                <button type="submit" class="btn btn-primary">确认入库</button>
+              </div>
+            </div>
+            <br>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr class="gradeX">
+                    <th>UID</th>
+                    <th>等级/分值</th>
+                    <th>性别</th>
+                    <th>最后登录时间</th>
+                    <th>相册数</th>
+                    <th>分类/标签名/数量</th>
+                    <th>头像</th>
+                    <th>首页推荐</th>
+                    <th>分类推荐</th>
+                    <th>关注推荐</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+<volist name="data.list" id="v">
+                  <tr class="gradeX form-inner">
+                    <td>
+                      <a href="{:U('User/user_info',array('uid'=>$v['uid']))}" target="_blank">{$v['uid']}</a>
+                    </td>
+                    <td>Lv{$v.grade} / {$v.score}</td>
+                    <td>{:C('USER_SEX_IS.'.$v['sex'])}</td>
+                    <td>{$v.login_time|date='Y-m-d H:i',###}</td>
+                    <td>{$v.album_cnt}</td>
+                    <td>{$v.tag_data}</td>
+                    <td>
+<php>
+//头像
+$arr = json_decode($v['album_data']) ?: array();
+</php>
+<volist name="arr" id="img" offset="0" length="3">
+                      <img src="http://headimage.chujian.im/{$img}" width="50"> &nbsp;
+</volist>
+                    </td>
+                    <td>
+                      <label><input type="checkbox" name="recommend[list][{$v['uid']}][0]" value="1"<php>echo $recommend['list'][$v['uid']][0] == '1' ? ' checked' : '';</php>></label>
+                    </td>
+                    <td>
+                      <div class="checkbox- form-inline">
+                        <!--label><input type="checkbox" name="recommend[list][{$v['uid']}][1]" value="1"<php>echo $recommend['list'][$v['uid']][1] == '1' ? ' checked' : '';</php>></label-->
+                      <select name="recommend[list][{$v['uid']}][1]" class="form-control input-sm">
+                        <option value="">不推荐</option>
+<volist name="data['tag_class']" id="vc">
+                        <option value="{$vc['id']}"<php>echo $recommend['list'][$v['uid']][1] == $vc['id'] ? ' selected' : '';</php>>{$vc['name']}</option>
+</volist>
+                      </select>
+                      </div>
+                    </td>
+                    <td>
+                      <label><input type="checkbox" name="recommend[list][{$v['uid']}][2]" value="1"<php>echo $recommend['list'][$v['uid']][2] == '1' ? ' checked' : '';</php>></label>
+                    </td>
+                    <td>
+                      <div class="form-inline">
+                        <div class="form-group">
+                          <input type="number" name="score" form="form_set_score" class="form-control input-sm" placeholder="" style="width:6em;">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm">扣除</button>
+                      </div>
+                    </td>
+                  </tr>
+</volist>
+                </tbody>
+              </table>
+<pre><php>print_r($recommend);</php></pre>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script>
+jQuery(function($)
+{
+  $('body')
+  .on('change','.change-submit',function()
+  {
+    var obj = $(this),
+        frm = obj.attr('form');
+    frm = frm ? $(window[frm] || $('form#' + frm + ',form[name="' + frm + '"]')) : obj.parents('form:first');
+    frm.submit();
+  });
+});
+</script>

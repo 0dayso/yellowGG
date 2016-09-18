@@ -1,0 +1,28 @@
+<div>
+    <!--<input type="checkbox" id="all">-->
+    <input type="button" value="全选" class="btn btn-primary btn-sm" id="selectAll" style="float:left;margin-right:4px">
+    <!--<input type="button" value="全不选" class="btn" id="unSelect">-->
+    <input type="button" value="反选" class="btn btn-primary btn-sm" id="reverse"   style="float:left">
+    <!--<input type="button" value="获得选中的所有值" class="btn" id="getValue">-->
+    <select style="width: 10%;float:left" name="aid" class="form-control m-b">
+        <option>请选择管理员</option>
+        <volist name="admin" id="vo">
+            <option value={$vo.aid}>{$vo.nickname}</option>
+        </volist>
+    </select>  &nbsp;
+    <input type="submit" class="btn btn-primary btn-sm" value="分配" />
+</div>
+<!-- <div>
+   
+    <input type="button" value="全选" class="btn btn-primary btn-sm" id="selectAll">
+   
+    <input type="button" value="反选" class="btn btn-primary btn-sm" id="reverse">
+     
+    <select style="width: 10%" name="aid">
+        <option>请选择管理员</option>
+        <volist name="admin" id="vo">
+            <option value={$vo.aid}>{$vo.nickname}</option>
+        </volist>
+    </select>  &nbsp;
+    <input type="submit" class="btn btn-primary btn-sm" value="分配" />
+</div> -->

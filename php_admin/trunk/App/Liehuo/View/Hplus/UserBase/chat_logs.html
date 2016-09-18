@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="clearfix">
+      <form action="{:U()}" method="GET" class="form-inline">
+        <input type="hidden" name="act" value="filter">
+        <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+        <input type="hidden" name="smsid" value="{$_REQUEST['smsid']}">
+        <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+        <input type="hidden" name="sender" value="{$_REQUEST['sender']}">
+        <input type="hidden" name="recver" value="{$_REQUEST['recver']}">
+        <label><input type="checkbox" form="form_main" class="check-all" data-target="[name^='ids[']"> 全选</label>
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range"
+                 data-stime="{$_REQUEST['stime'] ?: date('Y-m-d')}"
+                 data-etime="{$_REQUEST['etime']}"
+                 data-limit="31">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime'] ?: date('Y-m-d')}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group" style="display:none;">
+          <select name="day" class="form-control" disabled>
+            <option value="1"<php>echo $_REQUEST['day'] == '1' ? ' selected' : '';</php>>最近1天</option>
+            <option value="3"<php>echo $_REQUEST['day'] == '3' ? ' selected' : '';</php>>最近3天</option>
+            <option value="7"<php>echo $_REQUEST['day'] == '7' ? ' selected' : '';</php>>最近7天</option>
+            <option value="15"<php>echo $_REQUEST['day'] == '15' ? ' selected' : '';</php>>最近15天</option>
+            <option value="30"<php>echo $_REQUEST['day'] == '30' ? ' selected' : '';</php>>最近30天</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select name="texttype" class="form-control">
+            <option value="">消息类型</option>
+            <option value="1"<php>echo $_REQUEST['texttype'] == '1' ? ' selected' : '';</php>>文字</option>
+            <option value="2"<php>echo $_REQUEST['texttype'] == '2' ? ' selected' : '';</php>>图片</option>
+            <option value="3"<php>echo $_REQUEST['texttype'] == '3' ? ' selected' : '';</php>>表情</option>
+            <option value="4"<php>echo $_REQUEST['texttype'] == '4' ? ' selected' : '';</php>>语音</option>
+            <option value="5"<php>echo $_REQUEST['texttype'] == '5' ? ' selected' : '';</php>>位置</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+      </form>
+      <form id="form_main" action="{:U('closure_bat')}" method="POST" class="form-inline pull-right" onsubmit="return confirm('真的要这么做？')">
+        <input type="text" name="remark" value="" placeholder="必填，备注..." class="form-control">
+        <label><input type="checkbox" name="has_device" value="1"> 同时封禁设备</label>
+        <button type="submit" class="btn btn-danger">批量封禁</button>
+        <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+      </form>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+    <div class="chat-logs clearfix{$show_inline ? ' chat-logs-inline' : ''}">
+<volist name="data['list']" id="v">
+<php>
+$is_self = $v['sender'] == $_REQUEST['uid'];
+$ser = $data['users'][$v['sender']] ?: [];
+$rer = $data['users'][$v['recver']] ?: [];
+$sex_color = ['success','danger','waring'];
+</php>
+  <div class="media chat-msg{$is_self ? ' chat-myself' : ''}" data-id="{$v['smsid']}">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <label>
+          <input type="checkbox" name="ids[{$v['sender']}]" value="{$v['sender']}" form="form_main">
+          <small class="chat-time">{$v['time']}</small>
+        </label>
+        <a href="{:U('view?uid='.$v['sender'].'&tab=tab-user-chat')}" target="_blank" class="label label-{$sex_color[$ser['sex']] ?: 'primary'} popover-avatar" data-placement="top">{$v['sender']}</a>
+        <b class="label label-danger">{:boolval($ser['vip_level'] && $ser['vip_valid_end'] >= time()) ? 'v' : ''}{$ser['glory_grade'] ?: ''}</b>
+        对
+        <a href="{:U('view?uid='.$v['recver'].'&tab=tab-user-chat')}" target="_blank" class="label label-{$sex_color[$rer['sex']] ?: 'primary'} popover-avatar" data-placement="top">{$v['recver']}</a>
+        <b class="label label-danger">{:boolval($rer['vip_level'] && $rer['vip_valid_end'] >= time()) ? 'v' : ''}{$rer['glory_grade'] ?: ''}</b>
+        说：
+      </p>
+      <div class="chat-text">
+
+<if condition="$v['texttype'] == '2' && $v['text_json']['thumbnailPhotoUrl']">
+        <img src="{$v['text_json']['thumbnailPhotoUrl']}" data-src="{$v['text_json']['originPhotoUrl'] ?: $v['text_json']['thumbnailPhotoUrl']}" class="zoom">
+
+<elseif condition="$v['texttype'] == '3' && $v['text_json']['emoticonUrl']"/>
+        <img src="{$v['text_json']['emoticonUrl']}" title="{$v['text_json']['emoticonName']}">
+
+<elseif condition="$v['texttype'] == '4' && $v['text_json']['voiceUrl']"/>
+        <a href="{$v['text_json']['voiceUrl']}" target="_blank" class="label label-success jplayer-voice">[语音] {$v['text_json']['voiceTime']}s</a>
+
+<elseif condition="$v['texttype'] == '5' && $v['text_json']['locationAddress']"/>
+        <img src="{$v['text_json']['locationImageUrl']}" class="zoom">
+        <br>[位置] {$v['text_json']['locationAddress']}
+
+<elseif condition="$v['texttype'] == '100' && $v['text_json']['type'] == '7'"/>
+<php>
+$jso = $v['text_json']['json'];
+</php>
+        <div class="msg-articles clearfix articles-1">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="msg-article-tit">
+<if condition="$jso['sessionThumbImageUrl']">
+                <img src="{$jso['sessionThumbImageUrl']}" class="zoom">
+</if>
+              </div>
+<if condition="$jso['comment']">
+              <p class="msg-article-desc">{$jso['comment']}</p>
+</if>
+            </li>
+          </ul>
+        </div>
+
+<elseif condition="$v['texttype'] == '100' && $v['text_json']['type'] == '8'"/>
+<php>
+$jso = $v['text_json']['json'];
+$cnt = count($jso);
+$art = $jso[0] ?: [];
+unset($jso[0]);
+</php>
+        <div class="msg-articles clearfix articles-{$cnt}">
+          <ul class="list-group">
+            <a<php>echo $art['link'] ? (' href="'.$art['link'].'"') : '';</php> target="_blank" class="list-group-item">
+              <div class="msg-article-tit">
+                <h4>{$art['title'] ?: '运营消息'}</h4>
+<if condition="$art['thumb']">
+                <img src="{$art['thumb']}" class="zoom">
+</if>
+              </div>
+<if condition="$art['desc']">
+              <p class="msg-article-desc">{$art['desc']}</p>
+</if>
+              <p class="msg-article-read-more">查看全文</p>
+            </a>
+<volist name="jso" id="art">
+            <a class="list-group-item clearfix">
+<if condition="$art['thumb']">
+              <img src="{$art['thumb']}" class="pull-right">
+</if>
+              {$art['title']}
+            </a>
+</volist>
+          </ul>
+        </div>
+
+<elseif condition="/*$v['chattype'] == '6' && */$v['texttype'] == '100' && $v['text_json']['res']"/>
+<php>
+$jso = $v['text_json'] ?: [];
+</php>
+        <div class="msg-articles msg-snap clearfix articles-1">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="msg-article-tit">
+<if condition="$jso['res']">
+                <img src="{$jso['res']}" class="zoom">
+</if>
+              </div>
+<if condition="$jso['txt'] || 1">
+              <p class="msg-article-desc">【瞬间】{$jso['txt']}</p>
+</if>
+            </li>
+          </ul>
+        </div>
+
+<elseif condition="$v['texttype'] == '100' && in_array($v['text_json']['type'],[10,11])"/>
+<php>
+$jso = $v['text_json']['json'] ?: json_decode($v['text_json']['text'],true) ?: [];
+$cnt = count($jso);
+if(!$jso) var_dump($v['text_json']);
+$hls = [];
+foreach($jso as $j)
+{
+  $j['type'] == 'intent' && $j['name'] && $j['url'] = '#'.$j['name'];
+  $url = trim($j['url']);
+  $css = ($j['color'] ? ('color:#'.$j['color'].';') : '').($j['fontSize'] ? ('font-size:'.$j['fontSize'].'px;') : '');
+  if(in_array($j['type'],['text']))
+  {
+    $hls[] = '<span'.($css ? (' style="'.$css.'"') : '').'>'.$j['content'].'</span>';
+  }
+  elseif(in_array($j['type'],['link','intent']))
+  {
+    $hls[] = '<a'.($url ? (' href="'.$url.'"') : '').($css ? (' style="'.$css.'"') : '').'>'.$j['content'].'</a>';
+  }
+}
+echo implode('',$hls);
+</php>
+
+<elseif condition="$v['text_json'] && $v['text_json']['text']"/>
+        {$v['text_json']['text']}
+
+<else/>
+        {$v['text_html'] ?: $v['text']}
+</if>
+      </div>
+    </div>
+  </div>
+</volist>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$pager->show()}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script>window.JSON || document.write('<script src="//cdn.bootcss.com/json2/20150503/json2.min.js"><\/script>');</script>
+<script src="__PUBLIC__/js/app.comm.js"></script>

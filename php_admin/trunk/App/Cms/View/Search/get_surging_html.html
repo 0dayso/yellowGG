@@ -1,0 +1,108 @@
+<style>
+    .tab-pane{display:none;}
+    .active{display:block;}
+
+</style>
+<script src="/Public/js/update/jquery-2.1.1.min.js"></script>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+
+        $('.s-d-img').on('click',function(){
+
+            var src = $(this).attr('src');
+            $('#bb').show();
+            $('#show-bimg').attr('src',src);
+
+            var newimg = $('#show-bimg');
+
+            var width   = parseInt(newimg.width());
+            var height  = parseInt(newimg.height());
+
+            $('#h1w-h').text(width+' X '+height);
+
+            if(width >=500 && height >=700){
+                width  = width-(width/2);
+                height = height-(height/2);
+            }
+
+            $('#show-bimg').attr('width',width);
+            $('#show-bimg').attr('height',height);
+
+
+
+        });
+        
+        $('#bb-close').click(function () {
+            $('#bb').hide();
+        });
+
+
+
+
+    });
+</script>
+
+<div id="bb"  style="z-index: 19891016; width: 962.497027348395px; height: 430px; margin-left: -481px;  left: 50%;display:none" >
+
+    <div style="z-index: 19891015; height: 600px; width: 962.497027348395px;"  >
+        <div class="xubox_page">
+            <div class="xuboxPageHtml">
+                <div class="xubox_bigimg"  style="text-align: center;width: 1000px;background:#ffffff; height:700px;margin-top:10px;">
+                    <span class="xubox_setwin">
+                        <a  href="javascript:;" id="bb-close" style="width:50px;height:50px;float:left;">关闭</a>
+                    </span>
+                    <h1 id="h1w-h" style="float:left;margin-left: 100px"></h1>
+                    <img src=""   style="top: 1px; visibility: visible;" id="show-bimg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="user_tag">
+    <div class="panel-heading">
+        <div class="panel-options">
+            <ul class="nav nav-tabs">
+                <volist name="authentication" id="vo" >
+                    <li class="<if condition='$i eq 1' >active</if>">
+                        <a data-toggle="tab" href="#tab-{$i}" aria-expanded="true">
+                            {$vo[0]['title']}
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="tab-content widget-content nopadding" id="d-sid" style="overflow:scroll;">
+        <form class="form-horizontal" action="{:U('search/addsetsurging')}" id="form-search" method="post">
+        <input type="hidden" name="id" value="{$post['id']}" >
+        <input type="hidden" name="type" value="{$post['type']}" >
+        <input type="hidden" name="where" value="{$post['where']}" >
+        <input type="hidden" name="uid" value="{$post['uid']}" >
+        <?php $j=0; ?>
+        <volist name="authentication" id="vo" >
+        <?php $j++; ?>
+            <ul  id="tab-{$j}" class="tab-pane <if condition='$i eq 1' >active</if> ">
+                <volist name="vo" id="vos">
+                    <if condition="$vos['sg_id'] neq ''" >
+                        <li class="li-s-d-img" style="width:150px;height:250px;display:block;float:left;margin-left:20px;margin-top:10px"  title="{$vos.description}">
+                            <img src="http://surging.chujian.im/<?php echo $vos['thumb']; ?>" width="150" height="150" class="s-d-img" >
+                            <br><div style="display:block;overflow:hidden;height:20px;" >描述:{$vos.description}</div>
+                            <p>{$vos.create_time|date="Y-m-d H:i:s",###}  </p>
+                            <p>动态id：{$vos.sg_id}<input type="radio" name="surgings[{$j}]" class="tag-list-s" value="{$vos.user_tag_id}:{$vos.sg_id}:{$uid}"  <if condition=" in_array($vos['sg_id'],$uset) " >checked="checked"</if> ></p>
+                        </li>
+                    </if>
+                </volist>
+                <div style="clear:both"></div>
+            </ul>
+        </volist>
+        <input type="submit" class="btn btn-primary btn-sm " id="querytaginput"   value="确定">
+        </form>
+    </div>
+</div>
+
+ 
+

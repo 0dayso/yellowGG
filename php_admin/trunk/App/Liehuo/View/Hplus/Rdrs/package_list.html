@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>包名</th>
+              <th>版本</th>
+              <th>所属设备</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<php>
+$form = 'form_row_add';
+</php>
+            <tr class="gradeX">
+              <td>添加</td>
+              <td>
+                <input type="text" name="pkg_name" value="" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="pkg_version" value="" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <select name="pkg_device" form="{$form}" class="form-control">
+                  <option value="">选择设备</option>
+<volist name="data['devices']" id="o">
+                  <option value="{$key}">{$o}</option>
+</volist>
+                </select>
+              </td>
+              <td></td>
+              <td>
+                <form action="{:U('package_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="">
+                  <button type="submit" class="btn btn-primary">添加</button>
+                </form>
+              </td>
+            </tr>
+<volist name="data['list']" id="v">
+<php>
+$form = 'form_row_'.$v['id'];
+</php>
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>
+                <input type="text" name="pkg_name" value="{$v['pkg_name']}" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="pkg_version" value="{$v['pkg_version']}" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <select name="pkg_device" form="{$form}" class="form-control">
+                  <option value="">选择设备</option>
+<volist name="data['devices']" id="o">
+                  <option value="{$key}"<php>echo $v['pkg_device'] == (string)$key ? ' selected' : '';</php>>{$o}</option>
+</volist>
+                </select>
+              </td>
+              <td>{$v['pkg_time'] ? date('Y-m-d H:i:s',$v['pkg_time']) : '-'}</td>
+              <td>
+                <form action="{:U('package_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="{$v['id']}">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                <a href="{:U('channel_del?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

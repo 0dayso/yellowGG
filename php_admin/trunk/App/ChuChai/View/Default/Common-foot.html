@@ -1,0 +1,111 @@
+<div id="modal-comm" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/x-template" id="tpl-pagination">
+  <ul class="pagination">
+    <li :class="page == 1 ? 'disabled' : ''"><a :href="purl(1)">&laquo;</a></li>
+    <li v-for="v in list" :class="page == v.page ? 'active' : ''"><a :href="purl(v.page)">{{v.page}}</a></li>
+    <li :class="page == last ? 'disabled' : ''"><a :href="purl(last)">&raquo;</a></li>
+  </ul>
+</script>
+
+<script>window.jQuery || document.write('<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js" charset="utf-8"><\/script>');</script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+  require(['css!animate-css','css!font-awesome']);
+
+  define('vue-comm',['vue'],function(Vue)
+  {
+    Vue.filter('trim',function(val)
+    {
+      return (val == null ? '' : (val + '')).replace(/^\s+|\s+$/g,'');
+    });
+
+    Vue.component('pagination',
+    {
+      template : '#tpl-pagination'
+      ,props   : ['total','first','size','page','link','length']
+      ,data    : function()
+      {
+        return {
+          list : {},
+          page : 1,
+          last : 1,
+          link : ''
+        };
+      }
+      ,ready   : function()
+      {
+        this.length || (this.length = 7);
+        this.init();
+      }
+      ,methods :
+      {
+        goto : function(pgc)
+        {
+          this.init(pgc);
+        },
+        init : function()
+        {
+          var pgc = parseInt(this.page) || 1,
+              pgl = Math.floor(parseInt(this.length) / 2),
+              pgs = pgc - pgl,
+              pge = pgc + pgl,
+              pga = {},
+              pgt = Math.ceil(this.total / this.size) || 1;
+          pgc < 001 && (pgc = 001);
+          pgs < 001 && (pgs = 001);
+          pge > pgt && (pge = pgt);
+          for(var i = pgs;i <= pge;i++)
+          {
+            pga[i] =
+            {
+              page : i
+            };
+          }
+          this.page = pgc;
+          this.last = pgt;
+          this.list = pga;
+          return pga;
+        },
+        purl : function(pgc)
+        {
+          return (this.link || '').replace(/_PAGE_/g,pgc);
+        }
+      }
+    });
+
+    return Vue;
+  });
+
+  $('.table-form tr').children(':last-child').attr('colspan',99);
+
+  // vue-pager
+  (function()
+  {
+    var the = $('#vue-pager');
+    the.length && require(['vue-comm'],function(Vue)
+    {
+      var vue = new Vue(
+      {
+        el : the[0]
+      });
+    });
+  })();
+
+});
+</script>

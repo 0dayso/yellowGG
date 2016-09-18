@@ -1,0 +1,115 @@
+ 
+<div id="content">
+ 
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!--<div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>{$formTitle}</h5>
+                </div>-->
+                <div>
+                    <table>
+                        <tr>
+                            <th>
+                                <form class="form-horizontal" id="form-search">
+                                    <div class="controls">搜索:
+                                        <select id="form-search-type">
+                                            <option value=1>按id</option>
+                                            <option value=2>按行驶证</option>
+                                            <option value=3>按车型</option>
+                                        </select>
+                                        <input type="text" name="keyword" id="form-search-key">
+                                        <input type="submit" value="搜索">
+                                    </div>
+                                </form>
+                            </th>
+                            <th>
+                                <form class="form-horizontal" id="add-license"><!-- id="add-license"-->
+                                    <label class="control-label">添加车型行驶证信息 :</label>
+                                    <div class="controls">
+                                        <select style="width: 150px" name="get-car-brand" id="get-car-brand" selected="selected">
+                                            <option value="0">选择汽车品牌</option>
+                                            <volist name="brand" id="vo">
+                                                <option value="{$vo.id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>  &nbsp;
+
+                                        <select style="width: 150px" name="get-car-style" id="get-car-style" selected="selected">
+                                        </select>  &nbsp;
+
+                                        <input type="text" name="get-car-series" id="get-car-series">
+                                        <input type="submit" value="添加">
+                                    </div>
+                                </form>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'license'">车型信息<else />回收站</if></h5>-->
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>行驶证</th>
+                            <th>车型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:center">{$vo.id}</td>
+                                <td style="text-align:center">{$vo.style}</td>
+                                <td style="text-align:center">{$vo.name}</td>
+                                <td style="text-align:center">
+                                    <a href="{:U('Car/edit_license/', array('id'=>$vo['id'],'name'=>$vo['name']))}" class="btn btn-primary btn-mini">修改</a>
+                                    <a href="{:U('Car/delete_license/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini">删除</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div> 
+<!--end-Footer-part-->
+<script type="text/javascript">
+    $(function(){
+        $('#form-search').on('submit',function() {
+            var key = $('#form-search-key').val();
+            var searchType = $('#form-search-type option:selected').val();
+            location.href="{:U('Car/license')}?type="+searchType+"&keyword="+key;
+            return false;
+        });
+
+        $('#add-license').on('submit',function() {
+            //var brand  = $('#get-car-brand').val();
+            var style  = $('#get-car-style').val();
+            var series = $('#get-car-series').val();
+            location.href="{:U('Car/add_license')}?style="+style+"&series="+series;
+            return false;
+        });
+    });
+
+    $('#get-car-brand').change(function(){
+        var url = "{:U('Car/get_car_model')}";
+        var brand = $(this).val();
+        $.get(url,{brand:brand},function(str){
+            $('#get-car-style').html(str);
+        });
+    });
+
+</script>
+ 

@@ -1,0 +1,97 @@
+ 
+<div id="content">
+    <div class="container-fluid">
+ 
+        <div class="widget-content">
+            <form class="form-horizontal"  method="post">
+                <input type="hidden" name="id" value="{$pinfo.id}" >
+                <input type="hidden" name="prizeid" value="{$pr.id}" >
+                <div class="control-group">
+                    <label class="control-label">奖品名称：</label>
+                    <div class="controls">
+                        <input type="text"   size="150" name="name" value="{$pinfo.prize}"  >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">兑奖描述：</label>   
+                    <div style="margin-left: 200px;padding: 15px 0;">
+                        <input type="text"  name="description" value="{$pinfo.description}">    
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">卡牌数量：</label>   
+                    <div style="margin-left: 200px;padding: 15px 0;">
+                        <input type="text"  name="number" value="{$pr.num}">    
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">卡牌序列（特等奖）：</label>   
+                    <div style="margin-left: 200px;padding: 15px 0;">
+                        <input type="text"  name="list" value="{$pr.list}">    
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">卡牌设置条件：</label>   
+                    <div style="margin-left: 200px;padding: 15px 0;" id="f-radio">
+                        <input type="radio"  name="type" value="1" <if condition="$pr.model eq 1 " >checked</if> >无序    
+                        <input type="radio"  name="type" value="2" <if condition="$pr.model eq 2 " >checked</if> >连续    
+                        <input type="radio"  name="type" value="3" <if condition="$pr.model eq 3 " >checked</if> >并排       
+                    </div>
+                </div>
+                <div class="control-group" style="padding-left:200px">
+                    <span><input type="submit" class="btn btn-success submit" value="保存"></span>
+                    <div class="btn btn-success submit"  >
+                        <a style="color:#fff" href="{:U('PrizeManage/setprize',array('id'=>$pinfo['id']))}">添加新规则</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+ 
+
+     <div class="widget-content nopadding">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>卡牌数量</th>
+                <th>卡牌序列（特等奖）</th>
+                <th>卡牌设置条件</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="prule" id="vo">
+                <tr class="gradeX">
+                    <td style="text-align: center">{$vo.id}</td>
+                    <td style="text-align:center">{$vo.num}</td>
+                    <td style="text-align:center">{$vo.list}</td>
+                    <td style="text-align:center">
+                         <div   id="f-radio">
+                            <input type="radio"  name="type{$i}" value="1" <if condition="$vo.model eq 1 " >checked</if> >无序    
+                            <input type="radio"  name="type{$i}" value="2" <if condition="$vo.model eq 2 " >checked</if> >连续    
+                            <input type="radio"  name="type{$i}" value="3" <if condition="$vo.model eq 3 " >checked</if> >并排       
+                        </div>  
+                    </td>
+                    <td style="text-align:center">
+                        <a href="{:U('PrizeManage/setprize',array('id'=>$vo['prizeid'],'puid'=>$vo['id']))}" class="btn btn-primary btn-mini">编辑</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+ 
+
+
+  
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="quick-actions_homepage">
+        </div>
+         
+    </div>
+</div> 
+ 

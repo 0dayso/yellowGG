@@ -1,0 +1,273 @@
+<include file="Common/top"/>
+<style>
+.map-baidu { min-height:500px; }
+</style>
+</head>
+<body>
+<div id="doc">
+<include file="Common/head"/>
+  <div class="container-fluid">
+    <div class="row-fluid">
+
+      <div id="nav-side" class="col-md-2">
+<include file="Common/side"/>
+      </div>
+
+      <div id="main" class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">表单</h3>
+          </div>
+<php>
+$dat = $data['item'] ?: [];
+$adt = $dat['attrs'] ?: [];
+</php>
+          <form action="{:U('field_save')}" method="POST">
+            <input type="hidden" name="id" value="{$dat['id']}">
+            <table class="table table-form">
+              <col style="width:10em;">
+              <tr>
+                <th>名称</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="name" value="{$dat['name']}" placeholder="必填" required class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>唯一标识</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="key" value="{$dat['key']}" placeholder="必填，字段名" required class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr class="hide">
+                <th>模型</th>
+                <td>
+                  <div class="col-md-6">
+                    <select name="model_id" class="form-control" disabled>
+                      <option value="">请选择</option>
+<volist name="data['models']" id="v">
+                      <option value="{$v['id']}"<php>echo $dat['model_id'] == (string)$v['id'] ? ' selected' : '';</php>>{$v['name']}</option>
+</volist>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>模型</th>
+                <td>
+                  <div class="col-md-12">
+<volist name="data['models']" id="v">
+                    <label>
+                      <input type="checkbox" name="model_ids[]" value="{$v['id']}"{:in_array($v['id'],$dat['model_ids_array'] ?: []) ? ' checked' : ''}>
+                      {$v['name']} &nbsp;
+                    </label>
+</volist>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>类型</th>
+                <td>
+                  <div class="col-md-6">
+                    <select name="type" v-model="item.type | trim" class="form-control">
+                      <option value="">请选择</option>
+<volist name="data['types']" id="v">
+<if condition="!$v['hide']">
+                      <option value="{$key}"<php>echo $dat['type'] == (string)$key ? ' selected' : '';</php>>{$v['name']}</option>
+</if>
+</volist>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="item.type == 'number' || item.type == 'range'">
+                <th>数值步长</th>
+                <td>
+                  <div class="col-md-12">
+                    <input type="number" name="attrs[step]" value="{$adt['step']}" placeholder="选填" class="form-control" step="0.01">
+                  </div>
+                </td>
+                <th>最小值</th>
+                <td>
+                  <div class="col-md-12">
+                    <input type="number" name="attrs[min]" value="{$adt['min']}" placeholder="选填" class="form-control">
+                  </div>
+                </td>
+                <th>最大值</th>
+                <td>
+                  <div class="col-md-12">
+                    <input type="number" name="attrs[max]" value="{$adt['max']}" placeholder="选填" class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="item.type == 'select' || item.type == 'radio' || item.type == 'checkbox'">
+                <th>属性选项</th>
+                <td>
+                  <div class="col-md-6">
+                    <textarea name="attrs[choices]" class="form-control" style="min-width:100%;min-height:150px;">{$adt['choices']}</textarea>
+                  </div>
+                  <div class="col-sm-6 help-block" v-show="item.type == 'select'">
+                    只在项目为可选时有效，每行一个字段，等号前面为字段索引(建议用数字)，后面为内容，例如: <br>
+                    <i>1 = 光电鼠标<br>2 = 机械鼠标<br>3 = 没有鼠标</i><br>
+                    <i>1.1 = 黑色光电鼠标<br>1.2 = 红色光电鼠标</i><br>
+                    <i>1.2.1 = 蓝牙红色光电鼠标</i><br>
+                    注意: <br>
+                    1、 "1.2.1 = 蓝牙红色光电鼠标"必须有"1.2 = 红色光电鼠标"和"1 = 光电鼠标"这两项<br>
+                    2、 "1.2.1"之间不能有空格<br>
+                    3、 字段确定后请勿修改索引和内容的对应关系，但仍可以新增字段。如需调换显示顺序，可以通过移动整行的上下位置来实现
+                  </div>
+                  <div class="col-sm-6 help-block" v-show="item.type == 'radio' || item.type == 'checkbox'">
+                    只在项目为可选时有效，每行一个字段，等号前面为字段索引(建议用数字)，后面为内容，例如: <br>
+                    <i>1 = 光电鼠标<br>2 = 机械鼠标<br>3 = 没有鼠标</i><br>
+                    注意: 字段确定后请勿修改索引和内容的对应关系，但仍可以新增字段。如需调换显示顺序，可以通过移动整行的上下位置来实现
+                  </div>
+                  <div class="form-group hide">
+                    <hr>
+                    <ul>
+                      <li v-for="(k,v) in item.choices.tree">
+                        {{k + ' = ' + item.choices.data[k]}}
+                        <ul>
+                          <li v-for="(k2,v2) in v">
+                            {{k2 + ' = ' + item.choices.data[k2]}}
+                            <ul>
+                              <li v-for="(k3,v3) in v2">
+                                {{k3 + ' = ' + item.choices.data[k3]}}
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>排序号</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="sort" value="{$dat['sort']}" placeholder="选填" class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>备注</th>
+                <td>
+                  <div class="col-md-6">
+                    <textarea name="remark" placeholder="" class="form-control">{$dat['remark']}</textarea>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <td class="text-left">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success">保存</button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <hr class="line">
+          <div class="panel-body">
+            <div class="pull-right">
+              <div class="btn-group hide">
+                <a href="" class="btn btn-default">正常</a>
+                <a href="" class="btn btn-default">未启用</a>
+                <a href="" class="btn btn-primary">不限</a>
+              </div>
+              <a class="btn btn-default disabled">记录数：{$pager->totalRows ?: count($data['list'])}</a>
+            </div>
+            <div class="pull-left hide">
+              <div class="input-prepend input-group">
+                <span class="add-on input-group-addon">数据日期</span>
+                <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+              </div>
+            </div>
+          </div>
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>标识</th>
+                <th>类型</th>
+                <th>模型</th>
+                <th>备注</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+<volist name="data['list']" id="v">
+              <tr class="item" data-id="{$v['id']}">
+                <td>{$v['id']}</td>
+                <td>{$v['name']}</td>
+                <td>{$v['key']}</td>
+                <td>{$data['types'][$v['type']]['name']}</td>
+                <td><php>echo implode(', ',array_map(function($mid) use($data) { return $data['models'][$mid]['name'] ?: $mid; },$v['model_ids_array'] ?: []));</php></td>
+                <td>
+                  <div class="td-content popover-hover">{$v['remark']}</div>
+                </td>
+                <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+                <td>
+                  <div class="btn-group">
+                    <a href="{:U('?id='.$v['id'])}" class="btn btn-default">修改</a>
+                    <div class="btn-group">
+                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{:U('field_del?id='.$v['id'])}" class="btn">删除</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+</volist>
+            </tbody>
+          </table>
+          <div class="panel-footer clearfix">
+            <div class="pull-right">
+              <nav id="vue-pager">
+                <pagination :class.literal="pagination-sm" :page="{:intval($_REQUEST['p']) ?: 1}" :total="{$data['page']->totalRows}" :first="{$data['page']->firstRow}" :size="{$data['page']->listRows}" :link="'{:U('',array_merge($_GET ?: [],['p' => '_PAGE_']))}'"></pagination>
+              </nav>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<include file="Common/foot"/>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  require(['vue-comm'],function(Vue)
+  {
+    new Vue(
+    {
+      el : '#doc'
+      ,data :
+      {
+        list : [],
+        item : {:json_encode($data['item'] ?: new stdclass)},
+        null : null
+      }
+      ,methods :
+      {
+      }
+    });
+  });
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="text-align: center">UID</th>
+            <th style="text-align: center">时间段</th>
+            <th style="text-align: center">内容</th>
+            <th style="text-align: center">标签</th>
+            <th style="text-align: center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list.list" id="vo" >
+            <tr class="gradeX">
+                <td style="text-align: center">{$vo['uid']}</td>
+                <td style="text-align: center">{$vo['update_time']|date="Y-m-d H:i:s",###}</td>
+                <td style="text-align: center">
+                    <input type="submit" class="btn btn-primary btn-sm agingsuring" va="{$vo['uid']}"  value="查看">
+                </td>
+                <td style="text-align: center">{$vo.title}</td>
+                <td style="text-align: center">
+                    <input type="submit" class="btn btn-primary btn-sm deluser" va="{$vo['user_tag_id']}:{$vo['index']}"  value="删除">
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+    <div class="pagination alternate">
+        <ul>
+            <li style="text-align: center;color: #0000ff">{$list.page}</li>
+        </ul>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+        $('.deluser').click(function(){
+            var _this = $(this);
+            var id = $(this).attr('va');
+            layer.confirm('确定要删除吗？',function(){
+                $.post("{:U('search/delhost')}",{user_tag_id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.msg('删除成功！');
+                    }
+                });
+            });
+
+
+        });
+
+
+        $('.agingsuring').click(function(){
+
+            var uid  = $(this).attr('va');
+
+            $.post("{:U('search/get_surging_html')}",{uid:uid},function(data){
+                var pageii = $.layer({
+                    type: 1,
+                    title: false,
+                    area: ['1000px', 'auto'],
+                    shift: 'top', //从左动画弹出
+                    page: {
+                        html: '<div id="addsurginged"  style="overflow:scroll;width:1000px;height:560px; padding:20px; border:1px solid #ccc; background-color:#eee;">'+data+'</div>'
+                    }
+                });
+            });
+
+
+        });
+
+
+
+
+
+
+
+    });
+</script>

@@ -1,0 +1,200 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated.hover { animation-name:none; }
+.animated.hover.flip:hover { animation-name:flip; }
+.animated.hover.pulse:hover { animation-name:pulse; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <input type="hidden" name="type" value="{$_REQUEST['type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="contract_type" class="form-control">
+              <option value="">签约状态</option>
+<volist name="data['contract_types']" id="v">
+              <option value="{$key}"{:boolval($_REQUEST['contract_type'] == (string)$key) ? ' selected' : ''}>{$v['attrs']['name']}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="12"{:boolval($_REQUEST['page_size'] == '12') ? ' selected' : ''}>12条</option>
+              <option value="24"{:boolval($_REQUEST['page_size'] == '24') ? ' selected' : ''}>24条</option>
+              <option value="60"{:boolval($_REQUEST['page_size'] == '60') ? ' selected' : ''}>60条</option>
+              <option value="120"{:boolval($_REQUEST['page_size'] == '120') ? ' selected' : ''}>120条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="渠道、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('edit')}" class="btn btn-success">新增</a>
+          <a href="{:U('contract_types')}" target="_blank" class="btn btn-success">签约类型配置</a>
+          <a href="{:U('?',array_merge($_GET,['page_size' => 'export','download' => 1]))}" class="btn btn-success">导出</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form id="form_contract_change" action="{:U('contract_change')}" method="POST" class="form-inline">
+          <div class="form-group">
+            <label>
+              <input type="checkbox" class="check-all">
+              全选
+            </label>
+          </div>
+          <div class="form-group">
+            <select name="contract_type" class="form-control">
+              <option value="">签约状态</option>
+<volist name="data['contract_types']" id="v">
+              <option value="{$key}">{$v['attrs']['name']}</option>
+</volist>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">批量设置</button>
+        </form>
+      </div>
+      <div class="row list-feed">
+<volist name="data['list']" id="v">
+<php>
+$usr = $data['users'][$v['uid']];
+$sex = $usr['sex'];
+</php>
+        <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-id="{$v['uid']}">
+          <div class="thumbnail">
+            <a><img src="{:U('UserBase/avatar?uid='.$v['uid'])}"></a>
+            <span class="feed-score label label-default hide"></span>
+            <div class="caption">
+              <p class="popover-with-ajax" data-url="{:U('info?uid='.$v['uid'])}" data-tpl="tpl-live-info">
+                <b>用户：</b>
+<if condition="!$v['uid']">
+                <a>游客</a>
+<else/>
+                <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank">{$v['uid']}</a>
+                <b class="label label-{$sex ? 'danger' : 'success'}">{$Think.config.USER_SEX_IS.$sex}</b>
+</if>
+              </p>
+              <p class="text-nowrap"><b>昵称:</b>{$usr['nickname'] ?: ''}</p>
+              <p class="text-nowrap"><b>签约状态:</b>{$data['contract_types'][$v['contract_type']]['attrs']['name'] ?: $v['contract_type'] ?: ''}</p>
+              <p class="text-nowrap"><b>签约时间:</b>{$v['contract_time'] ? date('Y-m-d H:i:s',$v['contract_time']) : ' - '}</p>
+              <p class="text-nowrap"><b>注册时间:</b>{$usr['reg_time'] ? date('Y-m-d H:i:s',$usr['reg_time']) : ' - '}</p>
+              <p class="text-center">
+                <label>
+                  <input type="checkbox" name="uids[]" value="{$v['uid']}" form="form_contract_change">
+                </label>
+<if condition="$v['contract_type'] == Liehuo\Model\LiveHostModel::CONTRACT_TYPE_NONE">
+                <a href="{:U('edit?uid='.$v['uid'])}" class="btn btn-sm btn-success">签约</a>
+<else/>
+                <a href="{:U('edit?uid='.$v['uid'])}" class="btn btn-sm btn-success">编辑</a>
+                <a href="{:U('contract_del?uid='.$v['uid'])}" class="btn btn-sm btn-danger" onclick="return confirm('真的要这么做？')">解约</a>
+</if>
+              </p>
+            </div>
+          </div>
+        </div>
+</volist>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$pager ? $pager->show() : $page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<include file="modal-feed-del"/>
+
+<script type="text/html" id="tpl-live-info">
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tr>
+      <th>直播总次数</th>
+      <td><$=count.total_times || 0$></td>
+      <th>直播总时长</th>
+      <td><$=count.total_duration || 0$></td>
+    </tr>
+    <tr>
+      <th>进热门次数</th>
+      <td><$=(dispose.live_hot_set || {}).cnt || 0$></td>
+      <th>收礼总金额</th>
+      <td><$=count.total_income || 0$></td>
+    </tr>
+    <tr>
+      <th>停播次数</th>
+      <td><$=(dispose.live_stop || {}).cnt || 0$></td>
+      <th>警告次数</th>
+      <td><$=(dispose.live_warn || {}).cnt || 0$></td>
+    </tr>
+    <tr>
+      <th colspan="99">最近2次直播历史：</th>
+    </tr>
+    <tr>
+      <td colspan="2">
+<$
+if(v = records[0])
+{
+$>
+时间：<$=new _G.Date(_G.parseInt(v.time_end) * 1000 || 0).toLocaleString()$>
+<br>在线人数：<$=v.final_visitors$>
+<br>收礼金额：<$=v.total_income$>
+<br>关注人数：<$=v.total_followers$>
+<$
+}
+$>
+      </td>
+      <td colspan="2">
+<$
+if(v = records[1])
+{
+$>
+时间：<$=new _G.Date(_G.parseInt(v.time_end) * 1000 || 0).toLocaleString()$>
+<br>在线人数：<$=v.final_visitors$>
+<br>收礼金额：<$=v.total_income$>
+<br>关注人数：<$=v.total_followers$>
+<$
+}
+$>
+      </td>
+    </tr>
+  </table>
+</div>
+</script>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+jQuery(function($)
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+});
+</script>

@@ -1,0 +1,163 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated.hover { animation-name:none; }
+.animated.hover.flip:hover { animation-name:flip; }
+.animated.hover.pulse:hover { animation-name:pulse; }
+input.date-time { max-width:10em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left" style="margin-bottom:20px;">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="filter2" value="{$_REQUEST['filter2']}">
+          <div class="input-prepend input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+            <span class="input-group-addon">到</span>
+            <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+          </div>
+<if condition="!$is_scorer">
+          <div class="form-group">
+            <select name="aid" class="form-control">
+              <option value="">打分人</option>
+<volist name="data['scores']" id="v">
+              <option value="{$v['aid']}"<php>echo $_REQUEST['aid'] == $v['aid'] ? ' selected' : '';</php>>{$v['nickname']}</option>
+</volist>
+            </select>
+          </div>
+</if>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['sex'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="score_range" class="form-control">
+              <option value="">分值</option>
+              <option value="9"<php>echo $_REQUEST['score_range'] == '9' ? ' selected' : '';</php>>9分+</option>
+              <option value="8"<php>echo $_REQUEST['score_range'] == '8' ? ' selected' : '';</php>>8分</option>
+              <option value="7"<php>echo $_REQUEST['score_range'] == '7' ? ' selected' : '';</php>>7分</option>
+              <option value="6"<php>echo $_REQUEST['score_range'] == '6' ? ' selected' : '';</php>>6分</option>
+              <option value="5"<php>echo $_REQUEST['score_range'] == '5' ? ' selected' : '';</php>>5分</option>
+              <option value="0"<php>echo $_REQUEST['score_range'] == '0' ? ' selected' : '';</php>>违规</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="province" class="form-control">
+              <option value="">省份</option>
+<php>
+$arr = D('LocationBase')->provinces ?: [];
+</php>
+<volist name="arr" id="v">
+              <option value="{$v}"<php>echo $_REQUEST['province'] == (string)$v ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="timeout" class="form-control">
+              <option value="">超时时间</option>
+              <option value="0,19"<php>echo $_REQUEST['timeout'] == '0,19' ? ' selected' : '';</php>>0-19秒</option>
+              <option value="20,59"<php>echo $_REQUEST['timeout'] == '20,59' ? ' selected' : '';</php>>20-59秒</option>
+              <option value="60,119"<php>echo $_REQUEST['timeout'] == '60,119' ? ' selected' : '';</php>>60-119秒</option>
+              <option value="120,359"<php>echo $_REQUEST['timeout'] == '120,359' ? ' selected' : '';</php>>120-359秒</option>
+              <option value="360,599"<php>echo $_REQUEST['timeout'] == '360,599' ? ' selected' : '';</php>>360-599秒</option>
+              <option value="600,999999"<php>echo $_REQUEST['timeout'] == '600,999999' ? ' selected' : '';</php>>600秒+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="checkbox"><input type="checkbox" name="filter" value="score_changed"<php>echo $_REQUEST['filter'] == 'score_changed' ? 'checked' : '';</php>> 分数有改动</label>
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('index')}" class="btn btn-success">返回打分</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="row list-feed">
+<volist name="data['list']" id="v">
+<php>
+$score_show = $v['score'] ?: '';
+$score_css  = 'default';
+$score_show >= 1 && $score_css = 'primary';
+$score_show >= 5 && $score_css = 'success';
+$score_show >= 8 && $score_css = 'danger';
+$score_timeout = $v['score_time'] ? ((int)$v['score_time'] - (int)$v['create_time']) : 0;
+//$score_timeout > 99 && $score_timeout = '99+';
+$ava = $data['avatars'][$v['resource']];
+$rnk = $data['rank_fails'][$v['score']];
+</php>
+        <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-id="{$v['id']}">
+          <div class="thumbnail">
+            <a><img src="__AVATAR_URL_ROOT__{$v['resource']}"></a>
+            <span class="feed-score label label-{$score_css}">{$score_show < 5 ? '' : $score_show}</span>
+            <div class="caption">
+              <p>
+                用户：
+<if condition="!$v['uid']">
+                <a>游客</a>
+<elseif condition="$is_open"/>
+                <a>{$v['uid']}</a>
+<else/>
+                <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank">{$v['uid'] ?: ''}</a>
+</if>
+              </p>
+              <!--p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$ava['create_time'])}</p-->
+<if condition="$v['score_time']">
+              <p class="text-nowrap"><b>打分时间:</b>{:date('Y-m-d H:i:s',$v['score_time'])}</p>
+</if>
+              <p class="text-nowrap"><b>打分时效:</b> {$v['timeout']} 秒</p>
+<if condition="$v['aid']">
+              <p class="text-nowrap"><b>打 分 人:</b> {$data['admins'][$v['aid']]['nickname'] ?: $v['aid']}</p>
+</if>
+<if condition="$rnk">
+              <p class="text-danger"><b>违规原因:</b> {$rnk['reason']}</p>
+</if>
+<if condition="$ava && $v['score'] != $ava['score'] && $ava['score_time']">
+              <p class="text-nowrap"><b>分数改动:</b> {$v['score']} -> {$ava['score']}</p>
+</if>
+<if condition="!$is_open">
+              <p class="text-nowrap"><b>剩余队列:</b> {$v['remain']}</p>
+</if>
+              <p class="text-center">
+                <a href="http://image.baidu.com/n/pc_search?queryImageUrl=__AVATAR_URL_ROOT__{$v['resource']}" target="_blank" class="btn btn-sm btn-white">查询盗图</a>
+              </p>
+            </div>
+          </div>
+        </div>
+</volist>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+jQuery(function($)
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+});
+</script>

@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="activity_id" value="{$_REQUEST['activity_id']}">
+          <input type="hidden" name="pub_key" value="{$_REQUEST['pub_key']}">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <!--a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success">导出</a-->
+          <a href="{:U('subs?activity_id='.$_REQUEST['activity_id'])}" target="_blank" class="btn btn-white">领取数：{$data['cnt_subs']}</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>发布人</th>
+              <th>发布标识</th>
+              <th>金额</th>
+              <th>创建时间</th>
+              <th>领取数量</th>
+              <th>最后领取</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr>
+              <td>{$v['id']}</td>
+              <td><a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+              <td>{$v['pub_key']}</td>
+              <td>{$v['fee']}</td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td>{$v['cnt_subs']}</td>
+              <td>{$v['last_finish'] ? date('Y-m-d H:i:s',$v['last_finish']) : '-'}</td>
+              <td><a href="{:U('subs?pub_key='.$v['pub_key'])}" target="_blank" class="btn btn-primary">领取记录</a></td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

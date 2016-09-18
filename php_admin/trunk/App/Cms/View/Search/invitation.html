@@ -1,0 +1,119 @@
+<div id="content">
+    <div class="row-fluid">
+        <form class="form-horizontal" id="form-search" method="GET">
+            <div class="controls">   
+                <div class="col-md-2" style="padding-left:0">
+                    <input type="text" name="code" class="form-control" placeholder="邀请码"  >
+                </div>
+                <div class="col-md-2" style="padding-left:0">
+                    <input type="text" name="uid" class="form-control" placeholder="用户UID"  >
+                </div>
+                <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                <a href="JavaScript:void(0)" class="btn btn-primary btn-sm" style="float:right" id="addcode">新增</a>
+            </div>
+        </form>
+
+        <form action="" method="post" >
+            <div class="widget-content nopadding">
+                <table id="accusation_table" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <if condition="$_GET['code_type'] eq 0 " >
+                            <th style="text-align:center">用户UID</th>
+                        </if>
+                        <th style="text-align:center">邀请码</th>
+                        <th style="text-align:center">备注</th>
+                        <th style="text-align: center">注册用户数</th>
+                        <th style="text-align: center">今日注册用户数</th>
+                        <th style="text-align:center">已创建标签用户数</th>
+                        <th style="text-align:center">今日已创建标签用户数</th>
+                        <th style="text-align:center">标签通过认证用户数</th>
+                        <th style="text-align:center">今日标签通过认证用户数</th>
+                        <th style="text-align:center">邀请人数上限</th>
+                        <th style="text-align:center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list.list" id="vo">
+                        <tr class="gradeX">
+                            <if condition="$_GET['code_type'] eq 0 " >
+                                <td style="text-align:center">{$vo.uid}</td>
+                            </if>
+                            <td style="text-align:center">{$vo.code}</td>
+                            <td style="text-align:center" class="bz-{$vo.id}">{$vo.memo}</td>
+                            <td style="text-align:center"><a href="{:U('search/regcodelist',array('type'=>'all','code'=>$vo['code']))}" target="_blank" >{$vo.reg}</a></td>
+                            <td style="text-align:center">{$vo.num}</td>
+                            <td style="text-align:center">{$vo['usertag']['all']}</td>
+                            <td style="text-align:center">{$vo['usertag']['all_day']}</td>
+                            <td style="text-align:center">{$vo['usertag']['pass']}</td>
+                            <td style="text-align:center">{$vo['usertag']['pass_day']}</td>
+                            <td style="text-align:center" class="lim-{$vo.id}">{$vo.used_limit}</td>
+                            <td style="text-align:center" vid="{$vo.id}" >
+                                <if condition="$_GET['code_type'] eq 0 " >
+                                    <a href="javascript:void(0)" class="btn btn-white btn-sm cg-bezhu"><i class="fa fa-pencil"></i>更改邀请人次</a>
+                                </if>
+                                <a href="javascript:void(0)" class="btn btn-white btn-sm"><i class="fa fa-minus-circle"></i> 暂停 </a>
+                                <a href="javascript:void(0)" class="btn btn-white btn-sm"><i class="fa fa-youtube-play"></i> 启用 </a>
+                                <a href="javascript:void(0)" class="btn btn-white btn-sm bezhu"><i class="fa fa-pencil"></i> 备注 </a>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+    </div>
+    <div class="pagination alternate">
+        <ul>
+            <li style="text-align: center;color: #0000ff">{$list.page}</li>
+        </ul>
+    </div>
+</div>
+
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+
+        $('#addcode').click(function(){
+            layer.prompt({title:"输入生成数量"}, function(title){
+                $.post("{:U('search/codecreate')}",{type:1,num:title},function(data){
+                    if(data=='ok'){
+                        window.location.href = '';
+                    } 
+                }); 
+
+            });
+        });
+
+        $('.bezhu').click(function(){
+            var cid = $(this).parent().attr('vid');
+            var indexs = layer.prompt({title:"备注"}, function(title){
+                $.post("{:U('search/editinvbz')}",{id:cid,memo:title},function(data){
+                    if(data=='ok'){
+                        $('.bz-'+parseInt(cid)).text(title);
+                        layer.close(indexs);
+                        //layer.alert('编辑成功！',1);
+                    }
+                }); 
+                
+            });
+        });
+        $('.cg-bezhu').click(function(){
+            var cid = $(this).parent().attr('vid');
+            var indexs2 = layer.prompt({title:"输入上限次数"}, function(title){
+                $.post("{:U('search/updatelimit')}",{id:cid,used_limit:title},function(data){
+                    if(data=='ok'){
+                        $('.lim-'+parseInt(cid)).text(title);
+                        layer.close(indexs2);
+                        //layer.alert('编辑成功！',1);
+                    } 
+                }); 
+                
+            });
+        });
+
+    });
+</script>
+ 

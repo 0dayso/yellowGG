@@ -1,0 +1,94 @@
+   
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                    <!--<if condition="$fc eq 'hostlist' " >
+                        <a href="{:U('search/host')}" class="btn btn-primary btn-sm" style="float:right">增加活动</a>
+                    <else/>
+                        <a href="{:U('search/addacprize')}" class="btn btn-primary btn-sm" style="float:right">增加奖品</a>
+                    </if>-->
+                    
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <!-- <th style="text-align:center">ID</th> -->
+                                    <th style="text-align:center">动态ID</th>
+                                    <th style="text-align:center">类型</th>
+                                    <th style="text-align:center">用户</th>
+                                    <th style="text-align:center">文字描述</th>
+                                    <th style="text-align:center">图片</th>
+                                    <th style="text-align:center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo.id}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <if condition="$fc eq 'hostlist' " >
+                                                活动
+                                            <else/>
+                                                奖品
+                                            </if>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo.uid}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            {$vo.description}
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <img src="http://surging.chujian.im/{$vo.thumb}" width="150" height="150"/>
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle;">
+                                            <!--<a class="btn btn-primary btn-sm" href="{:U('search/editprize',array('id'=>$vo['id']))}">编辑</a>-->
+                                            <a class="btn btn-primary btn-sm "
+                                               href="{:U('user/user_info',array('menu'=>'account_manage','type'=>'virtual','uid'=>10002,'tag'=>'show'))}"  >查看</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js" type="text/javascript"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+
+        $('.delsurging').click(function(){
+            var _this = $(this);
+            var id = $(this).attr('va');
+
+            var yesd = layer.confirm('确定要删除吗？',function(){
+                $.post("/index.php/user/delusersurging",{uid:'10002',id:id,reason:5},function(data){
+                    if(data=='ok'){
+                        layer.msg('删除成功！');
+                        layer.close(yesd);
+                        _this.parent().parent().empty();
+                    }
+                });
+            });
+
+        });
+
+
+
+    });
+</script>
+ 

@@ -1,0 +1,247 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="sender" value="{$_REQUEST['sender']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+<if condition="$data['states']">
+          <div class="form-group">
+            <select name="state" class="form-control">
+              <option value="">审核状态</option>
+<volist name="data['states']" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['state'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+<if condition="$data['targets']">
+          <div class="form-group">
+            <select name="target" class="form-control">
+              <option value="">发送对象</option>
+<volist name="data['targets']" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['target'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+</if>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="60"<php>echo $_REQUEST['page_size'] == '60' ? ' selected' : '';</php>>60条</option>
+              <option value="120"<php>echo $_REQUEST['page_size'] == '120' ? ' selected' : '';</php>>120条</option>
+              <option value="240"<php>echo $_REQUEST['page_size'] == '240' ? ' selected' : '';</php>>240条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <span class="btn btn-white">队列：<b class="queue-count">-</b></span>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U('send_snap')}" method="POST" class="form-inline pull-left" onsubmit="return confirm('真的要这么做？')">
+          <a class="btn btn-white hide">瞬间发送</a>
+          <div class="input-group">
+            <span class="input-group-addon">发送人</span>
+            <input type="text" name="sender" value="" placeholder="必填，发送人ID..." class="form-control">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon">图片</span>
+              <input type="text" name="res" value="" placeholder="必填..." class="form-control">
+            </div>
+            <input type="file" name="file" class="image-upload-comm" data-url="{:U('Setting/upload?type=images')}" data-target="[name=res]">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">文字</span>
+            <input type="text" name="txt" value="" placeholder="选填..." class="form-control">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">定时</span>
+            <input type="text" name="timing" value="" placeholder="选填，为空则立即发送" class="form-control date-time">
+          </div>
+          <button type="submit" class="btn btn-primary">发送瞬间</button>
+        </form>
+      </div>
+
+      <div class="row list-feed">
+<volist name="data['list']" id="v">
+<php>
+$usr = $data['users'][$v['uid']];
+$sex = $usr['sex'];
+$sls = C('USER_SEX_IS') ?: [];
+$tps = [1 => '运营'];
+</php>
+        <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-id="{$v['id']}">
+          <div class="thumbnail">
+            <a><img src="{$v['image']}"></a>
+            <span class="feed-score label label-success">{$v['cnt_send'] ?: ''}</span>
+            <div class="caption">
+<if condition="$v['text']">
+              <p class="text-left"><b>描述：</b>{:htmlspecialchars($v['text'])}</p>
+</if>
+              <p class="text-nowrap">
+                <b>用户：</b>
+<if condition="!$v['uid']">
+                <a>游客</a>
+<else/>
+                <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid']}</a>
+                <b class="label label-{$sex ? 'danger' : 'success'}">{$tps[$usr['type']] ?: $sls[$sex]}</b>
+                <b class="label label-danger">{:boolval($usr['vip_level'] && $usr['vip_valid_end'] >= time()) ? 'v' : ''}{$usr['glory_grade'] ?: ''}</b>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt time())">
+                <b class="label label-danger">封</b>
+</if>
+</if>
+              </p>
+              <p class="text-nowrap"><b>创建时间:</b>{:date('Y-m-d H:i:s',$v['create_time'])}</p>
+<if condition="$v['handle_time']">
+              <p class="text-nowrap"><b>发送时间:</b>{:date('Y-m-d H:i:s',$v['handle_time'])}</p>
+</if>
+<if condition="$v['remark']">
+              <p class="text-left"><b>处理结果:</b>{:htmlspecialchars($v['remark'])}</p>
+</if>
+              <p class="text-center">
+<if condition="$v['state'] == '0'">
+                <a href="{:U('handle?id='.$v['id'].'&state=1')}" class="btn btn-sm btn-success act-modal-confirm">通过</a>
+                <a href="{:U('handle?id='.$v['id'].'&state=2')}" class="btn btn-sm btn-warning act-modal-confirm">拒绝</a>
+</if>
+<if condition="$v['state'] == '1'">
+                <a class="btn btn-sm btn-success">已通过</a>
+</if>
+<if condition="$v['state'] == '2'">
+                <a class="btn btn-sm btn-warning">已拒绝</a>
+</if>
+                <a href="{:U('UserBase/chat_logs?uid='.$v['uid'].'&smsid='.$v['smsid'].'&chattype=6&texttype=100&day=3')}"
+                   target="_blank"
+                   class="btn btn-sm btn-primary"
+                   data-popover-ajax="{:U('repeat_count?sender='.$v['uid'].'&smsid='.$v['smsid'].'&stime='.date('Y-m-d',$v['handle_time'] - 60 * 60 * 8))}">详情</a>
+                <a href="{:U('UserBase/match_list?uid='.$v['uid'])}" target="_blank" class="btn btn-sm btn-white">匹配</a>
+                <a href="{:U('delete?id='.$v['id'])}" class="btn btn-sm btn-danger hide">删除</a>
+              </p>
+            </div>
+          </div>
+        </div>
+</volist>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$page ?: $pager->show()}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-block" onsubmit="return confirm('真的要这么做？')">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">操作确认</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>备注：</label>
+            <input type="text" name="remark" placeholder="必填" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label>话术：</label>
+            <textarea name="msg" placeholder="选填，话术将以系统消息发送给用户" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+  $('body')
+  .on('mouseenter focus','[data-popover-ajax]',function()
+  {
+    var the = $(this),
+        url = $.trim(the.data('popover-ajax')),
+        pla = the.data('placement') || 'top';
+    if(the.data('popover-has'))
+    {
+      the.popover('show');
+    }
+    else if(url)
+    {
+      $.ajax(
+      {
+        url:url,
+        data:{ajax:1},
+        dataType:'json'
+      })
+      .done(function(data)
+      {
+        var dat = data.data || {};
+        dat.message && the.popover(
+        {
+          content:'<div>' + dat.message + '</div>',
+          html:true,
+          trigger:'hover focus',
+          placement:pla,
+          animation:true,
+          delay:{hide:300}
+        }).popover('show').data('popover-has',1);
+      });
+    }
+    return false;
+  });;
+
+  (function(fun)
+  {
+    setInterval(fun,5000);
+  })
+  (function()
+  {
+    var mql = $('.queue-count').html('<i class="fa fa-spinner fa-spin fa-1x"></i>');
+    return $.ajax(
+    {
+      url:'{:U('queue')}',
+      data:{ajax:1},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      mql.html(dat.queue_len || '-');
+    });
+  });
+
+});
+</script>

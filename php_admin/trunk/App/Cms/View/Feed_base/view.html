@@ -1,0 +1,178 @@
+<style>
+.text-center th { text-align:center; }
+img.zoom { cursor:zoom-in; }
+img.zoom:hover { opacity:.99; transform:scale(4); transform-origin:0 0; transition:all .2s ease-in-out; z-index:999; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-title">
+          <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#tab-feed-info">动态详情</a></li>
+            <li><a data-toggle="tab" href="#tab-feed-scores">用户打分记录 <span class="badge">{$data['scores_pager']->totalRows}</span></a></li>
+            <li><a data-toggle="tab" href="#tab-feed-logs">打分团/后台打分记录 <span class="badge">{:count($data['logs'])}</span></a></li>
+          </ul>
+        </div>
+        <div class="widget-content nopadding tab-content">
+          <div id="tab-feed-info" class="table-responsive- tab-pane">
+            <table class="table table-bordered user-info">
+              <col width="98">
+              <tr>
+                <th>动态ID</th>
+                <td><a class="label label-primary">{$data['item']['id']}</a></td>
+              </tr>
+              <tr>
+                <th>用户ID</th>
+                <td><a href="{:U('User_base/view?uid='.$data['item']['uid'])}" target="_blank" class="label label-default">{$data['item']['uid'] ?: '游客'}</a></td>
+              </tr>
+              <tr>
+                <th>动态图片</th>
+                <td>
+                  <img src="__FEED_IMG_ROOT__{$data['item']['resource']}" class="zoom" style="max-height:200px;">
+                </td>
+              </tr>
+              <tr>
+                <th>描述</th>
+                <td>{$data['item']['text']}</td>
+              </tr>
+              <tr>
+                <th>发布时间</th>
+                <td>{:date('Y-m-d H:i:s',$data['item']['create_time'])}</td>
+              </tr>
+              <tr>
+                <th>审核时间</th>
+                <td>
+<if condition="$data['item']['audited'] == 1">
+                  {$data['feed_log']['log_time'] ? date('Y-m-d H:i:s',$data['feed_log']['log_time']) : '-'}
+<else/>
+                  {$data['feed_audit'][$data['item']['audited']]}
+                  <a href="{:U('audit?id='.$data['item']['id'])}" class="btn btn-xs btn-success">通过审核</a>
+</if>
+                </td>
+              </tr>
+              <tr>
+                <th>基础分</th>
+                <td>{$data['item']['base_score']}</td>
+              </tr>
+              <tr>
+                <th>用户打分</th>
+                <td>{$data['item']['score']}</td>
+              </tr>
+              <tr>
+                <th>打分人数</th>
+                <td>{$data['item']['score_cnt']}</td>
+              </tr>
+              <tr>
+                <th>打分团分组</th>
+                <td>{$data['assign']['group_name'] ?: $data['assign']['group_id']}</td>
+              </tr>
+              <tr>
+                <th>打分团班次</th>
+                <td>{$data['assign']['range_name'] ?: $data['assign']['range_id']}</td>
+              </tr>
+              <tr>
+                <th>操作</th>
+                <td>
+                  <form action="{:U('del?id='.$data['item']['id'])}" method="POST" class="form-inline" onsubmit="return confirm('确定这么做？')">
+                    <input type="hidden" name="report_id" value="{$_REQUEST['report_id']}">
+                    <div class="form-group">
+                      <select name="reason" class="form-control">
+                        <option value="">删除理由</option>
+<volist name="data['accusation_reasons']" id="v">
+                        <option value="{$key}">{$v}</option>
+</volist>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>备注：</label>
+                      <input type="text" name="remark" placeholder="" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-danger">删除</button>
+                  </form>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div id="tab-feed-scores" class="table-responsive tab-pane">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>动态ID</th>
+                  <th>打分人UID</th>
+                  <th>被打分人UID</th>
+                  <th>分数</th>
+                  <th>打分时间</th>
+                  <th>类型</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['scores']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td>{$v['feed_id']}</td>
+                  <td>
+                    <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+                  </td>
+                  <td>
+                    <a href="{:U('User_base/view?uid='.$v['oid'])}" target="_blank" class="label label-default">{$v['oid'] ?: ''}</a>
+                  </td>
+                  <td>{$v['score']}</td>
+                  <td>{$v['score_time']|date="Y-m-d H:i:s",###}</td>
+                  <td>{$data['score_types'][$v['type']]}</td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+            <div class="pagination alternate">
+              <ul>
+                <li style="text-align:center;color:#00f">{$data['scores_pager']->show()}</li>
+              </ul>
+            </div>
+          </div>
+          <div id="tab-feed-logs" class="table-responsive tab-pane">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>动态ID</th>
+                  <th>打分人ID</th>
+                  <th>分数</th>
+                  <th>打分时间</th>
+                  <th>响应时间</th>
+                  <th>类型</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['logs']" id="v">
+<php>
+$css = 'default';
+$v['type'] == '0' && $css = 'success';
+$v['type'] == '1' && $css = 'danger';
+$ctime = $v['create_time'] ?: $data['item']['create_time'];
+</php>
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td>{$v['feed_id']}</td>
+                  <td>
+                    <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+                  </td>
+                  <td>{$v['score']}</td>
+                  <td>{:date('Y-m-d H:i:s',$v['score_time'])}</td>
+                  <td>{$v['timeout'] >= 0 ? $v['timeout'] : ($ctime ? ($v['score_time'] - $ctime) : '-')}</td>
+                  <td><span class="text-{$css}">{$data['score_types'][$v['type']]}</span></td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>

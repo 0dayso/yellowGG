@@ -1,0 +1,428 @@
+[ 2016-09-05T15:48:28+08:00 ] 127.0.0.1 /liehuo/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.020001s ]
+
+[ 2016-09-05T15:48:28+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T15:48:29+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T15:48:29+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.28346618215023645
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T15:48:42+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0060s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = 'shify' LIMIT 1   [ RunTime:0.0020s ]
+
+[ 2016-09-05T15:48:42+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/1473061722845
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T15:50:25+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-05 15:50:25' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0030s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473061825') [ RunTime:0.0010s ]
+ERR: 系统不支持:redis
+
+[ 2016-09-05T15:50:29+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-05 15:50:29' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0030s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473061829') [ RunTime:0.0020s ]
+ERR: 系统不支持:redis
+
+[ 2016-09-05T15:50:45+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0010s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-05 15:50:45' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0020s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473061845') [ RunTime:0.0010s ]
+ERR: 系统不支持:redis
+
+[ 2016-09-05T15:57:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T15:57:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T15:57:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.16520872172461654
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.07518947056753311
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T16:59:58+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.7943221272492837
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T16:59:58+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T16:59:58+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T16:59:58+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.8996050051440807
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:00:28+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2016-09-05T17:00:28+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/1473066028212
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:00:31+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-05 17:00:31' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0020s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473066031') [ RunTime:0.0010s ]
+NOTIC: [2048] Declaration of Common\Model\AuthModel::check() should be compatible with Think\Model::check($value, $rule, $type = 'regex') E:\workspace\liehuo\php_admin\trunk\App\Common\Model\AuthModel.class.php 第 117 行.
+SQL: SHOW COLUMNS FROM `cj_admin_auth_access` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_auth_rule` [ RunTime:0.0020s ]
+SQL: SELECT a.auth_id,r.id,r.name,r.title,r.condition FROM cj_admin_auth_access a left join cj_admin_auth_rule r on r.id = a.rule_id  WHERE a.auth_id = 54 AND r.status = 1  [ RunTime:0.0020s ]
+SQL: SELECT `id`,`name`,`title`,`condition` FROM `cj_admin_auth_rule` WHERE `status` = 1  [ RunTime:0.0020s ]
+
+[ 2016-09-05T17:00:31+08:00 ] 127.0.0.1 /liehuo/index.php/common/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:00:37+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:01:02+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/view/uid/12200153
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:01:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200150
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:14+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200153
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:14+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200152
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:01:15+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200151
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200149
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:19+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200148
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:24+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-05T17:01:26+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200103
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:26+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200102
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:26+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200101
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:31+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200098
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:37+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200099
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:01:37+08:00 ] 127.0.0.1 /liehuo/index.php/goods/discount_list
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:40+08:00 ] 127.0.0.1 /liehuo/index.php/setting/vip_banners
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:55+08:00 ] 127.0.0.1 /liehuo/index.php/promo/offline_data
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:56+08:00 ] 127.0.0.1 /liehuo/index.php/promo/snap_import
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:01:59+08:00 ] 127.0.0.1 /liehuo/index.php/rdrs/channel_list
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:02:03+08:00 ] 127.0.0.1 /liehuo/index.php/live/game_records
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:02:07+08:00 ] 127.0.0.1 /liehuo/index.php/live/add_robot
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:02:10+08:00 ] 127.0.0.1 /liehuo/index.php/setting/tasks
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:03:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/punished
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:03:54+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:04:04+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200141
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:04:04+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200140
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:04:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/punished
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:25:41+08:00 ] 127.0.0.1 /liehuo/index.php/common/logout
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:25:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:25:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T17:25:41+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.31191927113725004
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T17:55:22+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-05 17:55:22' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0020s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473069322') [ RunTime:0.0010s ]
+NOTIC: [2048] Declaration of Common\Model\AuthModel::check() should be compatible with Think\Model::check($value, $rule, $type = 'regex') E:\workspace\liehuo\php_admin\trunk\App\Common\Model\AuthModel.class.php 第 117 行.
+SQL: SHOW COLUMNS FROM `cj_admin_auth_access` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_auth_rule` [ RunTime:0.0020s ]
+SQL: SELECT a.auth_id,r.id,r.name,r.title,r.condition FROM cj_admin_auth_access a left join cj_admin_auth_rule r on r.id = a.rule_id  WHERE a.auth_id = 54 AND r.status = 1  [ RunTime:0.0020s ]
+SQL: SELECT `id`,`name`,`title`,`condition` FROM `cj_admin_auth_rule` WHERE `status` = 1  [ RunTime:0.0010s ]
+
+[ 2016-09-05T17:55:22+08:00 ] 127.0.0.1 /liehuo/index.php/common/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:24:32+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/punished
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T18:24:33+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T18:24:36+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200149
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:47:22+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200151
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:47:22+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12200152
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:47:28+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index?act=filter&stime=&etime=&type=0&sex=&score_range=&province=&order=&search_field=phone&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:47:34+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index?act=filter&stime=&etime=&type=0&sex=0&score_range=&province=&order=&search_field=phone&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-05T18:47:41+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/index?act=filter&stime=&etime=&type=&sex=&score_range=&province=&order=&search_field=phone&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T18:47:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/view/uid/12200153
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-05T18:48:18+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/chat_logs/uid/12200153
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+

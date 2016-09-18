@@ -1,0 +1,312 @@
+<include file="Common/top"/>
+</head>
+<body>
+<div id="doc">
+<include file="Common/head"/>
+  <div class="container-fluid">
+    <div class="row-fluid">
+
+      <div id="nav-side" class="col-md-2">
+<include file="Common/side"/>
+      </div>
+
+      <div id="main" class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <div class="btn-group btn-group-xs pull-right hide">
+              <a class="btn btn-default"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default"><i class="fa fa-plus"></i> 添加</a>
+            </div>
+            <h3 class="panel-title pull-left">表单</h3>
+          </div>
+<php>
+$dat = $data['item'] ?: [];
+$adt = $dat['attrs'] ?: [];
+</php>
+          <form action="{:U('save')}" method="POST">
+            <input type="hidden" name="id" value="{$dat['id']}">
+            <table class="table table-form">
+              <col style="width:10em;">
+              <tr>
+                <th>文章标题</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="title" value="{$dat['title']}" placeholder="必填" maxlength="255" required class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>文章描述</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="desc" value="{$dat['desc']}" placeholder="选填" maxlength="255" class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>封面图</th>
+                <td>
+                  <div class="form-group">
+                    <div class="col-md-4">
+                      <input type="text" name="thumb" value="{$dat['thumb']}" placeholder="" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                      <input type="file" name="file" class="image-upload-comm" data-url="{:U('Common/upload?type=article')}" data-target="[name=thumb]">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>文章内容</th>
+                <td>
+                  <div class="col-md-12">
+                    <textarea name="content" class="form-control an-ckeditor">{$dat['content']}</textarea>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>发布时间</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="datetime" name="publish_time" value="{$dat['publish_time'] ? date('Y-m-d H:i:s',$dat['publish_time']) : ''}" placeholder="选填，格式：{:date('Y-m-d H:i:s')}" class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <td class="text-left">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success">保存</button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<include file="Common/foot"/>
+<script>
+$(document).on('require.ready',function()
+{
+
+  define('ckeditor-upload',['ckeditor-jquery'],function()
+  {
+    var plugin = 'uploadimgs',
+        title  = '多图上传';
+    window.CKEDITOR && CKEDITOR.plugins.add(plugin,
+    {
+      requires:'dialog',
+      icons:'',
+      hidpi:true,
+      init:function(editor)
+      {
+        editor.addCommand(plugin,new CKEDITOR.dialogCommand(plugin,
+        {
+          allowedContent:'img[alt,height,!src,title,width]',
+          requiredContent:'img'
+        }));
+        editor.ui.addButton && editor.ui.addButton('UploadImgs',
+        {
+          label:title,
+          title:title,
+          command:plugin
+        });
+        // - dialog
+        CKEDITOR.dialog.add(plugin,function(editor)
+        {
+          var cfg = editor.config,
+              T   = CKEDITOR.tools,
+              tab = 
+              {
+                id:'tab-' + plugin,
+                label:title,
+                title:'',
+                expand:true,
+                padding:20,
+                elements:[]
+              },
+              ele =
+              {
+                id:tab.id + '-con',
+                type:'html',
+                html:'<div></div>',
+                onLoad:function(e)
+                {
+                  dialog = e.sender;
+                  require(['jquery','blueimp-fileupload','messenger-future'],function($)
+                  {
+                    $('.cke-fileupload').fileupload(
+                    {
+                      url:'{:U('Common/upload?type=article')}',
+                      dataType:'json',
+                      done:function(e,ret)
+                      {
+                        var data = ret.result || {},
+                            dat = data.data || {},
+                            src = dat.resource || dat.filename || '',
+                            tip = data.info || data.message || '';
+                        if(src)
+                        {
+                          editor.insertHtml('<img src="' + src + '">');
+                          dialog && dialog.hide();
+                        }
+                        else if(!tip) tip = '上传失败';
+                        tip && Messenger().post(
+                        {
+                          type:data.status == 1 ? 'success' : 'error',//info
+                          message:tip,
+                          showCloseButton:true
+                        });
+                      }
+                    });
+                  });
+                },
+                focus:function(){}
+              },
+              htm = [],
+              dialog;
+          htm.push(
+            '<input type="file" name="uploadfile" class="cke-fileupload" multiple>'
+          );
+          ele.html = '<div>' + htm.join('') + '</div>';
+          tab.elements.push(ele);
+          return {
+            title:title,
+            minWidth:200,
+            minHeight:100,
+            contents:[tab],
+            buttons:[CKEDITOR.dialog.cancelButton]
+          };
+        });
+      }
+    });
+  });
+
+  define('ckeditor-tpls',['ckeditor-jquery'],function()
+  {
+    window.CKEDITOR && CKEDITOR.addTemplates('aichuchai',
+    {
+      imagesPath : CKEDITOR.getUrl(CKEDITOR.plugins.getPath('templates') + 'templates/images/'),
+      templates  :
+      [
+        {
+          title : '一级标题',
+          //image : 'template1.gif',
+          //description : '一级标题模板',
+          html  : '<h1 class="ckt-tit ckt-tit-ls">一级标题</h1>'
+        },
+        {
+          title : '二级标题',
+          html  : '<h2>二级标题</h2>'
+        },
+        {
+          title : '推荐餐厅 - 单张大图',
+          html  : $.heredoc(function(){ /*
+<div class="ckt-gallery clearfix ckt-gallery-1">
+  <h3 class="ckt-gallery-tit">推荐餐厅</h3>
+  <a href="" target="_blank" class="ckt-gallery-item">
+    <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+    <span class="ckt-gallery-con">上海老字号餐厅2（人均180）</span>
+  </a>
+</div>
+*/ })
+        },
+        {
+          title : '推荐餐厅 - 两张图片',
+          html  : $.heredoc(function(){ /*
+<div class="ckt-gallery clearfix ckt-gallery-2">
+  <h3 class="ckt-gallery-tit">推荐餐厅</h3>
+  <div class="ckt-gallery-group clearfix">
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅1（人均180）</span>
+    </a>
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅2（人均180）</span>
+    </a>
+  </div>
+</div>
+*/ })
+        },
+        {
+          title : '推荐餐厅 - 四张图片',
+          html  : $.heredoc(function(){ /*
+<div class="ckt-gallery clearfix ckt-gallery-2">
+  <h3 class="ckt-gallery-tit">推荐餐厅</h3>
+  <div class="ckt-gallery-group clearfix">
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅1（人均180）</span>
+    </a>
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅2（人均180）</span>
+    </a>
+  </div>
+  <div class="ckt-gallery-group clearfix">
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅3（人均180）</span>
+    </a>
+    <a href="" target="_blank" class="ckt-gallery-item">
+      <span class="ckt-gallery-img"><img src="http://static.chujianapp.com/chuchai/images/201606/624c09cc6a02bc6ce5e6dedfdfd4719c.png@60Q"></span>
+      <span class="ckt-gallery-con">上海老字号餐厅4（人均180）</span>
+    </a>
+  </div>
+</div>
+*/ })
+        }
+      ]
+    });
+    return CKEDITOR;
+  });
+
+  require(['ckeditor-jquery'],function()
+  {
+    //for(k in CKEDITOR.instances) CKEDITOR.instances[k].destroy();
+    var ipt = $('.an-ckeditor'),
+        cfg =
+        {
+          //customConfig:'config.js',
+          language:'zh-cn',//zh-cn
+          //skin:'moono',
+          height:520,
+          allowedContent:true,
+          //extraAllowedContent:'*[id,class,style,data-*]',
+          contentsCss:['//src.chujianapp.com/article/static/css/app.cke-tpls.css'],
+          plugins:'dialogui,dialog,about,a11yhelp,dialogadvtab,basicstyles,bidi,blockquote,clipboard,button,panelbutton,panel,floatpanel,colorbutton,colordialog,templates,menu,contextmenu,div,resize,toolbar,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,forms,format,horizontalrule,htmlwriter,iframe,wysiwygarea,image,indent,indentblock,indentlist,smiley,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastetext,pastefromword,preview,print,removeformat,save,selectall,showblocks,showborders,sourcearea,specialchar,scayt,stylescombo,tab,table,tabletools,undo,wsc',
+          extraPlugins:'uploadimage',
+          imageUploadUrl:'{:U('Common/upload_cke?type=article')}',
+          filebrowserImageUploadUrl:'{:U('Common/upload_cke?type=article')}',
+          toolbar:
+          [
+            ['Source','-','Save'],['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],['Image','Flash','Smiley','SpecialChar'],'/',
+            ['Bold','Italic','Underline','Strike','-'],['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],['Table','Templates','HorizontalRule'],
+            ['Link','Unlink','Anchor'],'/',
+            ['Styles','Format','Font','FontSize'],['TextColor','BGColor'],['ShowBlocks']/*,['UploadImgs'],['Emotion']*/,['Maximize']
+          ],
+          image_prefillDimensions:false
+        };
+    CKEDITOR.dtd.$editable.input = 1;
+    var cke = ipt.ckeditor(cfg).editor;
+    cke && cke.on('instanceReady',function(e)
+    {
+      require(['ckeditor-tpls'],function()
+      {
+        cke.config.templates = 'aichuchai';
+        cke.config.templates_replaceContent = false;
+      });
+    });
+  });
+
+});
+</script>
+</body>
+</html>

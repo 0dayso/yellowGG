@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left hide">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group">
+            <select name="state" class="form-control">
+              <option value="">提现状态</option>
+  <volist name="data['cash_states']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['state'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+  </volist>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success">导出</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>首次评分</th>
+              <th>最后评分</th>
+              <th>评分次数</th>
+              <th>时间</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td><a href="{:U('user_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+              <!--td>{$data['scores'][$v['id_min']]['score']}</td>
+              <td>{$data['scores'][$v['id_max']]['score']}</td-->
+              <td>{$v['score_min']}</td>
+              <td>{$v['score_max']}</td>
+              <td>{$v['cnt']}</td>
+              <td>{$v['score_time'] ? date('Y-m-d H:i:s',$v['score_time']) : '-'}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

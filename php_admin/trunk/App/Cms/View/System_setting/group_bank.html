@@ -1,0 +1,107 @@
+ 
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <table>
+                        <tr>
+                            <th>
+                                <form class="form-horizontal" id="form-horizontal">
+                                    <div class="controls" style="margin-left: 10px">搜索:
+                                        <select name="search" id="search-type">
+                                            <option value="1">按gid</option>
+                                            <option value="2">按组名</option>
+                                            <option value="3">按权限</option>
+                                        </select>
+                                        <input type="text" name="keyword" />
+                                        <input type="submit" value="搜索" />
+                                    </div>
+                                </form>
+                            </th>
+                            <th>
+                                <form class="from-horizontal" id="add-group-permission" onsubmit="return false">
+                                    <div class="controls" style="margin-left:100px;">管理员组添加权限：
+                                        <select id="select-group" name="select-group">
+                                            <option>请选择组</option>
+                                            <volist name="group" id="vo">
+                                                <option value="{$vo.admin_group_id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>
+
+                                        <select id="select-action" name="select-action">
+                                            <option>请选择权限</option>
+                                            <volist name="action" id="vo">
+                                                <option value="{$vo.action_id}">{$vo.name}</option>
+                                            </volist>
+                                        </select>
+                                        <input type="submit" value="添加" />
+                                    </div>
+                                </form>
+                            </th>
+                            <th>
+                                <form class="form-horizontal" action="{:U('SystemSetting/create_group/')}" method="post">
+                                    <div class="controls" style="margin-right: 100">创建管理员组:
+                                        <input type="text" name="create-group" id="create-group">
+                                        <input type="submit" class="btn btn-primary btn-mini" value="创建" />
+                                    </div>
+                                </form>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <form>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>gid</th>
+                                <th>组名</th>
+                                <th>权限</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="vo">
+                                <tr>
+                                    <td style="text-align: center">{$vo.admin_group_id}</td>
+                                    <td style="text-align: center">{$vo.admin_group_name}</td>
+                                    <td style="text-align: center">{$vo.action_name}</td>
+                                    <td style="text-align: center">
+                                        <a href="{:U('SystemSetting/delete_group_permission/',array('admin_group_id'=>$vo['admin_group_id'],'action_id'=>$vo['action_id']))}" class="btn btn-primary btn-mini">移除权限</a>
+                                        <a href="{:U('SystemSetting/delete_group/',array('admin_group_id'=>$vo['admin_group_id']))}" class="btn btn-primary btn-mini">删除管理员组</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="pagination alternate">
+                <ul>
+                    <li style="text-align: center;color: #0000ff">{$page}</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div> 
+<script>
+    $(function(){
+       $('#add-group-permission').on('submit',function(){
+           var admin_group_id=$('#select-group').val();
+           var action_id=$('#select-action').val();
+
+           location.href="{:U('SystemSetting/add_group_permission')}?admin_group_id="+admin_group_id+'&action_id='+action_id;
+           return false;
+       });
+    });
+</script> 

@@ -1,0 +1,143 @@
+ 
+<!--main-container-part-->
+<div id="content">
+    <!--breadcrumbs-->
+   
+    <!--End-breadcrumbs-->
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <form class="form-horizontal" id="certificate" name="certificate" onsubmit="return false">
+                    <input type="hidden" id="id"   value="{$list.id}" />
+                    <input type="hidden" id="menu" value="{$menu}" />
+                    <input type="hidden" id="type" value="{$type}" />
+                    <input type="hidden" id="uid"  value="{$list.uid}" />
+                    <input type="hidden" id="certificate_video_id" value="{$list.certificate_video_id}" />
+
+                    <div  class="ibox-content" style="border-width:2px 2px;border-bottom:2px solid #e7eaec">
+                        <a class="fancybox" href="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p1}">
+                            <img src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p1}" />
+                        </a>
+                        <a class="fancybox" href="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p2}">
+                            <img src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p2}" />
+                        </a>
+                        <a class="fancybox" href="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p3}">
+                            <img src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p3}" />
+                        </a>
+                        <a class="fancybox" href="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p4}">
+                            <img src="{$Think.config.CERTIFICATE_VIDEO_PIC}/{$list.p4}" />
+                        </a>
+                    </div>
+
+                    <table id="certificate_video_table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">用户初见号：</th>
+                                <th style="text-align:center">备注</th>
+                                <th style="text-align:center">审核</th>
+                                <th style="text-align:center">自定义消息</th>
+                                <th style="text-align:center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align: center">
+                                    <if condition="$list.user_status EQ 2">
+                                        <a href="{:U('User/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$list['uid']))}" target="_blank" style="line-height:35px">{$list.uid}(地推用户)</a>
+                                    <else />
+                                        <a href="{:U('User/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$list['uid']))}" target="_blank" style="line-height:35px">{$list.uid}</a>
+                                    </if>
+                                </td>
+                                <td>
+                                    <input type="text" id="remark" name="remark" class="form-control" >
+                                </td>
+                                <td>
+                                    <select id="status" name="status" class="form-control m-b" >
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.1}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.2}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.3}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.4}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.6}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.7}</option>
+                                        <option>{$Think.config.STATE_CERTIFICATE_VIDEO_STATUS_TEXT.8}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="myquite" id="myquite" class="form-control" ></textarea>
+                                </td>
+                                <td align="center">
+                                    <input   type="submit" class="btn btn-w-m btn-info" value="确定" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<!--放大图片-->
+<script src='__PUBLIC__/layer/layer.min.js'></script>
+<script src='__PUBLIC__/cms/justifiedgallery.js'></script>
+<script src='__PUBLIC__/cms/jquery.swipebox.min.js'></script>
+<script src='__PUBLIC__/cms/jquery.colorbox-min.js'></script>
+<script>
+    /*$().ready(function() {
+        $('#remotetest').justifiedGallery({rel: 'gal0'}).on('jg.rowflush', function () {
+            $(this).find('a').colorbox({
+                maxWidth : '100%',
+                maxHeight : '100%',
+                opacity : 0.8,
+                transition : 'elastic',
+                current : ''
+            });
+        });
+    });*/
+
+    $('#certificate').on('submit',function(){
+        var menu        = $('#menu').val();
+        var type        = $('#type').val();
+        var uid         = $('#uid').val();
+        var status      = $('#status').val();
+        var remark      = $('#remark').val();
+        var certificate_video_id = $('#certificate_video_id').val();
+		var id          = $('#id').val();
+        var myquite     = $('#myquite').val();
+
+        
+        var indexs = layer.confirm('确定提交?',function(data){
+            $.ajax({
+                url : '__CONTROLLER__/submit_certificate',
+                type : "post",
+                data: {menu:menu, type:type, uid:uid, certificate_video_id:certificate_video_id ,status:status, remark:remark,id:id,myquite:myquite},
+                success : function(data) {
+                    if(data.info=='操作成功'){
+                        if(menu == 'task_hall'){
+                            location.href="{:U('CertificateVideo/index',array('menu'=>'task_hall','type'=>'processed'))}";
+                        }
+                        else if(menu == 'admin_task'){
+                            location.href="{:U('CertificateVideo/index',array('menu'=>'admin_task','type'=>'unprocessed'))}";
+                        }
+                        else{
+                            layer.alert('页面错误');
+                        }
+                    }
+                    else{
+                        layer.alert(data.info);
+                    }
+                    layer.close(indexs);
+                },
+                error: function(data){
+                    layer.close(indexs);
+                }
+            });
+
+        });
+
+
+    });
+</script>
+ 

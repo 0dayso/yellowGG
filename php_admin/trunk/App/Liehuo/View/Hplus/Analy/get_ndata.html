@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="type" value="{$_REQUEST['type']}">
+          <input type="hidden" name="rdrs_type" value="{$_REQUEST['rdrs_type']}">
+          <input type="hidden" name="ad_serial" value="{$_REQUEST['ad_serial']}">
+          <input type="hidden" name="time_type" value="{$time_type ?: $_REQUEST['time_type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+
+<if condition="ACTION_NAME == 'daily_user'">
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+</if>
+          <button type="submit" class="btn btn-primary">搜索</button>
+          <a href="{:U('',$all_params ?: [])}" class="btn btn-white">全部</a>
+        </form>
+
+        <div class="pull-right">
+          <a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success">导出</a>
+<if condition="$_REQUEST['rdrs_type'] == 'dt'">
+          <a href="{:U('update_offline_daily_user')}" class="btn btn-primary">更新数据</a>
+</if>
+          <span class="btn btn-white">记录数：{$count}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+                <th>日期</th>
+                <th>DAU</th>
+                <th>注册用户</th>
+                <th>主播人数</th>
+                <th>观众人数</th>
+                <th>付费总额</th>
+                <th>付费总人数</th>
+                <th>月活跃人数</th>
+
+                <th>30天内付费总人数</th>
+                <th>30天内二次付费总人数</th>
+                <th>30天内二次付费率</th>
+
+                <th>主播提现</th>
+
+                <th>第1日付费率</th>
+                <th>第1日ARPU</th>
+                <th>第2日付费率</th>
+                <th>第2日ARPU</th>
+
+                <th>安卓直播观众数</th>
+                <th>安卓付费总额</th>
+                <th>安卓付费人数</th>
+                <th>安卓付费率</th>
+                <th>安卓APRU</th>
+
+                <th>ios直播观众数</th>
+                <th>ios直播付费总额</th>
+                <th>ios直播付费人数</th>
+                <th>ios直播付费率</th>
+                <th>ios直播APRU</th>
+
+                <th>注册用户当日付费总额</th>
+                <th>注册次日付费总额</th>
+            </tr>
+          </thead>
+          <tbody>
+          <volist name="list" id="v">
+              <tr>
+                  <td>{$v['dtime']}</td>
+                  <td>{$v['n_dau']}</td>
+                  <td>{$v['n_reg']}</td>
+                  <td>{$v['n_live_host']}</td>
+                  <td>{$v['n_live_guest']}</td>
+                  <td>{$v['s_pay_sum']}</td>
+                  <td>{$v['n_pay_user']}</td>
+                  <td>{$v['n_mau']}</td>
+
+                  <td>{$v['n_pay_month_user']}</td>
+                  <td>{$v['n_pay_month_secondary_user']}</td>
+                  <td>{$v['n_pay_month_secondary_user']/$v['n_pay_month_user']*100|round=2}%</td>
+
+                  <td>{$v['s_cash_sum']}</td>
+
+                  <td>{$v['n_reg_pay_user']/$v['n_reg']*100|round=2}%</td>
+                  <td>{$v['s_reg_pay_sum']/$v['n_reg']|round=2}</td>
+
+                  <td>{$v['n_reg_pay_secondary_user']/$v['n_reg']*100|round=2}%</td>
+                  <td>{$v['s_reg_pay_secondary_sum']/$v['n_reg']|round=2}</td>
+
+                  <td>{$v['n_android_live_guest']}</td>
+                  <td>{$v['s_android_pay_sum']}</td>
+                  <td>{$v['n_android_pay_user']}</td>
+                  <td>{$v['n_android_pay_user']/$v['n_android_live_guest']*100|round=2}%</td>
+                  <td>{$v['s_android_pay_sum']/$v['n_android_live_guest']|round=2}</td>
+
+                  <td>{$v['n_ios_live_guest']}</td>
+                  <td>{$v['s_ios_pay_sum']}</td>
+                  <td>{$v['n_ios_pay_user']}</td>
+                  <td>{$v['n_ios_pay_user']/$v['n_ios_live_guest']*100|round=2}%</td>
+                  <td>{$v['s_ios_pay_sum']/$v['n_ios_live_guest']|round=2}</td>
+                  <td>{$v['s_reg_pay_sum']}</td>
+                  <td>{$v['s_reg_pay_secondary_sum']}</td>
+              </tr>
+              </volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

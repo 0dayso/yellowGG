@@ -1,0 +1,56 @@
+<div id="content">
+  
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户id</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">
+                                        <a href="">查看材料</a>
+                                        <a href="">删除</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div>
+                    展示时间：<input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" placeholder="选择时间">
+                    至 <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" placeholder="选择时间"> 
+                    <input type="submit" value="确定" >
+                    </div>
+ 
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+ <script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

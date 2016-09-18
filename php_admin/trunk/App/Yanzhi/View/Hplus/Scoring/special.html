@@ -1,0 +1,257 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated { z-index:inherit; }
+.gradeX td,.gradeX th { text-align:center; }
+.col-score { display:none !important; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive-">
+            <table id="scoring-box" class="table table-bordered">
+              <thead>
+                <tr class="gradeX">
+                  <th>动态ID</th>
+                  <th>用户ID</th>
+                  <th>照片内容</th>
+                  <th>创建时间</th>
+                  <th>打分团记录</th>
+                  <th>响应时间</th>
+                  <th class="col-score">照片分值</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody class="list-scoring">
+  <tr class="gradeX" data-id="">
+    <td>0</td>
+    <td>0</td>
+    <td><img src="http://surging.chujian.im/20150906/4ea6f83da01511cb468ddf25271b6cdc.png" class="zoom"></td>
+    <td>测试数据</td>
+    <td></td>
+    <td><b class="scoring-timeout label label-default" data-time="{:time()}" data-timeout="1"></b></td>
+    <td class="col-score">
+      <input type="number" name="score-no" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+      <a class="act-scoring-no btn btn-primary btn-mini">打分</a>
+    </td>
+  </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-scoring-item">
+<$
+$ = _G.jQuery;
+tim = (_G.parseInt(create_time) || 0) * 1000;
+sex_obj = {'0':'男','1':'女'};
+sco_lst = $data.scoring || {};
+$>
+  <tr class="gradeX animated- fadeInRightBig" data-id="<$=id$>">
+    <td><a href="{:U('Feed_base/view')}?id=<$=id$>" target="_blank" class="label label-primary"><$=id$></a></td>
+    <td>
+      <a href="{:U('User_base/view')}?uid=<$=uid$>" target="_blank" class="label label-default"><$=uid$></a>
+      <b class="badge"><$=sex_obj[sex] || ''$></b>
+    </td>
+    <td><i class="thumbnail"><img src="<$=img$>" class="zoom"></i></td>
+    <td><$=_G.moment(tim).format('YYYY-MM-DD HH:mm:ss')$></td>
+    <td>
+      <div class="scoring-history text-left">
+<$
+if(!$data.scoring)
+{
+$>
+        <span>没有记录</span>
+<$
+}
+else
+{
+  $.each($.extend({},sco_lst.fine || {},sco_lst.pass || {},sco_lst.fail || {}),function(k,v)
+  {
+    var rnk = v.rank || {};
+$>
+        <a class="label label-default"><$=k$></a>
+        <span><$=v.score >= 5 ? v.score : rnk.reason || v.score$></span>
+        <br>
+<$
+  });
+}
+$>
+      </div>
+    </td>
+    <td><b class="scoring-timeout label label-default" data-time="<$=tim$>" data-timeout="<$=timeout$>"></b></td>
+    <td class="col-score">
+      <input type="number" name="score" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+<$
+include('tpl-scoring-quick4');
+$>
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="tpl-scoring-quick3">
+      <a class="act-scoring btn btn-primary btn-mini hide">打分</a>
+      <div class="btn-group dropdown-toggle-hover horizontal">
+        <div class="btn-group">
+          <a class="btn btn-danger btn-sm">不合格</a>
+          <ul class="dropdown-menu">
+<$
+$.each(_G.Scoring.rank.fail,function(k,v)
+{
+  var sco = k;
+  if(!v.hidden)
+  {
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>" title="<$=v.msg$>"><$=v.reason$></a></li>
+<$
+  }
+});
+$>
+          </ul>
+        </div>
+<$
+//快捷打分
+scoring_quick =
+{
+  '5':[5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9],
+  '6':[6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9]
+};
+$.each(scoring_quick,function(k,v)
+{
+  var hsb = typeof v == 'object' && v,
+      sco = k;
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="<$=sco$>"><$=sco$></a>
+<$
+  if(hsb)
+  {
+$>
+          <ul class="dropdown-menu">
+<$
+    $.each(v,function(i2,v2)
+    {
+      var sco = v2;
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>"><$=sco$></a></li>
+<$
+    });
+$>
+          </ul>
+<$
+  }
+$>
+        </div>
+<$
+});
+
+include('tpl-scoring-box9',{score:7});
+include('tpl-scoring-box9',{score:8});
+include('tpl-scoring-box9',{score:9});
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="10">10</a>
+        </div>
+      </div>
+</script>
+
+<script type="text/html" id="tpl-scoring-quick4">
+      <a class="act-scoring btn btn-primary btn-mini hide">打分</a>
+      <div class="btn-group dropdown-toggle-hover horizontal">
+        <div class="btn-group">
+          <a class="btn btn-danger btn-sm">不合格</a>
+          <ul class="dropdown-menu">
+<$
+$.each(_G.Scoring.rank.fail,function(k,v)
+{
+  var sco = k;
+  if(!v.hidden)
+  {
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>" title="<$=v.msg$>"><$=v.reason$></a></li>
+<$
+  }
+});
+$>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm score-rand" data-score="5">5</a>
+          <a class="act-scoring-quick btn btn-primary btn-sm score-rand" data-score="6">6</a>
+        </div>
+<$
+include('tpl-scoring-box9',{score:7});
+include('tpl-scoring-box9',{score:8});
+include('tpl-scoring-box9',{score:9});
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="10">10</a>
+        </div>
+      </div>
+</script>
+
+<script type="text/html" id="tpl-scoring-box9">
+  <div class="btn-group">
+    <a class="act-scoring-quick btn btn-primary btn-sm" data-score="<$=score$>"><$=score$></a>
+    <ul class="dropdown-menu scoring-box9">
+<$
+$.each(_G.Scoring['score_box9_' + score] || [],function(i,v)
+{
+  var sco = v.id / 10;
+$>
+      <li>
+        <a class="act-scoring-quick" data-score="<$=sco$>"><img src="<$=_G.Scoring.option.feed_img_root$><$=v.resource || '20151010/e09203b33d96983451b149e1d47c1ed9.jpg'$>"></a>
+        <span class="score label label-danger"><$=sco$></span>
+      </li>
+<$
+});
+$>
+    </ul>
+  </div>
+</script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.Scoring =
+{
+  route:
+  {
+    query:'{:U('query')}',
+    save :'{:U('save')}',
+    del  :'{:U('del')}'
+  },
+  option:
+  {
+    feed_img_root          : '{$feed_img_root}' || '//feed.chujian.im/',
+    feed_timeout           : parseInt('{$feed_timeout}') || 60,
+    feed_timeout_highlight : parseInt('{$feed_timeout_highlight}') || 1,
+    // Ajax刷新时间
+    ajax_interval          : (parseInt('{$ajax_interval}') || 3) * 1000
+  },
+  rank:
+  {
+    fail:{:json_encode($score_rank_fail ?: array())}
+  },
+  score_box9_7:{:json_encode($score_box9_7 ?: array())},
+  score_box9_8:{:json_encode($score_box9_8 ?: array())},
+  score_box9_9:{:json_encode($score_box9_9 ?: array())}
+};
+
+$(document).on('require.ready',function()
+{
+  require(['app-scoring']);
+});
+</script>

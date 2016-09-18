@@ -1,0 +1,22 @@
+<div class="widget-content nopadding">
+    <a class="btn btn-primary btn-sm" href="{:U('search/stag',array('id'=>$_GET['id']))}">返回</a>
+<table id="accusation_table" class="table table-bordered">
+    <thead>
+    <tr>
+        <th style="text-align:center">用户UID</th>
+        <th style="text-align:center">加入时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <volist name="list" id="vo">
+        <tr class="gradeX">
+            <td style="text-align:center">{$vo.uid}</td>
+            <td style="text-align:center">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+</div>
+　
+
+ 

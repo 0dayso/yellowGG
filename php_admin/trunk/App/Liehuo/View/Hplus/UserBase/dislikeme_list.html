@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline clearfix">
+        <input type="hidden" name="act" value="filter">
+        <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+        <div class="form-group">
+          <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+      </form>
+      <div class="clearfix">
+        <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>用户昵称</th>
+              <th>电话号码</th>
+              <th>性别</th>
+              <th>分数</th>
+              <!--th>注册时间</th-->
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+</php>
+            <tr class="gradeX">
+              <td><a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+              <td title="{$v['nickname']}">
+                <div class="td-content popover-hover">{:htmlspecialchars($v['nickname_html'] ?: $v['nickname'])}</div>
+              </td>
+              <td>{$v['phone']}</td>
+              <td>{$Think.config.USER_SEX_IS.$sex}</td>
+              <td>{$v['score']}</td>
+              <!--td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td-->
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

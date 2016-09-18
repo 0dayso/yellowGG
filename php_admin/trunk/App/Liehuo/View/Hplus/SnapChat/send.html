@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('send_snap')}" method="POST" class="form-horizontal">
+          <input type="hidden" name="uid" value="{$data['item']['uid']}">
+          <table class="table table-bordered table-striped table-form">
+            <col style="width:10em;">
+            <tr>
+              <th>发送人</th>
+              <td>
+                <input type="text" name="sender" value="" placeholder="必填，发送人ID..." class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <th>瞬间图片</th>
+              <td>
+                <div class="form-group form-inline">
+                  <input type="text" name="res" value="" placeholder="必填..." class="form-control">
+                  <input type="file" name="file" class="image-upload-comm" data-url="{:U('Setting/upload?type=images')}" data-target="[name=res]">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>文本</th>
+              <td>
+                <input type="text" name="txt" value="" placeholder="选填..." class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <th>定时发送</th>
+              <td>
+                <div>
+                  <input type="text" name="timing" value="" placeholder="选填，为空则立即发送" class="form-control date-time">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="text-left">
+                <button type="submit" class="btn btn-primary">发送</button>
+                <a href="{:U('index')}" class="btn btn-success">返回列表</a>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+});
+</script>

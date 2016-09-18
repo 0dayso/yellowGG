@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>Msg</title>
+</head>
+<body>
+
+<hr>
+
+<div class="container-fluid">
+  <form action="{:U('msg_group')}" method="POST" target="api_ret" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">聊天类型</label>
+      <div class="col-sm-9">
+        <select name="major_type" class="form-control">
+          <option value="1">普通消息</option>
+          <option value="2">系统消息</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息格式</label>
+      <div class="col-sm-9">
+        <select name="minor_type" class="form-control">
+          <option value="1">文本</option>
+          <option value="2">表情</option>
+          <option value="3">礼物</option>
+          <option value="4">弹幕</option>
+          <option value="5">喇叭</option>
+          <option value="100" selected>复合</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息类型</label>
+      <div class="col-sm-9">
+        <select class="form-control msg-json-select">
+          <option data-major_type="1" data-minor_type="1" data-msg_type="" data-json=''>普通文本</option>
+
+          <option data-major_type="1" data-minor_type="3" data-msg_type="" data-json='
+{
+  "gift_id" : 3001,
+  "combo"   : 88,
+  "animate" : "batter",
+  "sex"     : 1,
+  "total_glamour" : 666666
+}'>赠送礼物</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 301,
+  "name" : "直播消息",
+  "text" : "关注下主播吧，不错过下一次见面的机会"
+}'>系统消息</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 302,
+  "name" : "直播消息",
+  "text" : "那谁被管理员警告了..."
+}'>警告消息</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 303,
+  "name" : "直播消息",
+  "text" : "大明关注了主播，不错过下一次见面的机会"
+}'>关注消息</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 304,
+  "name" : "直播消息",
+  "text" : "那谁分享了直播..."
+}'>分享消息</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 306,
+  "text" : "全房间内均可以看见，直播靠上位置跑马灯显示"
+}'>房间公屏</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 305,
+  "name" : "直播消息",
+  "text" : "土豪进房间了..."
+}'>土豪进房</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 308,
+  "name" : "直播消息",
+  "text" : "{\\"effect_id\\":1234,\\"image\\":\\"\\",\\"desc\\":\\"带着大金链子小金表进入房间，欢迎..鼓掌..\\",\\"vibrate\\":0,\\"uid\\":12200022,\\"nickname\\":\\"用户昵称\\",\\"level\\":21}"
+}'>进房特效 - 大土豪</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 308,
+  "name" : "直播消息",
+  "text" : "{\\"effect_id\\":1234,\\"image\\":\\"http:\\/\\/static.chujianapp.com/images/201608/5baa2eb1a669f2ab68caf601d85c3f1b.png\\",\\"desc\\":\\"骑着小黄鸭进入房间\\",\\"vibrate\\":0,\\"uid\\":12200022,\\"nickname\\":\\"用户昵称\\",\\"level\\":21}"
+}'>进房特效 - 小黄鸭</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 308,
+  "name" : "直播消息",
+  "text" : "{\\"effect_id\\":1234,\\"image\\":\\"http:\\/\\/static.chujianapp.com/images/201608/7e90f0026e615a64a596f998b56f6f7a.png\\",\\"desc\\":\\"极速漂移过弯，闪现在大家眼前..\\",\\"vibrate\\":1,\\"uid\\":12200022,\\"nickname\\":\\"用户昵称\\",\\"level\\":21}"
+}'>进房特效 - AE86</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 310,
+  "name" : "直播消息",
+  "text" : "那谁被场控禁言了..."
+}'>观众被禁言提醒</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 311,
+  "name" : "直播消息",
+  "text" : "那谁被场控踢出直播间了..."
+}'>观众被踢出提醒</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 312,
+  "name" : "直播消息",
+  "text" : "{\\"uid\\":12200022,\\"content\\":\\"谁谁谁成了守护！\\"}"
+}'>添加房管</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 313,
+  "name" : "直播消息",
+  "text" : "{\\"uid\\":12200022,\\"content\\":\\"\\"}"
+}'>解除房管</option>
+
+          <option data-major_type="2" data-minor_type="100" data-msg_type="" data-json='
+{
+  "type" : 315,
+  "name" : "",
+  "text" : "{\\"level_text\\":\\"当红主播\\"}"
+}'>主播认证状态通知</option>
+
+        </select>
+        <input type="text" name="msg_type" value="" class="form-control" placeholder="选填">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">房间ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="chat_room_id" value="" class="form-control" placeholder="必填">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">发送人ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="sender" value="10000" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息JSON</label>
+      <div class="col-sm-9">
+        <textarea name="json" rows="10" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-9">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+  <iframe src="about:blank" name="api_ret" width="100%" frameborder="0" scrolling="auto" class="api-ret"></iframe>
+
+</div>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+window.jQuery(function($)
+{
+  $('body')
+  .on('change','select.msg-json-select',function()
+  {
+    var sel = $(this).find('option:selected');
+    $.each(sel.data(),function(k,v)
+    {
+       $('[name="' + k + '"]').val($.trim(v));
+    });
+  });
+
+  $('select.msg-json-select').change();
+
+});
+</script>
+</body>
+</html>

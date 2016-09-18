@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+td input { min-width:4em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <div class="pull-left">
+          <div class="btn-group">
+            <a href="{:U('?stime='.date('Y-m-d',($data['stime'] ?: time()) - 60 * 60 * 24 * 7))}" class="btn btn-success">前7天</a>
+            <a href="{:U('?stime='.date('Y-m-d',($data['etime'] ?: time()) + 60 * 60 * 24 * 1))}" class="btn btn-success">后7天</a>
+          </div>
+        </div>
+        <div class="pull-right">
+          <button type="submit" form="form_main" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+      <form id="form_main" action="{:U('market_save')}" method="POST" class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <col style="min-width:5em;">
+          <thead>
+            <tr>
+              <th>渠道</th>
+<volist name="data['dates']" id="date">
+              <th>{$date}</th>
+</volist>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+<volist name="data['channels']" id="v">
+              <th style="vertical-align:middle;">{$v['ch_name']}</th>
+<volist name="data['dates']" id="date">
+<php>
+$sum = $data['sums'][$date][$v['id']] ?: [];
+</php>
+              <td>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-android"></i></span>
+                  <input type="text" name="sums[{$date}][{$v['id']}][android]" value="{$sum['android']}" class="form-control" placeholder="Android">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-apple"></i></span>
+                  <input type="text" name="sums[{$date}][{$v['id']}][ios]" value="{$sum['ios']}" class="form-control" placeholder="iOS">
+                </div>
+              </td>
+</volist>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

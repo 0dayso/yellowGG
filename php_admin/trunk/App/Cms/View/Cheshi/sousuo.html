@@ -1,0 +1,87 @@
+<div id="content">
+    <!--breadcrumbs-->
+    
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!--<div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>{$formTitle}</h5>
+                </div>-->
+                <div>
+                    <form class="form-horizontal" id="form-search" method="GET">
+                        <div class="controls"> 
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value="1">最新认证</option>
+                                <option value="2">被赞最多</option>
+                            </select>
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left;margin-left:4px">
+                                <option value="1">全部</option>
+                                <option value="2">男</option>
+                                <option value="2">女</option>
+                            </select>
+                            　　　　　　　<input type="checkbox" name="keyword" id="form-search-key"  >视频认证通过 
+                            　　　<input type="checkbox" name="keyword" id="form-search-key"  >照片数 >= 4  
+                            <input type="text" name="keyword" id="form-search-key"  style="width:100px;"> 
+
+                            <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                        </div>
+                    </form>
+
+                </div>
+                
+                <div>
+                    <form action="{:U('Accusation/allocate_task_to_admin',array('menu'=>$menu,'type'=>$type))}" method="POST">
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">认证标签 / 被赞次数</th>
+                                    <th style="text-align:center">被推荐次数 / 上次被推荐时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.uid}</td>
+                                        <td style="text-align:center">{$vo.report_type}</td>
+                                        <td style="text-align:center">{$vo.sub_time}</td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                       
+                    </form>
+                </div>
+
+                <div>
+                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+                        <!--<input type="hidden" id="list" value="{$list}" />-->
+                        <div style="float: right">
+                            <input type="submit" id="confirm" class="btn btn-primary btn-sm" value="确认"/>
+                        </div>
+                    </if>
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

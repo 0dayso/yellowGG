@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="aid" value="{$_REQUEST['aid']}">
+          <input type="hidden" name="filter" value="{$_REQUEST['filter']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="type" class="form-control">
+              <option value="">操作类型</option>
+<volist name="data['oper_types']" id="v">
+              <option value="{$key}"<php>echo (string)$key == $_REQUEST['type'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="aid" class="form-control">
+              <option value="">操作人</option>
+<volist name="data['admins']" id="v">
+              <option value="{$v['aid']}"<php>echo $_REQUEST['aid'] == $v['aid'] ? ' selected' : '';</php>>{$v['nickname']}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词、用户ID..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1&page_size=export',$_GET)}" class="btn btn-success">导出</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th style="min-width:6em;">管理员</th>
+              <th style="min-width:12em;">时间</th>
+              <th style="min-width:8em;">操作</th>
+              <th style="min-width:6em;">用户ID</th>
+              <th style="min-width:4em;">性别</th>
+              <th class="text-left">详细</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sexs = C('USER_SEX_IS');
+$usr = $data['oper_users'][$v['uid']] ?: [];
+</php>
+            <tr>
+              <td>{$v['id']}</td>
+              <td>{$data['oper_admins'][$v['aid']]['nickname'] ?: $v['aid']}</td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td>{$data['oper_types'][$v['type']] ?: $v['type']}</td>
+              <td>
+                <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+              </td>
+              <td>{$sexs[$usr['sex']]}</td>
+              <td class="text-left">
+                <div class="pull-left">{$v['remark']}</div>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

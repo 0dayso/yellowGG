@@ -1,0 +1,53 @@
+<style>
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="clearfix">
+            <a href="{:U('add')}" class="btn btn-success pull-right">新增管理员</a>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>名称</th>
+                  <th>Email</th>
+                  <th>创建时间</th>
+                  <th>最后登录</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['aid']}</td>
+                  <td title="{$v['nickname']}">{$v['nickname']}</td>
+                  <td>{$v['email']}</td>
+                  <td>{$v['create_time'] ?: '-'}</td>
+                  <td>{$v['last_login_time'] ?: '-'}</td>
+                  <td>
+                    <a href="{:U('edit?id='.$v['aid'])}" class="btn btn-primary btn-mini">修改</a>
+                    <a href="{:U('del?id='.$v['aid'])}" class="btn btn-danger btn-mini" onclick="return confirm('确定这么做？')">删除</a>
+                  </td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

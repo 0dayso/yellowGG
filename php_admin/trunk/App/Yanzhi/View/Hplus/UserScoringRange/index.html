@@ -1,0 +1,47 @@
+<div id="content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>列表</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </div>
+    </div>
+    <a href="{:U('add')}" class="btn btn-primary btn-sm pull-right">新增</a>
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr class="gradeX">
+              <th>ID</th>
+              <th>班次</th>
+              <th>起止时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>{$v['name']}</td>
+              <td>{:date('H:i',$v['work_start'] + strtotime(date('Y-m-d')))} - {:date('H:i',$v['work_end'] + strtotime(date('Y-m-d')))}</td>
+              <td>
+                <a href="{:U('edit?id='.$v['id'])}" class="btn btn-primary btn-mini">修改</a>
+                <a href="{:U('del?id='.$v['id'])}" class="btn btn-danger btn-mini">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+      <div class="clearfix"></div>
+      <div class="pagination alternate">
+        <ul>
+          <li style="text-align:center;color:#00f;">{$page}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/laydate/laydate.js"></script>

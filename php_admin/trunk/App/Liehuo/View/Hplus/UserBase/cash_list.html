@@ -1,0 +1,392 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.field-error { font-weight:bold; color:#E00; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class='clearfix'>
+        <form action="{:U()}" method="GET" class="filter form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">时间范围 <i class="caret"></i></button>
+              <ul class="dropdown-menu date-time-ranges"></ul>
+            </div>
+            <input type="text" name="stime" value="{$_REQUEST['stime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+            <span class="input-group-addon">到</span>
+            <input type="text" name="etime" value="{$_REQUEST['etime']}" class="form-control date-time" data-format="YYYY-MM-DD HH:mm">
+            <span class="input-group-addon">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group">
+            <select name="pay_type" class="form-control">
+              <option value="">提现方式</option>
+              <option value="2"<php>echo $_REQUEST['pay_type'] == '2' ? ' selected' : '';</php>>微信</option>
+              <option value="1"<php>echo $_REQUEST['pay_type'] == '1' ? ' selected' : '';</php>>支付宝</option>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <select name="pay_type2" class="form-control">
+              <option value="">提现方式</option>
+<volist name="data['pay_types']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pay_type'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="state" class="form-control">
+              <option value="">提现状态</option>
+<volist name="data['cash_states']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['state'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="50"<php>echo $_REQUEST['page_size'] == '50' ? ' selected' : '';</php>>50条</option>
+              <option value="100"<php>echo $_REQUEST['page_size'] == '100' ? ' selected' : '';</php>>100条</option>
+              <option value="200"<php>echo $_REQUEST['page_size'] == '200' ? ' selected' : '';</php>>200条</option>
+              <option value="500"<php>echo $_REQUEST['page_size'] == '500' ? ' selected' : '';</php>>500条</option>
+              <option value="1000"<php>echo $_REQUEST['page_size'] == '1000' ? ' selected' : '';</php>>1000条</option>
+              <option value="2000"<php>echo $_REQUEST['page_size'] == '2000' ? ' selected' : '';</php>>2000条</option>
+              <option value="20"<php>echo $_REQUEST['page_size'] == '20' ? ' selected' : '';</php>>20条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="姓名、账号..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success">导出</a>
+          <a href="{:U('cash_top')}" class="btn btn-success">排行榜</a>
+          <!--button type="submit" class="btn btn-success" form="form-trans-alipay">批量付款到支付宝</button-->
+          <a data-type="success" class="btn btn-success act-cash-handle-bat">批量通过审核</a>
+          <a data-href="{:U('cash_set_state?state=2')}" data-type="success" class="btn btn-success act-cash-set-state-bat">批量设置已成功</a>
+          <div class="btn-group">
+            <b class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+              批量设置已失败
+              <span class="caret"></span>
+            </b>
+            <ul class="dropdown-menu">
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">帐号和姓名不符合</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">未实名认证，额度受限</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">支付宝账户状态问题，如账户冻结</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">无效的支付宝帐号</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">真实姓名有误</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">支付宝账号存在多个重复账户</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">多个账号，涉嫌违规</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail">超时取消</a></li>
+              <li><a data-href="{:U('cash_set_state?state=3')}" class="act-cash-set-state-bat" data-type="fail" data-msg="由于提现系统升级造成异常，您的本次提现申请已失败，魅力已退还，有任何问题请联系烈火小秘书！">提现异常</a></li>
+            </ul>
+          </div>
+          <span class="btn btn-white">总金额：{$data['cash_total']}</span>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <form action="{:U('cash_confirm')}" method="POST" id="form-trans-alipay">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover text-center">
+            <thead>
+              <tr>
+                <th><label><input type="checkbox" class="check-all"> ID</label></th>
+                <th>用户ID</th>
+                <th>性别</th>
+                <th>提现金额</th>
+                <th>魅力值</th>
+                <th>支付方式</th>
+                <th>提现账号</th>
+                <th>真实姓名</th>
+                <th>身份证号</th>
+                <th>状态</th>
+                <th>申请时间</th>
+                <th>完成时间</th>
+                <th>失败原因</th>
+                <!--th>用户备注</th-->
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody class="list-cash">
+<volist name="data['list']" id="v">
+<php>
+$sexs = C('USER_SEX_IS');
+$usr = $data['users'][$v['uid']] ?: [];
+$pre = $data['prev_list'][$v['uid']] ?: [];
+$pre['reason'] && $pre['reason'] = '[上]'.$pre['reason'];
+$cls = ['','info','success','danger'];
+$is_ok = !in_array($v['state'],[0,1]);
+$rgd = ceil(($v['create_time'] - $usr['reg_time']) / 86400);
+</php>
+              <tr class="{$cls[$v['state']] ?: 'default'}">
+                <td>
+                  <label><input type="checkbox" name="ids[]" value="{$v['id']}"<php>echo in_array($v['state'],[0,1]) ? '' : ' disabled';</php>> {$v['id']}</label>
+                </td>
+                <td>
+                  <a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-{$usr['sex'] ? 'danger' : 'success'} popover-avatar" data-original-title="{$usr['nickname']}">{$v['uid'] ?: ''}</a>
+                  <b class="label label-danger">{:implode(' ',array_filter([
+                    boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : '',
+                    $usr['glory_grade'] ?: '',
+                    $data['contract_types'][$data['hosts'][$v['uid']]['contract_type']]['attrs']['name'],
+                  ]))}</b>
+<if condition="$rgd elt 5">
+                  <b class="label label-warning">{$rgd}天新用户</b>
+</if>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt NOW_TIME)">
+                  <b class="label label-danger">封</b>
+</if>
+                </td>
+                <td>{$sexs[$usr['sex']]}</td>
+                <td class="field-fee">{$v['fee_cash']}</td>
+                <td class="field-glamour">{$v['glamour']}</td>
+                <td>{$data['pay_types'][$v['pay_type']]}</td>
+                <td class="text-nowrap">
+                  <span class="field-account">{$v['pay_account']}</span>
+<if condition="$data['account_users'][$v['pay_account']]['cnt_user'] egt 2">
+                  <a href="{:U('',['pay_account' => $v['pay_account']])}" target="_blank" class="label label-danger">{$data['account_users'][$v['pay_account']]['cnt_user']}</a>
+</if>
+                </td>
+                <td class="field-name">{$v['pay_name']}</td>
+                <td class="field-idcard">{$v['pay_idcard']}</td>
+                <td>{$data['cash_states'][$v['state']]}</td>
+                <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+                <td>{$v['finish_time'] ? date('Y-m-d H:i:s',$v['finish_time']) : '-'}</td>
+                <td>
+                  <div class="td-content popover-hover">{$v['reason'] ?: $pre['reason'] ?: '-'}</div>
+                </td>
+                <!--td>{:htmlspecialchars($v['remark'])}</td-->
+                <td>
+                  <div class="btn-group" role="group">
+                    <b class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                      操作
+                      <span class="caret"></span>
+                    </b>
+                    <ul class="dropdown-menu">
+<if condition="in_array((string)$v['state'],['0','1']) && !$data['cash_queues'][$v['id']]">
+                      <li><a href="{:U('cash_handle?id='.$v['id'])}" class="act-cash-handle ajax-with-msg">通过审核</a></li>
+</if>
+<if condition="!$is_ok">
+                      <li><a href="{:U('cash_set_state?state=3&id='.$v['id'])}" class="act-cash-set-state">不通过</a></li>
+                      <li><a href="{:U('cash_set_state?state=2&id='.$v['id'])}" class="act-cash-set-state">已成功</a></li>
+</if>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+</volist>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+    <hr class="clearfix">
+    <div class="row-fluid">
+      <textarea class="form-control" placeholder="提现记录ID..."></textarea>
+      <button class="check-ids btn btn-primary">快速选择</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-cash-set" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-block" onsubmit="return confirm('真的要这么做？')">
+        <input type="hidden" name="resource">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">提现审核</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>原因：</label>
+            <input type="text" name="reason" placeholder="必填" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label>话术：</label>
+            <textarea name="msg" placeholder="必填，话术将以系统消息发送给用户" required class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <a class="btn btn-success act-cash-set-reason" data-type="success">提现成功</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">帐号和姓名不符合</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">未实名认证，额度受限</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">支付宝账户状态问题，如账户冻结</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">无效的支付宝帐号</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">多个账号，涉嫌违规</a>
+            <a class="btn btn-danger act-cash-set-reason" data-type="fail">超时取消</a>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.cash_msgs =
+{
+  'success' : '您的%fee%提现申请已通过审核，即将转入您的支付宝账号！',
+  'fail'    : '您的%fee%提现申请已失败，原因【%reason%】，已退还，有任何问题请联系烈火小秘书！'
+};
+
+$(document).on('require.ready',function()
+{
+  $('body')
+  .on('click','.check-all:checkbox',function()
+  {
+    var the = $(this);
+    the.parents('form:first').find(':checkbox:enabled').prop('checked',this.checked);
+  })
+  // 提现审核
+  .on('click','.act-cash-set-state',function()
+  {
+    var obj = $(this),
+        url = obj.attr('data-href') || obj.attr('href'),
+        row = obj.parents('tr:first'),
+        box = $('#modal-cash-set');
+    if(box.length < 1) return confirm('真的要这么做吗？');
+    box.modal().find('form:first').attr('action',url)
+    .data('fee',row.find('.field-fee').text())
+    .data('glamour',row.find('.field-glamour').text());
+    $(window).trigger('resize');
+    return false;
+  })
+  .on('click','.act-cash-set-reason',function()
+  {
+    var the = $(this),
+        frm = the.parents('form:first'),
+        fee = frm.data('fee') || '',
+        gla = frm.data('glamour') || '',
+        rea = the.attr('data-reason') || the.text() || '其他',
+        msg = $.trim(the.attr('data-msg')) || window.cash_msgs[the.attr('data-type')];
+    if(gla) msg = msg.replace(/%fee%/gi,gla ? (gla + '魅力（%fee%）') : '');
+    msg = msg.replace(/%fee%/gi,fee ? (fee + '元') : '');
+    msg = msg.replace(/%reason%/gi,rea);
+    frm.find('[name="reason"]').val(rea);
+    frm.find('[name="msg"]').val(msg);
+  })
+
+  // 批量设置状态
+  .on('click','.act-cash-set-state-bat',function()
+  {
+    var the = $(this),
+        url = the.attr('data-href') || the.attr('href'),
+        rea = the.attr('data-reason') || the.text() || '其他',
+        tip = $.trim(the.attr('data-msg')) || window.cash_msgs[the.attr('data-type') || 'success'],
+        lst = $('.list-cash tr input[name="ids[]"]:checked:enabled');
+    if(lst.length < 1) alert('请选择记录');
+    else if(confirm('真的要这么做吗？')) (function(i,fun)
+    {
+      fun(i || 0,fun);
+    })
+    (0,function(i,fun)
+    {
+      var chk = lst.eq(i),
+          _id = chk.val(),
+          row = chk.parents('tr:first'),
+          fee = row.find('.field-fee').text(),
+          msg = tip;
+      msg = msg.replace(/%fee%/gi,fee ? (fee + '元') : '');
+      msg = msg.replace(/%reason%/gi,rea);
+      $.ajax(
+      {
+        url:url,
+        type:'POST',
+        data:{id:_id,reason:rea,msg:msg},
+        dataType:'json'
+      })
+      .done(function(data)
+      {
+        data.info && require(['messenger-future'],function()
+        {
+          Messenger().post(
+          {
+            type:data.status == 1 ? 'success' : 'error',//info
+            message:data.info + '(' + _id + ')'
+          });
+        });
+        if(data.status == 1)
+        {
+          chk.prop('checked',false).attr('disabled',true);
+          row.find('.btn').addClass('disabled');
+          if(i < lst.length - 1) setTimeout(function(){fun(i + 1,fun)},100);
+        }
+      });
+      console.log([_id,rea,msg,url]);
+    });
+  })
+
+  // 批量通过审核
+  .on('click','.act-cash-handle-bat',function()
+  {
+    var the = $(this),
+        url = the.attr('data-href') || the.attr('href'),
+        lst = $('.list-cash tr input[name="ids[]"]:checked:enabled');
+    if(lst.length < 1) alert('请选择记录');
+    else if(confirm('真的要这么做吗？')) (function(i,fun)
+    {
+      fun(i || 0,fun);
+    })
+    (0,function(i,fun)
+    {
+      var chk = lst.eq(i),
+          _id = chk.val(),
+          row = chk.parents('tr:first'),
+          fee = row.find('.field-fee').text();
+      row.find('.act-cash-handle').trigger('click');
+      if(i < lst.length - 1) setTimeout(function(){fun(i + 1,fun)},500);
+    });
+  })
+
+  .on('click','.check-ids',function()
+  {
+    var ids = $.trim($(this).siblings(':enabled').val()),
+        arr = ids.match(/\b\d+\b/gi) || [],
+        lst = $('.list-cash tr input[name="ids[]"]:checkbox:enabled');
+    $.each(arr,function(i,v)
+    {
+      lst.filter('[value="' + v + '"]').prop('checked',true);
+    });
+  })
+  .on('submit','form#form-trans-alipay',function()
+  {
+    if($(this).find('td:contains(\'),td:contains(^),td:contains(|)').length) return confirm('提现信息可能存在非法字符，确定提交？？？');
+  });
+
+  (function()
+  {
+    $('.field-account,.field-name,.field-idcard,.field-fee').each(function(i)
+    {
+      var the = $(this),
+          val = $.trim(the.text() || the.val()),
+          ret = true;
+      if(val)
+      {
+        if(the.is('.field-account')) ret = /^(1\d{10}|\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*|o[\w-]{27})$/i.test(val);
+        if(the.is('.field-name'))    ret = !/['\\\/^|]/i.test(val);
+        if(the.is('.field-fee'))     ret = (parseInt($.trim(val)) || 0) < 199;
+        if(!ret) the.addClass('field-error');
+      }
+    });
+  })();
+});
+</script>

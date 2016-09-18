@@ -1,0 +1,108 @@
+ 
+<div id="content">
+   	<div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <form action="" method="get">
+                    <div style="float:left;line-height:30px">开始时间：</div>
+
+                    <div class="col-md-2" style="float:left">
+                        <input name="s_date" type="text" value="{$post.s_date}" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="选择时间" >
+                    </div>
+
+                    <div style="float:left;line-height:30px">结束时间：</div>
+                 
+                    <div class="col-md-2" style="float:left">
+                        <input name="t_date" type="text" value="{$post.t_date}" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="选择时间" >  
+                    </div>
+
+                    <select name="aid" class="form-control m-b" style="width:110px;float:left"> 
+                        <option value="0">管理员</option>
+                        <volist name="alist" id="vo">
+                            <option value="{$vo.aid}" <if condition="$vo['aid'] eq $post['aid']" >selected</if> >{$vo.nickname}</option>
+                        </volist>
+                    </select>
+                    
+                    <div class="col-md-2" style="float:left">
+                        <input name="uid" type="text" value="" placeholder="用户初见ID"  class="form-control" >
+                    </div>
+
+                    <select name="type" class="form-control m-b" class="form-control m-b" style="width:110px;float:left"> 
+                        <option value="0">操作类别</option>
+                        <option value="1" <if condition="$post.type eq 1" >selected</if> >视频认证</option>
+                        <option value="2" <if condition="$post.type eq 2" >selected</if> >车辆认证</option>
+                        <option value="3" <if condition="$post.type eq 3" >selected</if> >举报</option>
+                        <option value="4" <if condition="$post.type eq 4" >selected</if> >个人材料</option>
+                        <option value="5" <if condition="$post.type eq 5" >selected</if> >打分信息</option>
+                        <option value="6" <if condition="$post.type eq 6" >selected</if> >账号设置</option>
+                    </select>
+                    &nbsp;<input type="submit" value="确定" class="btn btn-primary btn-sm" >
+                </form>
+            </div>
+
+            <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>管理员操作记录</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="video['list']" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:left">{$vo.certificate_time}{$vo.aid} {$vo.result}  {$vo.uid} 视频认证,备注：{$vo.remark}</td>
+                            </tr>
+                        </volist>
+
+                        <volist name="car['list']" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:left">{$vo.certificate_time}{$vo.aid} {$vo.result}  {$vo.uid} 车辆认证,备注：{$vo.remark}</td>
+                            </tr>
+                        </volist>
+
+                        <volist name="request['list']" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:left">{$vo.certificate_time}{$vo.aid} {$vo.result}  {$vo.uid} 举报,备注：{$vo.remark}</td>
+                            </tr>
+                        </volist>
+
+                        <volist name="uinfo['list']" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:left">{$vo.pass_time}{$vo.aid} {$vo.result} {$vo.uid} 的相片</td>
+                            </tr>
+                        </volist>
+
+                        <volist name="rate['list']" id="vo">
+                            <tr class="gradeX"> 
+                                <td style="text-align:left">
+                                    {$vo.time|date='Y-m-d H:i:s',###}{$vo.aid} 给 {$vo.uid}  的<if condition="$vo['type'] eq 0 " >车辆<else/>颜值</if>打分 {$vo.rate}</td>
+                            </tr>
+                        </volist>
+                        <volist name="nmber['list']" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:left">
+                                    {$vo.time|date='Y-m-d H:i:s',###}{$vo.aid} 把 {$vo.uid}  加入
+                                        <if condition="$vo['type'] EQ 0">
+                                            正常用户
+                                        <elseif condition="$vo['type'] EQ 1"/>
+                                            测试帐号
+                                        <else />
+                                            地推帐号
+                                        </if>
+                                </td>
+                            </tr>
+                        </volist>
+
+                        </tbody>
+                    </table>
+
+                    <div class="pagination alternate">
+                        <ul>
+                            <li style="text-align: center;color: #0000ff">{$video.show}{$car.show}{$request.show}{$uinfo.show}{$rate.show}{$nmber.show}</li>
+                        </ul>
+                    </div>
+        </div>
+         
+    </div>
+    <!--Action boxes-->
+</div> 
+<script src="/Public/layer/laydate/laydate.js"></script>

@@ -1,0 +1,43 @@
+<div id="content">
+  <div class="container-fluid">
+    <form action="{:U('broker_reg')}" method="post" role="form" class="form-horizontal m-t">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">经纪人名称：</label>
+        <div class="col-sm-3">
+          <input type="text" name="nickname" value="" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">手机号：</label>
+        <div class="col-sm-3">
+          <input type="text" name="phone" value="" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">性别：</label>
+        <div class="col-sm-3">
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+          <label class="radio-inline"><input type="radio" name="sex" value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>> {$v}</label>
+</volist>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">密码：</label>
+        <div class="col-sm-3">
+          <input type="text" name="password" value="" class="form-control">
+        </div>
+      </div>
+      <div class="hr-line-dashed"></div>
+      <div class="form-group">
+        <div class="col-sm-12 col-sm-offset-3">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <a href="{:U('index?type=4')}" class="btn btn-info">返回列表</a>
+        </div>
+      </div>
+    </form>
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+<script src="__PUBLIC__/js/app.comm.js"></script>

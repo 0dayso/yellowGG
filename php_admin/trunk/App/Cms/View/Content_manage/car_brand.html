@@ -1,0 +1,77 @@
+ 
+<div id="content">
+ 
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!--<div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>{$formTitle}</h5>
+                </div>-->
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls">
+                            <select id="form-search-type" class="form-control m-b" style="width:110px;float:left">
+                                <option value=1>按id</option>
+                                <option value=2>按品牌</option>
+                            </select>
+                            <div class="col-md-2">
+                                <input type="text" name="keyword" id="form-search-key" class="form-control">
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'index'">汽车品牌<else />回收站</if></h5>-->
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>汽车品牌</th>
+                            <th>图片</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td>{$vo.id}</td>
+                                <td style="text-align:center">{$vo.name}</td>
+                                <td style="text-align:center;"><img style="width:80px;height:80px" src="{$Think.config.CAR_LOGO_PATH}{$vo.id}.png">
+                                    <form action="__CONTROLLER__/upload?id={$vo.id}" enctype="multipart/form-data" method="post" >
+                                        <input type="file" name="选择图片" value="选择图片" />&nbsp;&nbsp;
+                                        <input type="submit" value="上传" >
+                                    </form>
+                                </td>
+                                <td style="text-align:center">
+                                    <a href="{:U('ContentManage/car_model/', array('model'=>$vo['id']))}" class="btn btn-primary btn-mini">查看所有车型</a>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    $(function(){
+        $('#form-search').on('submit',function() {
+            var key = $('#form-search-key').val();
+            var searchType = $('#form-search-type option:selected').val();
+            location.href="{:U('ContentManage/car_model')}?type="+searchType+"&keyword="+key;
+            return false;
+        });
+    });
+</script>
+ 

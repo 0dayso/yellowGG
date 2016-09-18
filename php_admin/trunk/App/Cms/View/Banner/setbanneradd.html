@@ -1,0 +1,273 @@
+<div id="content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>元素</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <a href="{:U('Banner/setbanner')}" class="btn btn-primary btn-sm" style="float:right">返回列表</a>
+        <div class="ibox-content">
+            <form role="form" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  > 
+                <input type="hidden" value="{$info['id']}"     name="id" >
+                <input type="hidden" value="{$info['thumb']}"  name="thumb" >
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">标题：</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="title" value="{$info.title}" class="form-control" style="width:375px">
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">上传图片：</label>
+                    <div class="col-sm-3">
+                        <input type="file" name="file" class="form-control" >
+                    </div>
+                    <if condition="!empty($info)" ><img src="{:C('BANNER_PATH')}banner/{$info.thumb}" width="100" height="100"></if>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">点击后是否消失：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="1"  name="clickoff" <if condition="$info['clickoff'] eq 1" >checked</if>  >是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="0"  name="clickoff"  <if condition="$info['clickoff'] eq 0" >checked</if> >否
+                        </label>
+                         
+                    </div>
+                </div>
+                
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">内容：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="1"  name="type" <if condition="$info['type'] eq 1" >checked</if> >用户集合
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="2" name="type"  <if condition="$info['type'] eq 2" >checked</if> >个人主页
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="3"  name="type" <if condition="$info['type'] eq 3" >checked</if> >单个标签集合
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="4"  name="type" <if condition="$info['type'] eq 4" >checked</if> >动态集合
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="5"  name="type" <if condition="$info['type'] eq 5" >checked</if> >web页面
+                        </label>
+                    </div>
+                </div>
+                  
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">显示位置：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="0"  name="page" <if condition="$info['page'] eq 0" >checked</if>  >首页推荐
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="1"  name="page"  <if condition="$info['page'] eq 1" >checked</if> >动态最新
+                        </label>
+                         
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">展示顺序：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="1"  name="index" <if condition="$info['index'] eq 1">checked</if>>1
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="2"  name="index" <if condition="$info['index'] eq 2">checked</if>>2
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="3"  name="index" <if condition="$info['index'] eq 3">checked</if>>3
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="4"  name="index" <if condition="$info['index'] eq 4">checked</if>>4
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="5"  name="index" <if condition="$info['index'] eq 5">checked</if>>5
+                        </label>
+                    </div>
+                    <label class="col-sm-3 control-label">　　</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="6"  name="index" <if condition="$info['index'] eq 6">checked</if>>6
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="7"  name="index" <if condition="$info['index'] eq 7">checked</if>>7
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="8"  name="index" <if condition="$info['index'] eq 8">checked</if>>8
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="9"  name="index" <if condition="$info['index'] eq 9">checked</if>>9
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="10"  name="index" <if condition="$info['index'] eq 10">checked</if>>10
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">&nbsp;</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="11"  name="index" <if condition="$info['index'] eq 11">checked</if>>11
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="12"  name="index" <if condition="$info['index'] eq 12">checked</if>>12
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="13"  name="index" <if condition="$info['index'] eq 13">checked</if>>13
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="14"  name="index" <if condition="$info['index'] eq 14">checked</if>>14
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="15"  name="index" <if condition="$info['index'] eq 15">checked</if>>15
+                        </label>
+                    </div>
+                    <label class="col-sm-3 control-label">　　</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" value="16"  name="index" <if condition="$info['index'] eq 16">checked</if>>16
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="17"  name="index" <if condition="$info['index'] eq 17">checked</if>>17
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="18"  name="index" <if condition="$info['index'] eq 18">checked</if>>18
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="19"  name="index" <if condition="$info['index'] eq 19">checked</if>>19
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="20"  name="index" <if condition="$info['index'] eq 20">checked</if>>20
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">展示时间：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline" style="padding-left:0px">
+                            <input type="text" name="valid_begin" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                   class="laydate-icon form-control" placeholder="选择时间"
+                                   <if condition="$info['valid_begin'] neq ''" >
+                                       value="{$info['valid_begin']|date='Y-m-d H:i:s',###}"
+                                   <else/>
+                                       value=""
+                                   </if>
+
+                                    >
+                        </label>
+                        <label class="radio-inline" style="padding-left:0px">
+                            至
+                        </label>
+                        <label class="radio-inline" style="padding-left:0px">
+                            <input type="text" name="valid_end" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                   class="form-control laydate-icon" placeholder="选择时间"
+
+                                    <if condition="$info['valid_end'] neq ''" >
+                                        value="{$info['valid_end']|date='Y-m-d H:i:s',###}"
+                                        <else/>
+                                        value=""
+                                    </if>
+
+
+                                    >
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="hr-line-dashed"></div>
+            </form>
+            <div class="form-group draggable ui-draggable">
+                <div class="col-sm-12 col-sm-offset-3">
+                    <button class="btn btn-primary" type="submit" id="saved">下一步</button>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+
+
+        $('input[name="banner_type"]').click(function(){
+            var id = $(this).val();
+            $('.set-hide').hide();
+            $('#set-'+id).show();
+            $('.set-i').attr('name','');
+            $('#set-'+id).find('.set-i').attr('name','item');
+            if(id != 2){
+                $('input[name="options"]').attr('checked',false);
+            }
+
+        });
+
+        $('#saved').click(function(){
+            var banner_type = typeof($('input[name="type"]:checked').val());
+            var index       = typeof($('input[name="index"]:checked').val());
+            var valid_begin = $('input[name="valid_begin"]').val();
+            var valid_end   = $('input[name="valid_end"]').val();
+            var id          = "{$_GET['id']}";
+
+            if(banner_type == 'undefined' ){
+                layer.alert('请选择内容！');
+                return false;
+            }
+            if(index == 'undefined' && moveid =='undefined'  ){
+                layer.alert('展示置！');
+                return false;
+            }
+
+            if( typeof(valid_begin) == 'undefined' || typeof(valid_end)  == 'undefined' ){
+                layer.alert('请选择展示时间！');
+                return false;
+            }
+
+            // js判断时间有没有叠加
+            /*$.post("{:U('search/judgetime')}",{id:id,valid_begin:valid_begin,valid_end:valid_end,type:'Banner'},function(data){
+                if(data=='have'){
+                    layer.msg('对不起，时间和其它的banner有冲突！');
+                    return false;
+                }else if(data=='ok') {
+                    $('.form-horizontal').submit();
+                }else{
+                    layer.msg(data);
+                    return false;
+                }
+            });*/
+
+            $('.form-horizontal').submit();
+
+
+        });
+
+        $('input[name="options"]').click(function(){
+            $('.set-i').attr('name','');
+            $(this).parent().next().find('.set-i').attr('name','item');
+        });
+
+        $('input[name="index"]').click(function(){
+            clears('moveid');
+        });
+        $('input[name="moveid"]').click(function(){
+            clears('index');
+        });
+
+    });
+    
+    function clears(even){
+        $('input[name="'+even+'"]').each(function(i){
+            $('input[name="'+even+'"]').eq(i).prop('checked','');
+        });
+    }
+
+</script>
+ 

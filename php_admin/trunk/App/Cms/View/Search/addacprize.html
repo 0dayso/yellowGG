@@ -1,0 +1,113 @@
+<div id="content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>元素</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <?php $content = json_decode($info['content']); $pic = $content->p1;  ?>
+
+        <if condition="$fc eq 'host' || $fc eq 'deithost' " >
+            <a href="{:U('search/hostlist')}" class="btn btn-primary btn-sm" style="float:right">返回列表</a>
+        <else/>
+            <a href="{:U('search/prizelist')}" class="btn btn-primary btn-sm" style="float:right">返回列表</a>
+        </if>
+ 
+        <div class="ibox-content">
+            <form role="form" action="{$action}" class="form-horizontal m-t" method="post"  enctype="multipart/form-data"  > 
+                <input type="hidden" value="{$info['id']}"    name="id" >
+                <input type="hidden" value="{$info['u_tag']}" name="u_tag" >
+                <input type="hidden" value="{$info['uid']}"   name="uid" >
+                <input type="hidden" value="{$info['thumb']}" name="pic" >
+
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">认证位置：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            认证位置2
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">UID：</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="uid" class="form-control" value="10002" style="width:375px">
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">认证标签：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <if condition="$fc eq 'host' " >
+                            活动
+                            <else/>
+                            每日礼物
+                            </if>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">上传图片：</label>
+                    <div class="col-sm-3">
+                        <input type="file" name="file" class="form-control" style="width:375px">
+                    </div>
+                    <img src="http://surging.chujian.im/{$info.thumb}" width="100" height="100">
+                </div>
+                
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">文字描述：</label>
+                    <div class="col-sm-9">
+                        <textarea name="dis" id="dis" style="margin: 0px; width: 425px; height: 129px;">{$info.description}</textarea>
+                    </div>
+                </div>
+
+
+                    
+                <div class="hr-line-dashed"></div>
+            </form>
+            <div class="form-group draggable ui-draggable">
+                <div class="col-sm-12 col-sm-offset-3">
+                    <button class="btn btn-primary" type="submit" id="saved">保存内容</button>
+                    <button class="btn btn-white" type="submit">取消</button>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+ 
+        $('#saved').click(function(){
+
+            var banner_type =  $('#dis').val();
+            
+            /*var valid_begin = typeof($('input[name="valid_begin"]').val());
+            var valid_end   = typeof($('input[name="valid_end"]').val());*/
+            
+
+            if(banner_type == '' ){
+                layer.alert('请填写内容！');
+                return false;
+            }
+            
+
+            /*if(valid_begin == 'undefined' || valid_end  == 'undefined' ){
+                layer.alert('请选择展示时间！');
+                return false;
+            }*/
+ 
+            $('.form-horizontal').submit();
+
+        });
+
+        
+    });
+</script>
+ 

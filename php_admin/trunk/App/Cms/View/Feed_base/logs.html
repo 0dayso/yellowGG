@@ -1,0 +1,53 @@
+<style>
+.text-center th { text-align:center; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>动态ID</th>
+                  <th>发布人UID</th>
+                  <th>发布时间</th>
+                  <!--th>动态图片</th-->
+                  <th>操作类型</th>
+                  <th>操作管理员</th>
+                  <th>备注</th>
+                  <th>操作时间</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td><a href="{:U('view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id']}</a></td>
+                  <td><a href="{:U('User_base/view?id='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+                  <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+                  <!--td>
+                    <php>echo $v['resource'] ? ('<img src="__FEED_IMG_ROOT__'.$v['resource'].'" height="80">') : '';</php>
+                  </td-->
+                  <td>{$data['log_types'][$v['type']]}</td>
+                  <td>{$data['log_admins'][$v['aid']]['nickname']}</td>
+                  <td>{$v['remark']}</td>
+                  <td>{:date('Y-m-d H:i:s',$v['log_time'])}</td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div> 

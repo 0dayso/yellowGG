@@ -1,0 +1,90 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="clearfix">
+            <form action="{:U()}" method="GET" class="form-inline pull-left">
+              <input type="hidden" name="act" value="filter">
+              <div class="input-prepend input-group">
+                <span class="add-on input-group-addon">日期范围</span>
+                <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+              </div>
+              <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <div class="pull-right">
+              <a href="{:U('UserBase/virtual_users?type=4')}" class="btn btn-success">新增陪聊账号</a>
+              <a href="{:U('index')}" class="btn btn-primary">聊天配置</a>
+              <div class="btn-group">
+                <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover text-center">
+              <thead>
+                <tr>
+                  <th>用户ID</th>
+                  <th>用户昵称</th>
+                  <th>电话号码</th>
+                  <th>性别</th>
+                  <th>用户类型</th>
+                  <th>注册时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+<php>
+$sex = $v['sex'];
+$type_css = 'default';
+$v['type'] == 1 && $type_css = 'success';
+$v['type'] == 2 && $type_css = 'danger';
+$v['type'] == 3 && $type_css = 'warning';
+$alb = json_decode($v['album'],true) ?: [];
+</php>
+                <tr class="gradeX">
+                  <td>
+                    <span class="popover-avatar">{$v['uid']}</span>
+                    <b class="label label-danger">{:boolval($v['vip_level'] && $v['vip_valid_end'] >= time()) ? 'v' : ''}{$v['glory_grade'] ?: ''}</b>
+                  </td>
+                  <td title="{$v['nickname']}">
+                    <div class="td-content popover-hover">{$v['nickname_html'] ?: $v['nickname']}</div>
+                  </td>
+                  <td>
+<if condition="$v['phone']">{$v['phone']}</if>
+<if condition="$v['qq_open_id']">&nbsp;<i class="fa fa-2x fa-qq" style="color:#1BE;"></i></if>
+<if condition="$v['wx_open_id']">&nbsp;<i class="fa fa-2x fa-weixin" style="color:#0A0;"></i></if>
+                  </td>
+                  <td>{$Think.config.USER_SEX_IS.$sex}</td>
+                  <td><b class="label label-{$type_css}">{$data['user_types'][$v['type']]}</b></td>
+                  <td>{$v['reg_time'] ? date('Y-m-d H:i:s',$v['reg_time']) : '-'}</td>
+                  <td>
+                    <a href="{:U('user_base/view?uid='.$v['uid'])}" target="_blank" class="btn">查看资料</a>
+                    |
+                    <a href="{:U('robot/robotset?uid='.$v['uid'].'&sex='.$v['sex'])}"   class="btn btn-primary btn-mini">启动运营</a>
+                    <input type="checkbox" name="" value="{$v['uid']}" class="chat_set" <if condition="$v.robot eq 1 ">checked</if>  >
+                    <a href="{:U('robot/robotdel?uid='.$v['uid'].'&sex='.$v['sex'])}"   class="btn btn-danger ">取消运营</a>
+                    <a href="{:U('user_base/match_list?uid='.$v['uid'])}" target="_blank" class="btn btn-primary">匹配</a>
+                  </td>
+                </tr>
+</volist>     
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+

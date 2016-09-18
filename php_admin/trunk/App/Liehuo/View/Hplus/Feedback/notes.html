@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline">
+        <input type="hidden" name="act" value="filter">
+        <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group">
+          <select name="status" class="form-control">
+            <option value="">处理状态</option>
+<volist name="data['status']" id="v">
+            <option value="{$key}"<php>echo (string)$key == $_REQUEST['status'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+        <a href="{:U('?download=1&page_size=export',$_GET)}" class="btn btn-success pull-right">导出</a>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th style="min-width:12em;">咨询时间</th>
+              <th style="min-width:12em;">响应时间</th>
+              <th style="min-width:6em;">管理员</th>
+              <th style="min-width:8em;">状态</th>
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$cls = ['warning','info','danger','success'];
+</php>
+            <tr class="{$cls[$v['status']] ?: 'default'}">
+              <td>
+                <a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+              </td>
+              <td>{$v['start_time'] ? date('Y-m-d H:i:s',$v['start_time']) : '-'}</td>
+              <td>{$v['reply_time'] ? date('Y-m-d H:i:s',$v['reply_time']) : '-'}</td>
+              <td>{$data['admins'][$v['aid']]['nickname'] ?: $v['aid'] ?: '-'}</td>
+              <td>{$data['status'][$v['status']] ?: $v['status']}</td>
+              <td>
+                <div class="td-content popover-hover">{:htmlspecialchars($v['remark'])}</div>
+              </td>
+              <td>
+                <a href="{:U('UserBase/chat_logs?filter=feedback&day=30&uid='.$v['uid'])}" target="_blank" class="btn btn-primary">聊天记录</a>
+                <a href="{:U('index?uid='.$v['uid'])}" target="_blank" class="btn btn-success">对话</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

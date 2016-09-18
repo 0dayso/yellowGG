@@ -1,0 +1,43 @@
+<div id="content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>表单</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </div>
+    </div>
+    <div class="ibox-content">
+      <form action="{:U('save')}" method="post" role="form" class="form-horizontal m-t"> 
+        <input type="hidden" name="id" value="{$data['item']['id']}">
+        <div class="form-group draggable ui-draggable">
+          <label class="col-sm-3 control-label">班次：</label>
+          <div class="col-sm-3">
+            <input type="text" name="name" value="{$data['item']['name']}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group draggable ui-draggable">
+          <label class="col-sm-3 control-label">起止时间：</label>
+          <div class="col-sm-6">
+            <div class="pull-left">
+              <input type="time" name="work_start" value="{:date('H:i',(int)$data['item']['work_start'] - 60 * 60 * 8)}" class="form-control">
+            </div>
+            <div class="pull-left"> ~ </div>
+            <div class="pull-left">
+              <input type="time" name="work_end" value="{:date('H:i',(int)$data['item']['work_end'] - 60 * 60 * 8)}" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group draggable ui-draggable">
+          <div class="col-sm-12 col-sm-offset-3">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{:U('index')}" class="btn btn-info">返回列表</a>
+          </div>
+        </div>
+      </form>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/laydate/laydate.js"></script>

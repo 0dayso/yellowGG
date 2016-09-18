@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="POST" enctype="multipart/form-data" class="form-inline pull-left">
+          <div class="form-group">
+            <label>选择照片</label>
+            <input type="file" name="imgs[]" multiple accept="image/jpeg,.jpeg,image/png,image/gif">
+          </div>
+          <button type="submit" class="btn btn-primary">上传</button>
+          <div class="btn-group">
+            <span class="btn btn-white">导入数：{:count($data['phones'])}</span>
+            <span class="btn btn-white">匹配数：{:count($data['list'])}</span>
+          </div>
+        </form>
+        <form id="form_save" action="{:U('snap_send')}" method="POST" enctype="multipart/form-data" class="form-inline pull-right">
+          <button type="submit" class="btn btn-success">确认发送</button>
+        </form>
+      </div>
+      <hr>
+
+      <div class="table-responsive">
+        <table class="table table-bordered text-center list-user">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>昵称</th>
+              <th>性别</th>
+              <th>手机号</th>
+              <th>注册时间</th>
+              <th>活跃时间</th>
+              <th>注册渠道</th>
+              <th>图片</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>$sex = $v['sex'];</php>
+            <tr class="gradeX form-sub">
+              <td>
+                <label>
+                  <input type="checkbox" name="ids[{$v['uid']}]" value="{$v['uid']}"{$v['is_sent'] ? '' : ' checked'} form="form_save">
+                  {$v['uid'] ?: ''}
+                </label>
+              </td>
+              <td><a href="{:U('UserBase/view?uid='.$v['uid'])}" target="_blank">{$v['nickname'] ?: ''}</a></td>
+              <td>{$Think.config.USER_SEX_IS.$sex}</td>
+              <td class="field-phone" data-phone="{$v['phone']}">{$v['phone']}</td>
+              <td>{:date('Y-m-d H:i:s',$v['reg_time'])}</td>
+              <td>{$v['active_time'] ? date('Y-m-d H:i:s',$v['active_time']) : '-'}</td>
+              <td>{$v['pkg_channel']}</td>
+              <td>
+                <img src="__IM_IMAGE_URL_ROOT__{$v['resource']}" alt="{$v['resource']}" class="zoom" style="max-height:80px;">
+                <input type="hidden" name="resource[{$v['uid']}]" value="{$v['resource']}" form="form_save">
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.offline_phones = {:json_encode($data['phones'] ?: [])};
+
+$(document).on('require.ready',function()
+{
+  $('body');
+
+  (function()
+  {
+    var box = $('.list-user');
+    $.each(offline_phones || [],function(i,tel)
+    {
+      var reg = new RegExp(tel + '$'),
+          obj = box.find('.field-phone:contains("' + tel + '")').regexp(reg);
+      if(obj.length) obj.html(function()
+      {
+        var the = $(this),
+            old = the.text();
+        return old.replace(reg,'<b class="text-' + (obj.length > 1 ? 'danger' : 'success') + '">' + tel + '</b>');
+      });
+      else box.append('<tr><td colspan="99">' + tel + '</td></tr>');
+    });
+  })();
+});
+</script>

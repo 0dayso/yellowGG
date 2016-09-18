@@ -1,0 +1,288 @@
+<style>
+.animated { z-index:inherit; }
+.gradeX td,.gradeX th { text-align:center; }
+td:last-child .dropdown-menu { left:auto; right:0; min-width:inherit; }
+.text-center th { text-align:center; }
+#content { min-height:1200px; }
+.list-scoring tr { transition:all .2s ease-in-out; }
+.list-scoring td img { max-height:80px; cursor:zoom-in; transition:all .3s ease-in-out; }
+.list-scoring td .zoom:hover { opacity:.99; transform:scale(8); transform-origin:50% 10%; z-index:999; }
+.list-scoring td .thumbnail { display:inline-block; }
+.list-scoring td .form-control { display:inline-block; width:auto; }
+.list-scoring td [name="score"] { min-width:100px; }
+.list-scoring .act-scoring-quick { cursor:pointer; }
+.list-scoring .dropdown-toggle-hover .dropdown-menu { top:-100px; left:100%; right:auto; }
+.list-scoring .dropdown-menu { padding:4px 0; }
+.list-scoring .dropdown-menu > li > a { margin-top:0; margin-bottom:0; }
+.list-scoring .dropdown-menu > li:hover > a { background-color:#ccc; }
+.col-score { display:none !important; }
+.dropdown-toggle-hover:hover > .dropdown-menu { display:block; margin-top:0; }
+.dropdown-toggle-hover .btn.disabled ~ .dropdown-menu { display:none; }
+.dropdown-toggle-hover li:hover > .dropdown-menu { top:0; left:auto; right:100%; display:block; margin-top:0; }
+.horizontal .btn-group .dropdown-menu { top:100%; left:auto; right:auto; }
+.horizontal .btn-group:hover > .dropdown-menu { display:block; margin-top:0; }
+.btn.disabled ~ .horizontal .btn-group:hover > .dropdown-menu { display:none; }
+
+.scoring-box9 { width:600px; left:auto !important; right:-80px !important; }
+.scoring-box9 li { float:left; width:33.3333%; min-height:200px; position:relative; }
+.scoring-box9 li a { padding:0; }
+.scoring-box9 li img { display:block; width:100%; max-height:200px; opacity:.7; cursor:pointer; }
+.scoring-box9 li img:hover { opacity:1; }
+.scoring-box9 li .score { position:absolute; top:0; right:0; display:block; width:50px; height:50px; line-height:50px; padding:0; border-radius:999px; text-align:center; opacity:.88; }
+.scoring-box9-zoom li img { transition:all .3s ease-in-out; }
+.scoring-box9-zoom li img:hover { transform:scale(1.5); z-index:999; }
+.scoring-box9-zoom li:nth-child(1) img { transform-origin:000% 000%; }
+.scoring-box9-zoom li:nth-child(2) img { transform-origin:050% 000%; }
+.scoring-box9-zoom li:nth-child(3) img { transform-origin:100% 000%; }
+.scoring-box9-zoom li:nth-child(4) img { transform-origin:000% 050%; }
+.scoring-box9-zoom li:nth-child(6) img { transform-origin:100% 050%; }
+.scoring-box9-zoom li:nth-child(7) img { transform-origin:000% 100%; }
+.scoring-box9-zoom li:nth-child(8) img { transform-origin:050% 100%; }
+.scoring-box9-zoom li:nth-child(9) img { transform-origin:100% 100%; }
+
+.hover-show-img { position:relative; }
+.hover-show-img img { display:none; position:absolute; left:0; top:100%; }
+.hover-show-img:hover img { display:block; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <hr>
+          <a class="btn btn-default">{$_SESSION[C('USER_AUTH_KEY')]}</a>
+          <a class="btn btn-default">
+            班次：{:date('H:i',(int)$_SESSION['user-scoring-range']['work_start'] + strtotime(date('Y-m-d')))}
+            - {:date('H:i',(int)$_SESSION['user-scoring-range']['work_end'] + strtotime(date('Y-m-d')))}
+          </a>
+          &nbsp;
+          <a href="{:U('index/logout')}" class="btn btn-default">登出</a>
+          &nbsp;
+          <a class="btn btn-default hover-show-img">打分标准<img src="__ROOT__/images/dfbz.png"></a>
+          <a class="btn btn-default hover-show-img">违规示例<img src="__ROOT__/images/fails.jpg"></a>
+          <hr>
+          <div class="table-responsive-">
+            <table id="scoring-box" class="table table-bordered">
+              <thead>
+                <tr class="gradeX">
+                  <th>动态ID</th>
+                  <th>用户ID</th>
+                  <th>照片内容</th>
+                  <th>创建时间</th>
+                  <!--th>班次</th>
+                  <th>组别</th-->
+                  <th>响应时间</th>
+                  <th class="col-score">照片分值</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody class="list-scoring">
+  <tr class="gradeX" data-id="" style="display:none;">
+    <td>0</td>
+    <td>0</td>
+    <td><img src="http://surging.chujian.im/20150906/4ea6f83da01511cb468ddf25271b6cdc.png" class="zoom"></td>
+    <td>测试数据</td>
+    <!--td></td>
+    <td></td-->
+    <td><b class="scoring-timeout label label-default" data-time="{:time()}" data-timeout="1"></b></td>
+    <td class="col-score">
+      <input type="number" name="score-no" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+      <a class="act-scoring-no btn btn-primary btn-mini">打分</a>
+    </td>
+  </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-scoring-item">
+<$
+$ = _G.jQuery;
+tim = (_G.parseInt(create_time) || 0) * 1000;
+sex_obj = {'0':'男','1':'女'};
+$>
+  <tr class="gradeX animated- fadeInRightBig" data-id="<$=id$>">
+    <td><a href="{:U('Feed_base/view')}?id=<$=id$>" target="_blank" class="label label-primary"><$=id$></a></td>
+    <td>
+      <a href="{:U('User_base/view')}?uid=<$=uid$>" target="_blank" class="label label-default"><$=uid$></a>
+      <b class="badge"><$=sex_obj[sex] || ''$></b>
+    </td>
+    <td><i class="thumbnail"><img src="<$=img$>" class="zoom"></i></td>
+    <td><$=_G.moment(tim).format('YYYY-MM-DD HH:mm:ss')$></td>
+    <!--td></td>
+    <td></td-->
+    <td><b class="scoring-timeout label label-default" data-time="<$=tim$>" data-timeout="<$=timeout$>"></b></td>
+    <td class="col-score">
+      <input type="number" name="score" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+<$
+include('tpl-scoring-quick4');
+$>
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="tpl-scoring-quick3">
+      <a class="act-scoring btn btn-primary btn-mini hide">打分</a>
+      <div class="btn-group dropdown-toggle-hover horizontal">
+        <div class="btn-group">
+          <a class="btn btn-danger btn-sm">不合格</a>
+          <ul class="dropdown-menu">
+<$
+$.each(_G.Scoring.rank.fail,function(k,v)
+{
+  var sco = k;
+  if(!v.hidden)
+  {
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>" title="<$=v.msg$>"><$=v.reason$></a></li>
+<$
+  }
+});
+$>
+          </ul>
+        </div>
+<$
+//快捷打分
+scoring_quick =
+{
+  '5':[5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9],
+  '6':[6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9]
+};
+$.each(scoring_quick,function(k,v)
+{
+  var hsb = typeof v == 'object' && v,
+      sco = k;
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="<$=sco$>"><$=sco$></a>
+<$
+  if(hsb)
+  {
+$>
+          <ul class="dropdown-menu">
+<$
+    $.each(v,function(i2,v2)
+    {
+      var sco = v2;
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>"><$=sco$></a></li>
+<$
+    });
+$>
+          </ul>
+<$
+  }
+$>
+        </div>
+<$
+});
+
+include('tpl-scoring-box9',{score:7});
+include('tpl-scoring-box9',{score:8});
+include('tpl-scoring-box9',{score:9});
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="10">10</a>
+        </div>
+      </div>
+</script>
+
+<script type="text/html" id="tpl-scoring-quick4">
+      <a class="act-scoring btn btn-primary btn-mini hide">打分</a>
+      <div class="btn-group dropdown-toggle-hover horizontal">
+        <div class="btn-group">
+          <a class="btn btn-danger btn-sm">违规</a>
+          <ul class="dropdown-menu">
+<$
+$.each(_G.Scoring.rank.fail,function(k,v)
+{
+  var sco = k;
+  if(!v.hidden)
+  {
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>" title="<$=v.msg$>"><$=v.reason$></a></li>
+<$
+  }
+});
+$>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm score-rand" data-score="5">5</a>
+          <a class="act-scoring-quick btn btn-primary btn-sm score-rand" data-score="6">6</a>
+        </div>
+<$
+include('tpl-scoring-box9',{score:7});
+include('tpl-scoring-box9',{score:8});
+include('tpl-scoring-box9',{score:9});
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="10">10</a>
+        </div>
+      </div>
+</script>
+
+<script type="text/html" id="tpl-scoring-box9">
+  <div class="btn-group">
+    <a class="act-scoring-quick btn btn-primary btn-sm" data-score="<$=score$>"><$=score$></a>
+    <ul class="dropdown-menu scoring-box9">
+<$
+$.each(_G.Scoring['score_box9_' + score] || [],function(i,v)
+{
+  var sco = v.id / 10;
+$>
+      <li>
+        <a class="act-scoring-quick" data-score="<$=sco$>"><img src="<$=_G.Scoring.option.feed_img_root$><$=v.resource || '20151010/e09203b33d96983451b149e1d47c1ed9.jpg'$>"></a>
+        <span class="score label label-danger"><$=sco$></span>
+      </li>
+<$
+});
+$>
+    </ul>
+  </div>
+</script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.Scoring =
+{
+  route:
+  {
+    query:'{:U('query')}',
+    save :'{:U('save')}',
+    del  :'{:U('del')}'
+  },
+  option:
+  {
+    feed_img_root          : '{$feed_img_root}' || '//feed.chujian.im/',
+    feed_timeout           : parseInt('{$feed_timeout}') || 60,
+    feed_timeout_highlight : parseInt('{$feed_timeout_highlight}') || 1,
+    // Ajax刷新时间
+    ajax_interval          : (parseInt('{$ajax_interval}') || 3) * 1000
+  },
+  rank:
+  {
+    fail:{:json_encode($score_rank_fail ?: array())}
+  },
+  score_box9_7:{:json_encode($score_box9_7 ?: array())},
+  score_box9_8:{:json_encode($score_box9_8 ?: array())},
+  score_box9_9:{:json_encode($score_box9_9 ?: array())}
+};
+
+$(document).on('require.ready',function()
+{
+  require(['app-scoring']);
+});
+</script>

@@ -1,0 +1,99 @@
+ 
+<div id="content">
+ 
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <input type="hidden" id="menu" value="{$menu}" />
+                    <input type="hidden" id="type" value="{$type}" />
+                    <input type="hidden" id="feedback_data_id" value="{$feedback_data_id}" />
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'index'">等待审核<else />用户回收站</if></h5>-->
+                </div>
+
+                <div>
+                    <div class="widget-content nopadding">
+                        <table id="accusation_table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">初见号</th>
+                                <th style="text-align: center">反馈内容</th>
+                                <!--<th style="text-align: center">最后对话时间</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center">{$list.uid}</td>
+                                <td style="text-align: center">
+                                    <volist name="list.dialog" id="sub">
+                                        <!--<tr class="gradeX"><td style="text-align: center">{$sub.sub_time}</td></tr>-->
+                                        <if condition="$sub.sender_type EQ 1">
+                                            <div style="float: left">
+                                                {$sub.time}<br>
+                                                {$sub.sender}{$sub.text}<br>
+                                            </div>
+                                            <br><br>
+                                        <else />
+                                            <div style="float: right">
+                                                {$sub.time}<br>
+                                                {$sub.sender}{$sub.text}<br>
+                                            </div>
+                                            <br><br>
+                                        </if>
+
+                                    </volist>
+                                    <if condition="$menu EQ admin_task">
+                                        <div>
+                                            <input id="uid" type="hidden" value="{$list.uid}">
+                                            <input id="reply" style="float: left" type="text" style="width: 50%;height: 400%" />
+                                            <input id="reply_confirm" style="float: left" type="submit" value="回复" />
+                                        </div>
+                                    </if>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <if condition="$menu EQ admin_task">
+                <div>
+                    添加备注：<input id="remark_info" value="{$remark}">
+                    <input id="remark" type="submit" value="确认">
+                </div>
+            </if>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#reply_confirm').click(function(){
+            var uid  = $('#uid').val();
+            var menu = $('#menu').val();
+            var type = $('#type').val();
+            var reply = $('#reply').val();
+            var feedback_data_id = $('#feedback_data_id').val();
+
+            location.href ="{:U('FeedbackFactory/reply')}?menu="+menu+"&type="+type+"&reply="+reply+"&feedback_data_id="+feedback_data_id+"&uid="+uid;
+        });
+
+        $('#remark').click(function(){
+            var uid  = $('#uid').val();
+            var menu = $('#menu').val();
+            var type = $('#type').val();
+            var remark = $('#remark_info').val();
+            var feedback_data_id = $('#feedback_data_id').val();
+            location.href ="{:U('FeedbackFactory/remark')}?menu="+menu+"&type="+type+"&remark="+remark+"&feedback_data_id="+feedback_data_id+"&uid="+uid;
+        });
+    });
+</script> 

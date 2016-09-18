@@ -1,0 +1,116 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="operation" value="{$_REQUEST['operation']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="page_size" class="form-control">
+              <option value="">每页显示</option>
+              <option value="50"<php>echo $_REQUEST['page_size'] == '50' ? ' selected' : '';</php>>50条</option>
+              <option value="100"<php>echo $_REQUEST['page_size'] == '100' ? ' selected' : '';</php>>100条</option>
+              <option value="200"<php>echo $_REQUEST['page_size'] == '200' ? ' selected' : '';</php>>200条</option>
+              <option value="500"<php>echo $_REQUEST['page_size'] == '500' ? ' selected' : '';</php>>500条</option>
+              <option value="1000"<php>echo $_REQUEST['page_size'] == '1000' ? ' selected' : '';</php>>1000条</option>
+              <option value="2000"<php>echo $_REQUEST['page_size'] == '2000' ? ' selected' : '';</php>>2000条</option>
+              <option value="20"<php>echo $_REQUEST['page_size'] == '20' ? ' selected' : '';</php>>20条</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+<if condition="$_REQUEST['handled'] neq '1'">
+          <a class="btn btn-success act-user-field-pass-all">本页全部通过审核</a>
+</if>
+          <span class="btn btn-white">记录数：{$pager->totalRows}</span>
+        </div>
+      </div>
+      <div class="clearfix" style="margin-bottom:20px;">
+        <form id="form_closure" action="{:U('closure_bat')}" method="POST" class="form-inline" onsubmit="return confirm('真的要这么做？')">
+          <input type="text" name="remark" value="" placeholder="必填，备注..." class="form-control">
+          <label><input type="checkbox" name="has_device" value="1"> 同时封禁设备</label>
+          <button type="submit" class="btn btn-danger">批量封禁</button>
+        </form>
+      </div>
+      <div id="main-table" class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th><label><input type="checkbox" class="check-all" form="form_closure" data-target="[form='form_closure'][name^='ids[']"> 用户ID</label></th>
+              <th>内容</th>
+              <th>重复次数</th>
+              <th>更新时间</th>
+<if condition="$_REQUEST['handled'] == '1'">
+              <th>处理时间</th>
+</if>
+              <th>处理结果</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$url = U('view?uid='.$v['uid']);
+$usr = $data['users'][$v['uid']] ?: [];
+</php>
+            <tr>
+              <td>{$v['id']}</td>
+              <td>
+                <label><input type="checkbox" name="ids[{$v['uid']}]" value="{$v['uid']}" form="form_closure"></label>
+                <a href="{$url}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+                <b class="label label-danger">{:boolval($usr['vip_level'] && $usr['vip_valid_end'] >= time()) ? 'v' : ''}{$usr['glory_grade'] ?: ''}</b>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt time())">
+                <b class="label label-danger">封</b>
+</if>
+              </td>
+              <td>
+                <div class="td-content">{$v['text_html'] ?: $v['text']}</div>
+              </td>
+              <td>{$v['times']}</td>
+              <td>{$v['update_time'] ? date('Y-m-d H:i:s',$v['update_time']) : '-'}</td>
+<if condition="$_REQUEST['handled'] == '1'">
+              <td>{$v['handle_time'] ? date('Y-m-d H:i:s',$v['handle_time']) : '-'}</td>
+</if>
+              <td>
+                <a href="{:U('chat_logs?day=3&uid='.$v['uid'])}" target="_blank" class="btn btn-primary btn-sm">记录</a>
+<if condition="$v['handle_time'] == 0">
+                <a href="{$url}" target="_blank" class="btn btn-primary btn-sm">处理</a>
+                <a href="{:U('text_repeat_pass?id='.$v['id'])}" class="btn btn-success btn-sm act-user-field-pass">通过</a>
+<else/>
+                {$v['remark'] ?: '-'}
+</if>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+<if condition="$_REQUEST['handled'] neq '1'">
+        <a class="btn btn-success act-user-field-pass-all pull-right">本页全部通过审核</a>
+</if>
+        <div class="pagination alternate">
+          <ul>
+            <li style="text-align:center;color:#00f">{$page}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+});
+</script>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>初见管理后台</title>
+    <include file="Common:intohead" />
+</head>
+<body>
+<!--top-Header-menu-->
+<include file="Common:head" />
+<!--sidebar-menu-->
+<include file="Test:left" />
+<!--sidebar-menu-->
+<!--main-container-part-->
+<div id="content">
+    <!--breadcrumbs-->
+    <include file="Common:navbar" />
+    <!--End-breadcrumbs-->
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="quick-actions_homepage">
+        </div>
+        <!--end-main-container-part-->
+        <!--Footer-part-->
+        <include file="Common:foot" />
+        <!--end-Footer-part-->
+        <!--<script type="text/javascript">
+            // This function is called from the pop-up menus to transfer to
+            // a different page. Ignore if the value returned is a null string:
+            function goPage (newURL) {
+                // if url is empty, skip the menu dividers and reset the menu selection to default
+                if (newURL != "") {
+
+                    // if url is "-", it is this page -- reset the menu:
+                    if (newURL == "-" ) {
+                        resetMenu();
+                    }
+                    // else, send page to designated URL
+                    else {
+                        document.location.href = newURL;
+                    }
+                }
+            }
+            // resets the menu selection upon entry to this page:
+            function resetMenu() {
+                document.gomenu.selector.selectedIndex = 2;
+            }
+        </script>-->
+</body>
+</html>

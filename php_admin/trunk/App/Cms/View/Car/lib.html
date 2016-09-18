@@ -1,0 +1,74 @@
+ 
+<div id="content">
+ 
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <!--<div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <h5>{$formTitle}</h5>
+                </div>-->
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls">搜索:
+                            <select id="form-search-type">
+                                <option value=1>按id</option>
+                                <option value=2>按车型</option>
+                                <!--<option value=3>按品牌</option>-->
+                            </select>
+                            <input type="text" name="keyword" id="form-search-key">
+                            <input type="submit" value="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'lib'">汽车类型<else />回收站</if></h5>-->
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>车型</th>
+                            <th>品牌</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td>{$vo.id}</td>
+                                <td style="text-align:center">{$vo.name}</td>
+                                <td style="text-align:center">{$vo.modelName}</td>
+                                <td style="text-align:center">
+                                    <a href="{:U('Car/edit/')}" class="btn btn-primary btn-mini">添加</a>
+                                    <!--<a href="{:U('Car/edit/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini">修改</a>-->
+                                    <!--<a href="{:U('Car/delete/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini">删除</a>-->
+                                </td>
+                            </tr>
+                        </volist>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    $(function(){
+        $('#form-search').on('submit',function() {
+            var key = $('#form-search-key').val();
+            var searchType = $('#form-search-type option:selected').val();
+            location.href="{:U('Car/lib')}?type="+searchType+"&keyword="+key;
+            return false;
+        });
+    });
+</script>
+ 

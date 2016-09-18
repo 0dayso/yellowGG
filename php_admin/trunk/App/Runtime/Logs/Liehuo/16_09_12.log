@@ -1,0 +1,1438 @@
+[ 2016-09-12T11:18:33+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:18:34+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:18:34+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:18:34+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.6917438905070554
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:18:35+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-12 11:18:35' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0020s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473650315') [ RunTime:0.0010s ]
+NOTIC: [2048] Declaration of Common\Model\AuthModel::check() should be compatible with Think\Model::check($value, $rule, $type = 'regex') E:\workspace\liehuo\php_admin\trunk\App\Common\Model\AuthModel.class.php 第 117 行.
+SQL: SHOW COLUMNS FROM `cj_admin_auth_access` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_auth_rule` [ RunTime:0.0020s ]
+SQL: SELECT a.auth_id,r.id,r.name,r.title,r.condition FROM cj_admin_auth_access a left join cj_admin_auth_rule r on r.id = a.rule_id  WHERE a.auth_id = 54 AND r.status = 1  [ RunTime:0.0020s ]
+SQL: SELECT `id`,`name`,`title`,`condition` FROM `cj_admin_auth_rule` WHERE `status` = 1  [ RunTime:0.0020s ]
+
+[ 2016-09-12T11:18:36+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:20:55+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:21:00+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:21:01+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:21:11+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=&etime=&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:22:19+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:22:22+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'lh_stat.stat_live_guest_source' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `stat_live_guest_source`
+
+[ 2016-09-12T11:22:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'lh_stat.stat_live_gift_data' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `stat_live_gift_data`
+
+[ 2016-09-12T11:22:37+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_host_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'lh_stat.stat_live_host_data' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `stat_live_host_data`
+
+[ 2016-09-12T11:22:48+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+ERR: 1146:Table 'lh_stat.stat_live_guest_source' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `stat_live_guest_source`
+
+[ 2016-09-12T11:24:03+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:24:11+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:24:14+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_host_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:24:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14316464
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:24:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14313804
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-12T11:24:24+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:24:29+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:24:58+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:25:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:25:20+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:25:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:26:21+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:32:24+08:00 ] 127.0.0.1 /liehuo/index.php/analy/score_quality
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:32:27+08:00 ] 127.0.0.1 /liehuo/index.php/analy/score_quality
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:32:28+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/black_list
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:32:42+08:00 ] 127.0.0.1 /liehuo/index.php/analy/operation
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:32:45+08:00 ] 127.0.0.1 /liehuo/index.php/analy/operation
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:32:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/adver_stat
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:32:49+08:00 ] 127.0.0.1 /liehuo/index.php/analy/adver_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:32:56+08:00 ] 127.0.0.1 /liehuo/index.php/analy/daily_income
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:32:59+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_base
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-12T11:33:01+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_first
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:03+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_frequency
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_trace
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:07+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_amount
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_consume_frequency
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:10+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_vip_path
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:33:12+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:33:30+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:33:58+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:34:02+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:35:07+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:35:30+08:00 ] 127.0.0.1 /liehuo/index.php/analy/stat_pay_visit
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1146:Table 'chujiandw_test.cj_defined_map' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `cj_defined_map`
+
+[ 2016-09-12T11:35:41+08:00 ] 127.0.0.1 /liehuo/index.php/analy/daily_analy
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:35:43+08:00 ] 127.0.0.1 /liehuo/index.php/analy/been_thumb
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:35:45+08:00 ] 127.0.0.1 /liehuo/index.php/analy/daily_thumb
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:35:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/hourly_slide
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:35:48+08:00 ] 127.0.0.1 /liehuo/index.php/analy/been_thumb
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:02+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_host_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:04+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14621507
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-12T11:36:04+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14422491
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:04+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14639231
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:06+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14313804
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:07+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14316464
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13075865
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14443895
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14016059
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14503907
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14603710
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12916281
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14318196
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14259370
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:11+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14341179
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:12+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14327750
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:14+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14498074
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:15+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12484831
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:15+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14306284
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:15+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14127723
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:16+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14198986
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:16+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14429736
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:16+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13801752
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14565750
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14569561
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14314042
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14520812
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12966910
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14064556
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14662641
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14627732
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:17+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14073038
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:19+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14365828
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:20+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13611008
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:36:21+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14283059
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:21+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14031803
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:21+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14614057
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:31+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:36:33+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T11:37:03+08:00 ] 127.0.0.1 /liehuo/index.php/analy/hourly_slide
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:37:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/been_thumb
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T11:37:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/hourly_slide
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:01:02+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:47:12+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:50:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:51:53+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_host_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:46+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14639231
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:47+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14016059
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14443895
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13075865
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14316464
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14313804
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14365828
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14503907
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14603710
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=12916281
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14318196
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14259370
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14341179
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:49+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14422491
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:49+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14621507
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:49+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14327750
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14377402
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13013852
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13875816
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14393865
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14499143
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13793906
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14415457
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:51+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13583368
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:52:52+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13134660
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14283059
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13611008
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14031803
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14073038
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14614057
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14593941
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=14643677
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T12:53:10+08:00 ] 127.0.0.1 /liehuo/index.php/user_base/avatar?uid=13374267
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T12:54:39+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_gift_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T13:11:56+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_daily
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T13:20:30+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_data
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:get_data
+
+[ 2016-09-12T13:21:01+08:00 ] 127.0.0.1 /liehuo/index.php/analy/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:index
+
+[ 2016-09-12T13:21:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_data
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 非法操作:get_data
+
+[ 2016-09-12T13:21:36+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T13:22:20+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 非法操作:get_ndata
+
+[ 2016-09-12T13:30:18+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T13:31:10+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1146:Table 'lh_stat.stat_stat' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `stat_stat` 
+
+[ 2016-09-12T13:36:21+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndat
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:get_ndat
+
+[ 2016-09-12T13:36:25+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:36:56+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T13:37:31+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:39:27+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:39:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:39:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:39:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: Think\Controller:dispaly方法不存在！
+
+[ 2016-09-12T13:40:18+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndat
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 非法操作:get_ndat
+
+[ 2016-09-12T13:41:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndat
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:get_ndat
+
+[ 2016-09-12T13:41:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T13:41:09+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T13:41:55+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T13:42:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T13:54:17+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1146:Table 'lh_stat.stat_stat' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `stat_stat` 
+
+[ 2016-09-12T13:57:40+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T13:58:23+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:04:41+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:13:48+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:14:32+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:14:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:14:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:14:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:15:09+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:19:37+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:19:43+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:19:45+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:19:51+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:19:54+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:20:03+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:20:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:20:12+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:20:36+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:20:38+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:20:40+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:32:51+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 1054:Unknown column 'eq' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `stat_platform_info` WHERE (  eq ) AND (  1=1 ) LIMIT 1  
+
+[ 2016-09-12T14:32:52+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1054:Unknown column 'eq' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `stat_platform_info` WHERE (  eq ) AND (  1=1 ) LIMIT 1  
+
+[ 2016-09-12T14:33:26+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:33:42+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') ) AND (  (  lt ) AND (  ) ) LIMIT 1' at line 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `stat_platform_info` WHERE (  (  gt ) AND (  ) ) AND (  (  lt ) AND (  ) ) LIMIT 1  
+
+[ 2016-09-12T14:35:55+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:36:00+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:36:04+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-09-06/etime/2016-09-12/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-09-06/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:18+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-09-06/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-09-06/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=1970-01-01&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:36:37+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/1970-01-01/etime/2016-09-12/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:39+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/1970-01-01/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:36:42+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:36:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:36:52+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:40:17+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:40:19+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:40:27+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:40:29+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:42:00+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:43:14+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:43:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:44:40+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:45:04+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:45:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-08-29/etime/2016-09-12/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:45:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-08-29/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:47:26+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata/act/filter/stime/2016-08-29/etime/2016-09-12/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:47:58+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:48:02+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:48:07+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:48:19+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:49:43+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11&device=&ch_id=&adver_id=&pkg_id=&sex=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:49:50+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:49:52+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:50:03+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:50:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:50:12+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-07&etime=2016-09-09
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:50:19+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:50:29+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:50:32+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:52:36+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:52:37+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:52:41+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:52:44+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:52:48+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:52:52+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-07&etime=2016-09-09
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:52:55+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-06&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T14:53:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:56:51+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T14:59:29+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:10+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:21+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:22+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-29&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:24+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:26+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:00:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:00:31+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:00:45+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:00:48+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:23:13+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:25:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/live_guest_source
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:25:09+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_n
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:get_n
+
+[ 2016-09-12T15:25:31+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_n
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 非法操作:get_n
+
+[ 2016-09-12T15:25:34+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:25:35+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:27:40+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:27:44+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:27:47+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:29:20+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:44:46+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T15:50:38+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:50:41+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T15:50:45+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T17:38:43+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T18:50:21+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-08-14&etime=2016-09-12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-12T18:50:24+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-11&etime=2016-09-11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T18:50:27+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata?act=filter&uid=&type=&rdrs_type=&ad_serial=&time_type=&stime=2016-09-10&etime=2016-09-10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T18:50:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T18:51:25+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:19:20+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:21:04+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:21:14+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:22:49+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:23:30+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:24:06+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:30:57+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:35:04+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:35:39+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:36:05+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:36:26+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:38:04+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:38:28+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:44:16+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:49:37+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:50:27+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-12T19:53:53+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-12T19:54:08+08:00 ] 127.0.0.1 /liehuo/index.php/analy/get_ndata
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+

@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+<php>
+$dat = $data['item'] ?: [];
+</php>
+      <div class="clearfix">
+        <form action="{:U('robot_config_save')}" method="POST" class="form-inline">
+          <input type="hidden" name="id" value="{$_REQUEST['id']}">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon">截至时间为</span>
+              <input type="text" name="deadline" value="{$data['deadline'] ? intval($data['deadline'] / 60) : ''}" placeholder="必填" required class="form-control">
+              <span class="input-group-addon">分钟</span>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">每进1个真人，给</span>
+              <input type="text" name="robot_num" value="{$data['robot_num']}" placeholder="必填" required class="form-control">
+              <span class="input-group-addon">个假用户</span>
+            </div>
+          </div>
+          <hr style="margin:5px 0;">
+          <div class="input-group">
+            <span class="input-group-addon">直播时间</span>
+            <input type="text" name="valid_begin" value="{$dat['valid_begin'] ? intval($dat['valid_begin'] / 60) : ''}" placeholder="必填" class="form-control" style="max-width:4em;">
+            <span class="input-group-addon">-</span>
+            <input type="text" name="valid_end" value="{$dat['valid_end'] ? intval($dat['valid_end'] / 60) : ''}" placeholder="必填" class="form-control" style="max-width:4em;">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">虚假人数</span>
+            <input type="text" name="amount_min" value="{$dat['amount_min']}" placeholder="必填" class="form-control" style="max-width:4em;">
+            <span class="input-group-addon">-</span>
+            <input type="text" name="amount_max" value="{$dat['amount_max']}" placeholder="选填" class="form-control" style="max-width:4em;">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">每</span>
+            <input type="text" name="interval" value="{$dat['interval'] ? intval($dat['interval'] / 60) : ''}" placeholder="必填" class="form-control" style="max-width:4em;">
+            <span class="input-group-addon">分钟随机1次人数，并从假人中给</span>
+            <input type="text" name="popularity_min" value="{$dat['popularity_min']}" placeholder="必填" class="form-control" style="max-width:4em;">
+            <span class="input-group-addon">-</span>
+            <input type="text" name="popularity_max" value="{$dat['popularity_max']}" placeholder="选填" class="form-control" style="max-width:4em;">
+            <span class="input-group-addon">人气</span>
+          </div>
+          <hr style="margin:5px 0;">
+          <button type="submit" class="btn btn-primary">保存</button>
+        </form>
+      </div>
+      <hr>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr class="text-nowrap">
+              <th>ID</th>
+              <th>直播时间</th>
+              <th>虚假人数</th>
+              <th>规则</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['rules']" id="v">
+            <tr>
+              <td>{$key}</td>
+              <td>{:intval($v['valid_begin'] / 60)} - {:intval($v['valid_end'] / 60)} 分钟</td>
+              <td>{:intval($v['amount_min'])} - {:intval($v['amount_max'])}</td>
+              <td>每{:intval($v['interval'] / 60)}分钟随机1次人数，并从假人中给{$v['popularity_min']} - {$v['popularity_max']}人气</td>
+              <td class="text-nowrap">
+                <a href="{:U('?id='.$key)}" class="btn btn-primary">编辑</a>
+                <a href="{:U('?id='.$key)}" class="btn btn-danger" onclick="return confirm('真的要这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  $('.table tr').children(':last-child').attr('colspan',99);
+
+});
+</script>

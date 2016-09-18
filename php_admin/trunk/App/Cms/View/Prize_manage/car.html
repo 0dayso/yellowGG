@@ -1,0 +1,67 @@
+ 
+    <style  >
+        .nav-pills li{margin-left:10px}
+    </style>
+ 
+ 
+<div id="content">
+   
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                
+                <form class="form-horizontal" id="form-search" style="width:700px;float:left">
+                    <div class="controls"  >
+                        <div class="col-md-3" style="padding-left:0px">
+                            <input type="text" name="uid"  value="{$data.uid}" id="form-search-key" placeholder="初见ID" class="form-control">
+                        </div> 
+                        <input type="submit" class="btn btn-primary btn-sm" value="搜索" >
+                    </div>
+                </form>
+                
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>卡牌日志</th>
+                            <th>操作日志</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          
+                            <volist name="list" id="vo">
+                                <tr class="gradeX">
+                                    <td style="text-align:center">{$vo.uid}</td>
+                                    <td style="text-align:center">
+                                        <if condition="$vo.card eq ''" >
+                                            兑换所有卡牌清零
+                                        <else/>
+                                            获得卡牌 {$vo.card}
+                                        </if>
+                                    </td>
+                                    <td style="text-align:center">{$vo.guess_time|date='Y-m-d H:i:s',###}</td>
+                                </tr>
+                            </volist>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$data.page}</li>
+            </ul>
+        </div>
+    </div>
+
+
+   
+</div> 
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+ 

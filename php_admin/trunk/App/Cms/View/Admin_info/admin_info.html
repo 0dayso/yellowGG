@@ -1,0 +1,51 @@
+<div style="display: none" class="AdminInfo">
+
+    <form class="form-horizontal" id="password" onsubmit="return false">
+        <div class="col-lg-3" style="padding-left:0px">
+            <div class="widget lazur-bg p-xl">
+
+                <h2>{$list.nickname}</h2>
+                <ul class="list-unstyled m-t-md">
+                    
+                    <li>
+                        <span class="fa fa-home m-r-xs"></span>
+                        <label>上次登录时间：</label>
+                        {$list.last_login_time}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- <div class="control-group" style="clear:both">
+            <label class="control-label">昵称：</label>
+            <div class="controls">
+                <input type="text" style="border: 0" size="150" value="{$list.nickname}" readonly />
+            </div>
+        </div> -->
+        <input type="hidden" style="border: 0" size="150" value="{$list.nickname}" readonly />
+        <!-- <div class="control-group">
+            <label class="control-label">上次登录时间：</label>
+            <div class="controls">
+                <input type="text" style="border: 0" size="150" value="{$list.last_login_time}" readonly/>
+            </div>
+        </div> -->
+        <input type="hidden" style="border: 0" size="150" value="{$list.last_login_time}" readonly/>
+        <div class="control-group" style="clear:both">
+            <label class="control-label">修改密码：</label>
+            <div class="controls">
+
+                <div class="col-md-2" style="padding-left:0px">
+                    <input type="text" id="init_pwd" name="init_pwd" class="form-control" placeholder="*原始密码"/><br>
+                    <input type="text" placeholder="*请输入6位或6位以上新密码" id="change_pwd_first" name="change_pwd_first"  class="form-control"/><br> 
+                    <input type="text" placeholder="请再次输入新密码" id="change_pwd_confirm" name="change_pwd_confirm"  class="form-control"/>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="form-actions" style="text-align:left;clear:both;">
+            <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+        </div>
+    </form>
+</div>
+
+

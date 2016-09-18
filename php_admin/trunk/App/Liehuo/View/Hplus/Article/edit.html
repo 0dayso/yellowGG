@@ -1,0 +1,121 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('save')}" method="POST" class="form-horizontal">
+          <input type="hidden" name="id" value="{$data['item']['id']}">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">文章标题</label>
+            <div class="col-sm-10">
+              <input type="text" name="title" value="{$data['item']['title']}" placeholder="必填" maxlength="255" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">文章描述</label>
+            <div class="col-sm-10">
+              <input type="text" name="desc" value="{$data['item']['desc']}" placeholder="选填" maxlength="255" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">缩率图</label>
+            <div class="col-sm-6">
+              <input type="text" name="thumb" value="{$data['item']['thumb']}" placeholder="必填" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <input type="file" name="file" class="article-image-upload" data-url="{:U('upload')}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">文章内容</label>
+            <div class="col-sm-10">
+              <textarea name="content" class="form-control an-ckeditor">{$data['item']['content']}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">发布时间</label>
+            <div class="col-sm-10">
+              <input type="datetime" name="publish_time" value="{$data['item']['publish_time'] ? date('Y-m-d H:i:s',$data['item']['publish_time']) : ''}" placeholder="选填，格式：{:date('Y-m-d H:i:s')}" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-primary">保存</button>
+              <a href="{:U('index')}" class="btn btn-success">返回列表</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+  $('body')
+  .on('click','.article-image-upload',function()
+  {
+    var ipt = $(this),
+        box = ipt.parents('.form-group:first');
+    require(['jquery','blueimp-fileupload','messenger-future'],function($)
+    {
+      ipt.fileupload(
+      {
+        dataType:'json',
+        formData:{ajax:1},
+        change:function()
+        {
+          ipt.attr('disabled',true);
+        },
+        done:function(e,ret)
+        {
+          var data = ret.result || {};
+          data.info && Messenger().post(
+          {
+            type:data.status == 1 ? 'success' : 'error',//info
+            message:data.info,
+            showCloseButton:true
+          });
+          if(data.status && data.data)
+          {
+            var dat = data.data || {};
+            box.find('[name="thumb"]').val(dat.resource || dat.filename);
+          }
+          ipt.removeAttr('disabled');
+        }
+      });
+    });
+  });
+
+  require(['ckeditor-jquery'],function()
+  {
+    //for(name in CKEDITOR.instances) CKEDITOR.instances[name].destroy();
+    var ipt = $('.an-ckeditor'),
+        cfg =
+        {
+          //customConfig:'config.js',
+          language:'zh-cn',//zh-cn
+          //skin:'moono',
+          plugins:'dialogui,dialog,about,a11yhelp,dialogadvtab,basicstyles,bidi,blockquote,clipboard,button,panelbutton,panel,floatpanel,colorbutton,colordialog,templates,menu,contextmenu,div,resize,toolbar,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,forms,format,horizontalrule,htmlwriter,iframe,wysiwygarea,image,indent,indentblock,indentlist,smiley,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastetext,pastefromword,preview,print,removeformat,save,selectall,showblocks,showborders,sourcearea,specialchar,scayt,stylescombo,tab,table,tabletools,undo,wsc',
+          //extraPlugins:'emotion',
+          toolbar:
+          [
+            ['Source','-','Save'],['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],['Image','Flash','Smiley','SpecialChar'],'\/',
+            ['Bold','Italic','Underline','Strike','-'],['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],['Table','Templates','HorizontalRule'],
+            ['Link','Unlink','Anchor'],'\/',
+            ['Styles','Format','Font','FontSize'],['TextColor','BGColor'],['ShowBlocks']/*,['Maximize'],['Emotion']*/
+          ]
+        };
+    CKEDITOR.dtd.$editable.input = 1;
+    var cke = ipt.ckeditor(cfg).editor;
+    cke && cke.on('instanceReady',function(e)
+    {
+      //this.execCommand('maximize');
+    });
+  });
+
+});
+</script>

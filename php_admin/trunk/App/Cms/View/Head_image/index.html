@@ -1,0 +1,214 @@
+<style type="text/css">
+    .container-fluid{border: 1px solid #E1E1E4;}
+</style>
+ 
+<div id="content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <if condition="$type EQ 'unprocessed'">
+                        <div class="control-group">
+                            <div style="float: right" class="controls">清空用户自己删除的头像:
+                                <a href="{:U('HeadImage/clear_user_deleted_image/')}" class="btn btn-primary btn-mini" >清空</a>
+                            </div>
+                        </div>
+                    </if>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <ul id="inline">
+                        <volist name="list" id="vo">
+                            <li>
+                                <div class="row-fluid">
+                                    <div class="select_image">
+                                        <img src="{$Think.config.USER_HEAD_IMG}/{$vo.image}" width="200px" height="200px" >
+                                        <br>初见号:<a href="{:U('user/user_info',array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid']))}" target="_bank" >{$vo.uid}</a><input type="checkbox" class="image_check" id="{$vo.id}" name="image_check" value="{$vo.id}"/>
+                                        <p>上传时间:{$vo.sub_time}</p>
+                                        <if condition="$type EQ 'processed'">
+                                            <p>通过时间:{$vo.pass_time}</p>
+                                            <p>管理员:{$vo.nickname}</p>
+                                        </if>
+                                    </div>
+                                </div>
+                            </li>
+                        </volist>
+                    </ul>
+                </div> 
+ 
+
+
+                 <if condition="$type EQ 'unprocessed'">
+                    <div>
+                         
+                        <input type="submit" style="float:right;clear:both" id="confirm_all_pass" class="btn btn-w-m btn-warning" value="确认全部通过"/>
+                    </div>
+                </if> 
+
+                <if condition="$type EQ 'processed'">
+                    <div>
+                        <input type="submit" style="float: right;clear:both" id="confirm_all_certificated" class="btn btn-w-m btn-warning" value="确认审核结束"/>
+                    </div>
+                </if>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div> 
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+ 
+<script type="text/javascript">
+    $(function()
+    {
+
+        $('body')
+        .on('click','.xubox_bigimg img',function()
+        {
+          var src = $(this).attr('src');
+          src && window.open('{:U('show_img_full')}?src=' + encodeURIComponent(src));
+        });
+
+        //点击图片即可触发
+        layer.photosPage({
+            parent: '#inline',
+            title: '直接获取页面元素包含的所有图片',
+            id: 112 //相册id，可选
+        });
+
+         
+
+        var  arr  = [];
+        
+        $("#delete_selected_images").click(function() {
+
+            /*var  reason = $("input[name='reason']:checked").val();
+            if( typeof(reason) =='undefined' ){
+                layer.alert('请选择违规原因！');
+                return false;
+            }*/
+
+            $("input[name='image_check']:checked").each(function () {
+                var id = $(this).attr("checked",true).val();
+                arr.push(id.trim());
+            });
+            var delimg = confirm('确定要删除吗');
+            if(delimg==false){
+                return false;
+            }
+
+            $.ajax({
+                url: "__CONTROLLER__/delete_head_image",
+                type : "post",
+                data :{list:arr,reason:reason},
+                success : function(data) {
+                    if(data.info=='操作成功'){
+                        location.href="{:U('HeadImage/index',array('menu'=>'content_manage','type'=>'unprocessed'))}";
+                        return false;
+                    }
+                    else{
+                        bootbox.alert(data.info);
+                        commonAjaxSubmit('','#confirm');
+                    }
+                },
+                error: function(data){
+                    if(data.info=='操作成功'){
+                        bootbox.alert('修改成功');
+                        return false;
+                    }
+                    commonAjaxSubmit('','#loginform');
+                }
+            });
+        });
+
+        $("#confirm_all_pass").click(function() {
+            var pic_arr = [];
+
+
+            $(".image_check").each(function(i){
+                if($(".image_check").eq(i).attr('name')!='reason'){ // 不是于违规原因的
+                    $(".image_check").eq(i).attr('checked','checked');
+                    //$.uniform.update($(this));
+                }
+            });
+            $("input[name='image_check']:checked").each(function () {
+                var request_id = $(this).attr("checked",true).val();
+                pic_arr.push(request_id.trim());
+            });
+            layer.alert();
+            var ckpass = layer.confirm('确认要全部通过吗',function(){
+ 
+                $.ajax({
+                    url: "__CONTROLLER__/confirm_all_pass",
+                    type : "post",
+                    data :{list:pic_arr},
+                    success : function(data) {
+                        if(data.info=='操作成功'){
+                            location.href="{:U('HeadImage/index',array('menu'=>'content_manage','type'=>'unprocessed'))}";
+                            return false;
+                        }else{
+                            layer.alert(data.info);
+                            layer.close(ckpass);
+                            //commonAjaxSubmit('','#confirm');
+                        }
+                    },
+                    error: function(data){
+                        if(data.info=='操作成功'){
+                            layer.alert('修改成功');
+                            layer.close(ckpass);
+                            return false;
+                        }
+                        //commonAjaxSubmit('','#loginform');
+                    }
+                });
+            });
+
+
+
+        });
+
+        $("#confirm_all_certificated").click(function() {
+            var certificate_arr = [];
+            $(".image_check").each(function(i){
+                $(".image_check").eq(i).attr('checked','checked');
+                //$.uniform.update($(this));
+            });
+            $("input[name='image_check']:checked").each(function () {
+                var certificate_id = $(this).attr("checked",true).val();
+                certificate_arr.push(certificate_id.trim());
+            });
+            var passrz = confirm('确认要全部通过吗');
+            if(passrz==false){
+                return false;
+            }
+            $.ajax({
+                url: "__CONTROLLER__/confirm_all_certificated",
+                type : "post",
+                data :{list:certificate_arr},
+                success : function(data) {
+                    if(data.info=='操作成功'){
+                        location.href="{:U('HeadImage/index',array('menu'=>'content_manage','type'=>'processed'))}";
+                        return false;
+                    }
+                    else{
+                        bootbox.alert(data.info);
+                        commonAjaxSubmit('','#confirm');
+                    }
+                },
+                error: function(data){
+                    if(data.info=='操作成功'){
+                        bootbox.alert('修改成功');
+                        return false;
+                    }
+                    commonAjaxSubmit('','#loginform');
+                }
+            });
+        });
+    });
+</script>
+ 

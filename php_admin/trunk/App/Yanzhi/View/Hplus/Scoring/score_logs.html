@@ -1,0 +1,78 @@
+<style>
+.text-center th { text-align:center; }
+.date-range { min-width:200px; }
+.table-striped > tbody > tr:nth-of-type(odd) { background-color:#efefef; }
+.table-hover > tbody > tr:hover { background-color:#ececec; }
+.table tr .auto-rowspan,
+.table tr .auto-rowspan-identic { vertical-align:middle; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline">
+        <input type="hidden" name="act" value="filter">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group">
+          <input type="text" name="uid" value="{$_REQUEST['uid']}" placeholder="打分人ID" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center an-auto-rowspan-">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>动态ID</th>
+              <th>打分人ID</th>
+              <th>打分人班次</th>
+              <th>分数</th>
+              <th>最终得分</th>
+              <th>响应时间</th>
+              <th>打分时间</th>
+              <th>分配时间</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$rnk = json_decode($v['score_data'],true) ?: array();
+$sco = $v['score'];
+$v['score'] < 5 && $sco = $rnk['rank']['reason'];
+$v['score'] < 0 && $sco = '<span class="text-danger">未打分</span>';
+</php>
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td><a href="{:U('Feed_base/view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id']}</a></td>
+              <td>
+<if condition="$v['uid']">
+                <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a>
+<else/>
+                <a class="label label-info">官方</a>
+</if>
+              </td>
+              <td>{$data['ranges'][$v['uid']]['range_name']}</td>
+              <td>{$sco}</td>
+              <td>{$data['feeds'][$v['feed_id']]['base_score'] ?: ''}</td>
+              <td>{$v['score_time'] ? ($v['score_time'] - $v['assign_time']) : '-'}</td>
+              <td>{$v['score_time'] ? date('Y-m-d H:i:s',$v['score_time']) : '-'}</td>
+              <td>{$v['assign_time'] ? date('Y-m-d H:i:s',$v['assign_time']) : '-'}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

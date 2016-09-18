@@ -1,0 +1,61 @@
+ <!--sidebar-menu-->
+<!--main-container-part-->
+<div id="content">
+ 
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                    <label>车打分剩余{$count}条</label>
+                    <if condition="!empty($userinfo)" >
+                        <hr noshade="" color="#0066cc">
+                        <p>
+                        </p>
+                        <div class="control-group">
+                            <p>初见号:{$userinfo['uid']}</p>
+                            <p>昵称:{$userinfo['nickname']}</p>
+                            <p>年龄:{$userinfo['birthday']}</p>
+                            <p>性别:<if condition="$userinfo.sex eq 0  " >男<else/>女</if></p>
+                            <p>车辆品牌: {$userinfo['car_brand_name']}</p>
+                            <p>车辆型号: {$userinfo['car_model_name']}</p>
+                        </div>
+                        <div class="control-group" style="text-align:center">
+                                <img class="pic-rotate" id="car1" src="{:C('CERTIFICATE_CAR_PIC')}/{$userinfo.p1}"   />
+                        </div>
+
+                        <ul  class="nav nav-pills" style="clear:both; text-align: center; margin: 0 auto; padding: 0 0; width: 300px;">
+                            <li><input type="button" class="rate-user" va="1" value="10万以下"  ></li>
+                            <li><input type="button" class="rate-user" va="2" value="10-50万"></li>
+                            <li><input type="button" class="rate-user" va="3" value="50万以上"></li>
+                        </ul>
+                    <else/>
+                        <div class="control-group" style="text-align: center;" >暂无评分用户！</div>
+                    </if>
+            </div>
+        </div>  
+
+
+    </div>
+
+ 
+        
+</div> 
+ 
+
+
+ 
+
+<script type="text/javascript">
+     
+   
+        $('.rate-user').click(function(){
+ 
+            var rate = $(this).attr('va');
+            var user = "{$userinfo['uid']}";
+            $.post("{:U('FaceCarRate/facecarepost')}",{uid:user,rate:rate},function(data){
+                if( data == 1 ){
+                    window.location.reload();
+                }
+            });
+        });
+    
+</script>

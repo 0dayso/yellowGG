@@ -1,0 +1,205 @@
+<include file="Common/top"/>
+<style>
+.map-baidu { min-height:500px; }
+</style>
+</head>
+<body>
+<div id="doc">
+<include file="Common/head"/>
+  <div class="container-fluid">
+    <div class="row-fluid">
+
+      <div id="nav-side" class="col-md-2">
+<include file="Common/side"/>
+      </div>
+
+      <div id="main" class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">表单</h3>
+          </div>
+<php>
+$dat = $data['item'] ?: [];
+$adt = $dat['attr']  ?: [];
+</php>
+          <form action="{:U('model_save')}" method="POST">
+            <input type="hidden" name="id" value="{$dat['id']}">
+            <table class="table table-form">
+              <col style="width:10em;">
+              <col>
+              <tr>
+                <th>名称</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="name" value="{$dat['name']}" placeholder="必填" required class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>备注</th>
+                <td>
+                  <div class="col-md-6">
+                    <textarea name="remark" placeholder="" class="form-control">{$dat['remark']}</textarea>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <td class="text-left">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success">保存</button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <hr class="line">
+          <div class="panel-body">
+            <div class="pull-right">
+              <div class="btn-group hide">
+                <a href="" class="btn btn-default">正常</a>
+                <a href="" class="btn btn-default">未启用</a>
+                <a href="" class="btn btn-primary">不限</a>
+              </div>
+              <a class="btn btn-default disabled">记录数：{$pager->totalRows ?: count($data['list'])}</a>
+            </div>
+            <div class="pull-left hide">
+              <div class="input-prepend input-group">
+                <span class="add-on input-group-addon">数据日期</span>
+                <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+              </div>
+            </div>
+          </div>
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>备注</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+<volist name="data['list']" id="v">
+              <tr class="item" data-id="{$v['id']}">
+                <td>{$v['id']}</td>
+                <td>{$v['name']}</td>
+                <td>
+                  <div class="td-content popover-hover">{$v['remark']}</div>
+                </td>
+                <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+                <td>
+                  <div class="btn-group">
+                    <a href="{:U('?id='.$v['id'])}" class="btn btn-default">修改</a>
+                    <div class="btn-group">
+                      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><a class="btn">删除</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+</volist>
+            </tbody>
+          </table>
+          <div class="panel-footer clearfix">
+            <div class="pull-right">
+              <nav id="vue-pager">
+                <pagination :class.literal="pagination-sm" :page="{:intval($_REQUEST['p']) ?: 1}" :total="{$data['page']->totalRows}" :first="{$data['page']->firstRow}" :size="{$data['page']->listRows}" :link="'{:U('',array_merge($_GET ?: [],['p' => '_PAGE_']))}'"></pagination>
+              </nav>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<include file="Common/foot"/>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body')
+  .on('click','.act-map-location',function()
+  {
+    var the = $(this),
+        zoo = the.data('zoom') || 14,
+        kwd = $.trim($('[name="city"]:enabled').val())
+            + $.trim($('[name="area"]:enabled').val())
+            + $.trim($('[name="street"]:enabled').val())
+            + $.trim($('[name="landmark"]:enabled').val())
+            + $.trim($('[name="location"]:enabled').val()),
+        lni = $('[name="lng"]:enabled'),
+        lai = $('[name="lat"]:enabled'),
+        lng = $.trim(lni.val()),
+        lat = $.trim(lai.val()),
+        mod = $('#modal-comm').modal(),
+        box = mod.find('.modal-body'),
+        ele = box.find('.map-baidu');
+    ele.length || (ele = $('<div/>').addClass('map-baidu').appendTo(box.empty()));
+    require(['baidu-map'],function()
+    {
+      var map = ele.data('map'),
+          geo = new BMap.Geocoder(),
+          fmt = function(str)
+          {
+            return str.replace(/(广西|宁夏|新疆|西藏|内蒙古).*$|(省|市|自治[区州]|地区)$/g,'$1');
+          };
+      if(!map)
+      {
+        map = new BMap.Map(ele[0]);
+        ele.data('map',map);
+        map.addEventListener('load',function()
+        {
+          var mrk = new BMap.Marker(map.getCenter());
+          map.addOverlay(mrk);
+          mrk.enableDragging();
+          (function(fun)
+          {
+            mrk.addEventListener('click',fun);
+            mrk.addEventListener('dragend',fun);
+          })
+          (function(e)
+          {
+            lni.val(e.point.lng);
+            lai.val(e.point.lat);
+            geo.getLocation(e.point,function(ret)
+            {
+              var dat = ret.addressComponents || {},
+                  poi = ret.surroundingPois || [];
+              dat.province && $('[name="province"]:enabled').val(fmt(dat.province));
+              dat.city     && $('[name="city"]:enabled').val(fmt(dat.city));
+              dat.district && $('[name="area"]:enabled').val(dat.district);
+              (dat.street || dat.streetNumber) && $('[name="street"]:enabled').val(dat.street + dat.streetNumber);
+              poi[0] && $('[name="landmark"]:enabled').val(poi[0].title);
+              console.log(ret);
+            });
+            //console.log('当前位置：' + e.point.lng + ', ' + e.point.lat);
+          });
+        });
+        0 && map.addControl(new BMap.CityListControl(
+        {
+          anchor : BMAP_ANCHOR_TOP_LEFT,
+          offset : new BMap.Size(10,20),
+          onChangeAfter : function()
+          {
+            console.log(arguments);
+          }
+        }));
+      }
+      map.centerAndZoom(lng && lat ? (new BMap.Point(lng,lat)) : ($.trim(kwd) || '上海'),zoo);
+      map.enableScrollWheelZoom();
+    });
+    return false;
+  });
+
+});
+</script>
+</body>
+</html>

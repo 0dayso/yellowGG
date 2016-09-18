@@ -1,0 +1,116 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline clearfix">
+        <input type="hidden" name="act" value="filter">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group">
+          <select name="report_type" class="form-control">
+            <option value="">举报类型</option>
+<volist name="data['report_types']" id="v">
+            <option value="{$key}"<php>echo (string)$key == $_REQUEST['report_type'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+          </select>
+        </div>
+        <div class="form-group">
+          <select name="status" class="form-control">
+            <option value="">处理状态</option>
+<volist name="data['report_status']" id="v">
+            <option value="{$key}"<php>echo (string)$key == $_REQUEST['status'] ? ' selected' : '';</php>>{$v}</option>
+</volist>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID、备注..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <span class="btn btn-white pull-right">记录数：{$pager->totalRows}</span>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>举报人UID</th>
+              <th>被举报人UID</th>
+              <th>举报类型</th>
+              <th>举报时间</th>
+              <!--th>受理时间</th-->
+              <th>操作状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$usr = $data['users'][$v['offender_uid']] ?: [];
+</php>
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>
+                <a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid']}</a>
+              </td>
+              <td>
+                <a href="{:U('User_base/view?uid='.$v['offender_uid'].'&report_id='.$v['id'])}" target="_blank" class="label label-{$usr['sex'] ? 'danger' : 'success'} popover-avatar" data-original-title="{$usr['nickname']}">{$v['offender_uid']}</a>
+                <b class="label label-danger">{:implode(' ',array_filter([
+                  boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : '',
+                  $usr['glory_grade'] ?: '',
+                  $data['contract_types'][$data['hosts'][$v['offender_uid']]['contract_type']]['attrs']['name'],
+                ]))}</b>
+<if condition="$usr['type'] == '2' && $usr['dblocking_time'] gt time()">
+                  <b class="label label-danger">封</b>
+</if>
+<if condition="$usr['type'] == '3' && $usr['dblocking_time'] gt time()">
+                  <b class="label label-warning">警</b>
+</if>
+<if condition="$usr['type'] == '1'">
+                  <b class="label label-success">运营</b>
+</if>
+<if condition="$usr['type'] == '4'">
+                  <b class="label label-primary">机器人</b>
+</if>
+              </td>
+              <td>
+                <div class="td-content">{$v['report_type'] != '100' ? $data[report_types][$v['report_type']] : implode('',['其他(',htmlspecialchars($v['custom']),')'])}</div>
+              </td>
+              <td>{:date('Y-m-d H:i:s',$v['dtime'])}</td>
+              <!--td>
+                <span class="tip" data-original-title="{$v['remark']}">{$v['atime'] ? date('Y-m-d H:i:s',$v['atime']) :'-'}</span>
+              </td-->
+              <td>
+                <span class="tip" data-original-title="{$v['reason'] ? $data['accusation_reasons'][$v['reason']] : ''}">{$data['report_status'][$v['status']]}</span>
+              </td>
+              <td>
+<if condition="$v['status'] == '0'">
+                <div class="btn-group">
+                  <a href="{:U('UserBase/view?uid='.$v['offender_uid'].'&report_id='.$v['id'].'&tab=tab-user-closure')}" target="_blank" class="btn btn-primary btn-mini">处理</a>
+<if condition="$v['live_id']">
+                  <a href="{:U('Live/index?live_id='.$v['live_id'].'&state=-1&report_id='.$v['id'])}" target="_blank" class="btn btn-primary btn-mini">直播</a>
+</if>
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="{:U('user_base/closure?status=-2&msg2reporter=1&uid='.$v['offender_uid'].'&report_id='.$v['id'])}">已处罚不再处罚</a></li>
+                  </ul>
+                </div>
+</if>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

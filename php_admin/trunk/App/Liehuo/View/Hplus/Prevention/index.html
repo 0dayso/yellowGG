@@ -1,0 +1,192 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid clearfix">
+      <div class="pull-left">
+        <a class="btn btn-success">短信平台剩余条数：{$mongate_balance}</a>
+        <a href="{:U('mysql_processlist')}" target="_blank" class="btn btn-success">MySQL连接数：<b class="mysql-processlist-count">-</b></a>
+        <a class="btn btn-success">Redis内存：<b class="redis-memory" data-type="redis_recommend">-</b></a>
+      </div>
+    </div>
+    <hr>
+    <div class="row-fluid">
+      <div id="hchart-1" class="highcharts"></div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  function fun(hco)
+  {
+    var hct = false;
+    $.ajax(
+    {
+      url:'{:U('query')}',
+      data:{ajax:1},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {},
+          dtx = [],
+          dty = {time:[]},
+          cfg = hco;
+      if(data.ret)
+      {
+        data.msg && alert(data.msg);
+        return false;
+      }
+      $.each(dat,function(k,v)
+      {
+        var val = parseInt(v) || 0;
+        if(val > 60 * 60 * 2)
+        {
+          typeof(val) == 'object' || (val = {y:val});
+          val.color = '#A00';
+        }
+        if(data.logs[k])
+        {
+          typeof(val) == 'object' || (val = {y:val});
+          val.href = data.logs[k];
+          val.events =
+          {
+            click:function(){window.open(data.logs[k]);}
+          };
+        }
+        dtx.push(data.types[k] || k);
+        dty.time.push(val);
+      });
+      cfg.xAxis.categories = dtx;
+      cfg.series = 
+      [
+        {
+          name:'时间差',
+          type:'column',
+          data:dty.time
+        }
+      ];
+      if(hct) hct.series[0].update({data:dty.time});
+      else hct = $('#hchart-1').empty().highcharts(cfg);
+      $('.mysql-processlist-count').text(data.mysql || 0);
+      $.each(data.redis || {},function(k,v)
+      {
+        $('.redis-memory[data-type="' + k + '"]').text(v.used_memory_human || 0);
+      });
+    })
+    .fail(function()
+    {
+      console.error('ajax error');
+    });
+  }
+
+  require(['highcharts','moment'],function()
+  {
+    var hco =
+        {
+          title:
+          {
+            text:'业务预警',
+            x:-20 //center
+          },
+          subtitle:
+          {
+            text:'',
+            x:-20
+          },
+          xAxis:
+          {
+            categories:[],
+            dateTimeLabelFormats:
+            {
+              second:'%Y-%m-%d<br>%H:%M:%S',
+              minute:'%Y-%m-%d<br>%H:%M',
+              hour:'%Y-%m-%d<br>%H:%M',
+              day:'%Y-%m-%d',
+              week:'%Y-%m-%d',
+              month:'%Y-%m',
+              year:'%Y'
+            }
+          },
+          yAxis:
+          {
+            title:
+            {
+              text:''
+            },
+            labels:
+            {
+              //format:'{value} s',
+              formatter:function()
+              {
+                var sec = this.value > 0 ? this.value : (0 - this.value),
+                    str = (function(sec)
+                {
+                  return [parseInt(sec / 60 / 60),parseInt(sec / 60) % 60].join(':').replace(/\b(\d)\b/g,'0$1');
+                })(sec);
+                return str;
+              }
+            },
+            plotLines:
+            [{
+              value:60 * 60 * 2,//基准线
+              width:0.6,
+              color:'#A00'
+            },
+            {
+              value:0 - 60 * 60 * 2,//基准线
+              width:0.6,
+              color:'#A00'
+            }]
+          },
+          series:[],
+          tooltip:
+          {
+            valueSuffix:'秒',
+            crosshairs:[true,false],
+            shared:true,
+            useHTML:true,
+            formatter:function()
+            {
+              var s = '<b>' + this.x + '</b>';
+              $.each(this.points,function(i,point)
+              {
+                var sec = point.point.y > 0 ? point.point.y : (0 - point.point.y),
+                    url = point.point.href,
+                    str = (function(sec)
+                    {
+                      return [parseInt(sec / 60 / 60),parseInt(sec / 60) % 60,sec % 60].join(':').replace(/\b(\d)\b/g,'0$1');
+                    })(sec);
+                s += '<br><a' + (url ? (' href="' + url + '"') : '') + ' target="_blank">';
+                s += '<span style="color:' + point.series.color + ';">' + point.series.name + ': </span>';
+                s += '<b style="color:#222;">' + str + '</b></a>';
+              });
+              return s;
+            }
+          },
+          legend:
+          {
+            //layout:'vertical',
+            //align:'right',
+            //verticalAlign:'middle',
+            borderWidth:0
+          },
+          credits:
+          {
+            text:''
+          }
+        };
+
+    // hchart-1
+    fun(hco);
+    setInterval(function()
+    {
+      fun(hco);
+    },1000 * 60 * 0.5);
+
+  });
+
+});
+</script>

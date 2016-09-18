@@ -1,0 +1,54 @@
+
+<div id="content">
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+
+                <div class="widget-content nopadding">
+                    <table id="accusation_table" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="text-align:center">标签id</th>
+                            <th style="text-align:center">点赞数量</th>
+                            <th style="text-align:center">实际点赞数量</th>
+                            <th style="text-align:center">点赞时间</th>
+                            <th style="text-align:center">点赞管理员</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {$vo.tag}
+                                </td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {$vo.p_num}
+                                </td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {$vo.actual}
+                                </td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {$vo.praise_time|date="Y-m-d H:i:m",###}
+                                </td>
+                                <td style="text-align:center;vertical-align:middle;">
+                                    {$vo.nickname}
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+

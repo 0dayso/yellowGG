@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)http://www.zi-han.net/theme/hplus/login.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>初见 - 登录</title>
+    <meta name="keywords" content="初见,会员中心主题,后台HTML,响应式后台">
+    
+  
+    <link href="__PUBLIC__/css/update/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="__PUBLIC__/css/update/bootstrap.min.css?v=3.3.0" rel="stylesheet">
+    <link href="__PUBLIC__/css/update/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/update/style.css?v=2.1.0" rel="stylesheet">
+
+
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">烈</h1>
+
+            </div>
+            <h3>欢迎使用 烈火</h3>
+
+            <form id="login-form" class="m-t" role="form" action="#">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="用户名"   name="name" id="name">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="密码"   name="pwd" id="pwd">
+                </div>
+                <div class="form-group main_input_box hide">
+                        <input type="text" class="form-control" placeholder="请输入验证码"   name="verify" id="verify" style="width:150px;float:right"/>
+                        <img src="__CONTROLLER__/verify_code/"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();"  style="height:38px;cursor: pointer; vertical-align: middle;float:left" id="verifyImg" />
+                </div>
+                <input type="hidden" value="{$referer}" name="" id="referer" >
+                <button type="submit" class="btn btn-primary full-width submit">登 录</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="__PUBLIC__/js/update/jquery-2.1.1.min.js"></script>
+    <script src="__PUBLIC__/layer/layer.min.js"></script>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    $('#login-form').submit(function()
+    {
+        var referere = $('#referer').val();
+        layer.load('登录中...', 3);
+        $.ajax(
+        {
+            url : '__CONTROLLER__/check_login',
+            type : "post",
+            data: {name:$('#name').val(), pwd:$('#pwd').val(),verify:$('#verify').val(),referer:referere},
+            success : function(data)
+            {
+                if(data.info=='登录成功')
+                {
+                    if(data.referer!=''){
+                        location.href= data.referer;
+                    }else{
+                        location.href="{:U('Common/index')}";
+                    }
+                    return false;
+                }
+                else{
+                    changecode();
+                    layer.alert(data.info);
+                    $('#verify').val('');
+                    return false;
+                    //commonAjaxSubmit('','#loginform');
+                }
+            },
+            error: function(data){
+                if(data.status=='1'){
+                    layer.alert('地址有误');
+                    return false;
+                }
+                //commonAjaxSubmit('','#loginform');
+            }
+        });
+        return false;
+    });
+
+    function changecode(){
+        var time = new Date().getTime(); 
+        document.getElementById('verifyImg').src='__CONTROLLER__/verify_code/'+time;
+    }
+
+jQuery(function($)
+{
+    $('#verifyImg')
+    .attr('data-src',function()
+    {
+        return $(this).attr('src');
+    })
+    .removeAttr('onclick')
+    .on('click',function()
+    {
+        var the = $(this);
+        the.attr('src',the.attr('data-src') + '?rand=' + Math.random());
+    })
+    .click();
+});
+</script>

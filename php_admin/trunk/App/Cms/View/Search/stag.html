@@ -1,0 +1,107 @@
+<div id="content">
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                <div>
+                    <form class="form-horizontal" id="form-search" method="GET">
+                        <div class="controls">   
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                            <option value="u_num" <if condition="$_GET['search'] eq 'u_num' " >selected</if> >使用最多</option>
+                                <option value="tu.id" <if condition="$_GET['search'] eq 'tu.id' " >selected</if> >最新认证</option>
+                                <option value="sum" <if condition="$_GET['search'] eq 'sum' " >selected</if> >被赞最多</option>
+                            </select>
+                            <select   name="status" class="form-control m-b" style="width:110px;float:left;margin-left:10px">
+                                <option value=""   >选择用户类型</option>
+                                <option value="0" <if condition="$_GET['status'] eq '' || $_GET['status'] eq 0">selected</if> >真实用户</option>
+                                <option value="3" <if condition="$_GET['status'] eq 3 ">selected</if> >虚拟用户</option>
+                            </select>
+                            <div class="col-md-2">
+                                <input type="text" name="keyword" id="form-search-key" class="form-control" placeholder="输入标签"  >
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" name="start" class="laydate-icon form-control"
+                                       onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                       placeholder="标签创建时间开始"
+                                       <if condition="$_GET['start'] neq ''" >value="<?php echo substr($_GET['start'],0,10).' '.substr($_GET['start'],-8); ?>"</if>
+                                >
+                            </div>
+                            <div class="col-md-1" style="width:20px">--</div>
+                            <div class="col-md-2">
+                                <input type="text" name="end"   class="laydate-icon form-control"
+                                       onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                                       placeholder="标签创建时间结束"
+                                       <if condition="$_GET['start'] neq ''" >value="<?php echo substr($_GET['end'],0,10).' '.substr($_GET['end'],-8); ?>"</if>
+                                >
+                            </div>
+
+                            <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                        </div>
+                    </form>
+
+                </div>
+                
+                <div>
+                    <form  >
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">标签代号</th>
+                                    <th style="text-align:center">标签名称</th>
+                                    <th style="text-align: center">使用人数</th>
+                                    <th style="text-align:center">点赞次数</th>
+                                    <th style="text-align:center">建立时间</th>
+                                    <th style="text-align:center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list.list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">{$vo.id}</td>
+                                        <td style="text-align:center">{$vo.title}</td>
+                                        <td style="text-align:center">{$vo.u_num}</td>
+                                        <td style="text-align:center">{$vo.sum}</td>
+                                        <td style="text-align:center">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                                        <td style="text-align:center">
+                                            <a class="btn btn-primary btn-sm" href="{:U('search/taglistuser',array('id'=>$vo['id']))}">查看用户</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                       
+                    </form>
+
+                </div>
+
+                <div>
+                    <if condition="$menu EQ 'task_hall' AND $type EQ 'processed'">
+
+                        <div style="float: right">
+                            <input type="submit" id="confirm" class="btn btn-primary btn-sm" value="确认"/>
+                        </div>
+                    </if>
+                </div>
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$list.page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 

@@ -1,0 +1,51 @@
+<div id="content">
+    <div class="row-fluid">
+        <form action="" method="post" >
+            <div class="widget-content nopadding">
+                <table id="accusation_table" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="text-align:center">用户UID</th>
+                        <th style="text-align:center">名称</th>
+                        <th style="text-align:center">手机号</th>
+                        <th style="text-align:center">注册时间</th>
+                        <th style="text-align:center">邀请码</th>
+                        <th style="text-align:center">创建标签数</th>
+                        <th style="text-align:center">第一个标签名称</th>
+                        <th style="text-align:center">动态描述量</th>
+                        <th style="text-align:center">发动态数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <style>
+                        .gradeX:hover{background:#D5D5D1}
+                    </style>
+                    <volist name="list.list" id="vo">
+                        <tr class="gradeX">
+                            <td style="text-align:center">
+                                <a  href="{:U('User/user_info/', array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid'],'tag'=>'show'))}"  target="_blank" >{$vo['uid']}</a>
+                            </td>
+                            <td style="text-align:center">{$vo.nickname}</td>
+                            <td style="text-align:center">{$vo.phone}</td>
+                            <td style="text-align:center">{$vo.reg_time|date="Y-m-d H:i:s",###}</td>
+                            <td style="text-align:center">{$vo.code}</td>
+                            <td style="text-align:center">{$vo.tag_num}</td>
+                            <td style="text-align:center">{$vo.title}</td>
+                            <td style="text-align:center">{$vo.tag_des}</td>
+                            <td style="text-align:center">{$vo.sur_num}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+    </div>
+    <div class="pagination alternate">
+        <ul>
+            <li style="text-align: center;color: #0000ff">{$list.page}</li>
+        </ul>
+    </div>
+</div>
+
+

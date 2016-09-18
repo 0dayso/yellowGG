@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left" style="margin-bottom:20px;">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="show_type" value="{$_REQUEST['show_type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?show_type=admin')}" class="btn btn-primary">按管理员分组</a>
+          <span class="btn btn-white">记录数：{:count($data['list'])}</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>日期</th>
+<if condition="$_REQUEST['show_type'] == 'admin'">
+              <th>客服</th>
+</if>
+              <th>用户评级</th>
+              <th>照片审核</th>
+              <th>文字审核</th>
+              <th>答疑</th>
+              <th>举报</th>
+              <th>总和</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$par = [
+  'aid'   => $v['aid'],
+  'stime' => $v['date'],
+  'etime' => $v['date'],
+];
+</php>
+            <tr>
+              <td>{$v['date']}</td>
+<if condition="$_REQUEST['show_type'] == 'admin'">
+              <td>{$data['admins'][$v['aid']]['nickname'] ?: $v['aid']}</td>
+</if>
+              <td>
+                <a href="{:U('UserBase/oper_logs?type=scoring',$par)}" target="_blank">{$v['cnt_scoring']}</a>
+              </td>
+              <td>
+                <a href="{:U('UserBase/oper_logs?type=avatar_audit',$par)}" target="_blank">{$v['cnt_avatar_audit']}</a>
+              </td>
+              <td>
+                <a href="{:U('UserBase/oper_logs?type=text_audit',$par)}" target="_blank">{$v['cnt_text_audit']}</a>
+              </td>
+              <td>
+                <a href="{:U('UserBase/oper_logs?type=feedback',$par)}" target="_blank">{$v['cnt_feedback']}</a>
+              </td>
+              <td>
+                <a href="{:U('UserBase/oper_logs?type=report_handle',$par)}" target="_blank">{$v['cnt_report_handle']}</a>
+              </td>
+              <td>{$v['cnt_all']}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

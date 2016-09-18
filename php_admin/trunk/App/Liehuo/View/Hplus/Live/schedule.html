@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.form-horizontal .control-label { width:auto; min-width:10em; }
+.fc-license-message { display:none; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <div id="calendar"></div>
+        <hr>
+      </div>
+
+      <div class="clearfix">
+<php>
+$dat = $data['item'] ?: [];
+$adt = $dat['attrs'] ?: [];
+</php>
+        <form action="{:U('game_save')}" method="POST" class="form-inline">
+          <input type="hidden" name="id" value="{$dat['id']}">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon">开始时间</span>
+              <input type="text" name="start_time" value="{$data['item']['start_time'] ? date('Y-m-d H:i:s',$data['item']['start_time']) : ''}" placeholder="必填" class="form-control date-time">
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">结束时间</span>
+              <input type="text" name="end_time" value="{$data['item']['end_time'] ? date('Y-m-d H:i:s',$data['item']['end_time']) : ''}" placeholder="必填" class="form-control date-time">
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">备注</span>
+              <input type="text" name="remark" value="{$dat['remark']}" placeholder="选填..." class="form-control">
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">筹集时间</span>
+              <input type="text" name="attrs[raise_expire]" value="{$adt['raise_expire']}" placeholder="必填..." required class="form-control" style="max-width:4em;">
+              <span class="input-group-addon">秒</span>
+            </div>
+          </div>
+          <hr style="margin:5px 0;">
+          <table class="table" style="width:auto;">
+            <tr>
+<php>
+for($id = 1;$id <= 8;$id++)
+{
+  $v = $adt['list'][$id] ?: [];
+</php>
+              <td>
+                <div class="form-group">
+                  <div class="input-group">
+                    <select name="attrs[list][{$id}][type]" class="form-control filter-fields" style="max-width:5.6em;" data-type="filter{$id}">
+                      <option value="1"{:boolval($adt['list'][$id]['type'] == '1') ? ' selected' : ''}>赢钱</option>
+                      <option value="2"{:boolval($adt['list'][$id]['type'] == '2') ? ' selected' : ''}>表演</option>
+                    </select>
+                    <input type="text" name="attrs[list][{$id}][name]" value="{$adt['list'][$id]['name']}" placeholder="文案" required class="form-control" style="max-width:6em;">
+                  </div>
+                  <div class="input-group" data-filter{$id}="2">
+                    <input type="text" name="attrs[list][{$id}][diamond]" value="{$adt['list'][$id]['diamond']}" placeholder="钻石" class="form-control tip" data-original-title="钻石" style="max-width:4em;">
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="attrs[list][{$id}][probability]" value="{$adt['list'][$id]['probability']}" placeholder="概率" class="form-control tip" data-original-title="概率" style="max-width:4em;">
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </td>
+<if condition="$id % 4 == 0">
+            </tr><tr>
+</if>
+<php>
+}
+</php>
+              
+            </tr>
+          </table>
+          <hr style="margin:5px 0;">
+          <button type="submit" class="btn btn-primary">保存</button>
+<if condition="$_REQUEST['id']">
+          <a href="{:U()}" class="btn btn-success">新增</a>
+</if>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  require(['fc-scheduler'],function()
+  {
+    $('#calendar').fullCalendar(
+    {
+      defaultView : 'agendaWeek',
+      defaultDate : '2016-06-07',
+      editable    : true,
+      header :
+      {
+        left   : 'today prev,next',
+        center : 'title',
+        right  : 'timelineDay,agendaWeek,month'
+      },
+      events :
+      [
+          { id: '1', start: '2016-06-07T02:00:00', end: '2016-06-07T07:00:00', title: 'event 1' },
+          { id: '2', start: '2016-06-07T05:00:00', end: '2016-06-07T22:00:00', title: 'event 2' },
+          { id: '3', start: '2016-05-06', end: '2016-05-08', title: 'event 3' },
+          { id: '4', start: '2016-06-07T03:00:00', end: '2016-06-07T08:00:00', title: 'event 4' },
+          { id: '5', start: '2016-06-07T00:30:00', end: '2016-06-07T02:30:00', title: 'event 5' }
+      ],
+      resources : false
+    });
+  });
+
+});
+</script>

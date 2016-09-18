@@ -1,0 +1,61 @@
+
+<div class="widget-content nopadding">
+    <table id="accusation_table" class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="text-align:center">编号</th>
+            <th style="text-align:center">推送打开对应位置</th>
+            <th style="text-align:center">接收用户类型</th>
+            <th style="text-align:center">接收用户UID</th>
+            <th style="text-align:center">发送内容</th>
+            <th style="text-align: center">创建时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list" id="vo">
+            <tr class="gradeX">
+                <td style="text-align:center;vertical-align:middle;">{$vo.id}</td>
+                <td style="text-align:center;vertical-align:middle;">
+                    <if condition="$vo['index'] eq 1  " >
+                        首页
+                    <elseif condition="$vo['index'] eq 2 " />
+                        活动页面
+                    <elseif condition="$vo['index'] eq 3 " />
+                        首页banner
+                    <elseif condition="$vo['index'] eq 4 " />
+                        用户访谈
+                    <else/>
+                        认证集合
+                    </if>
+
+                </td>
+                <td style="text-align:center;vertical-align:middle;">
+                    <if condition="$vo['accept'] eq 1  " >
+                        全体用户
+                    <elseif condition="$vo['accept'] eq 2 " />
+                        超过两天未登陆用户
+                    <else/>
+                        指定用户
+                    </if>
+                </td>
+                <td style="text-align:center;vertical-align:middle;">
+                    <if condition="$vo['accept'] eq 1  " >
+                        全体用户
+                    <elseif condition="$vo['accept'] eq 2 " />
+                        超过两天未登陆用户
+                    <else/>
+                        {$vo.accept_uid}
+                    </if>
+                </td>
+                <td style="text-align:center;vertical-align:middle;">{$vo.content}</td>
+                <td style="text-align:center;vertical-align:middle;">{$vo.createtime|date="Y-m-d H:i:s",###}</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<div class="pagination alternate">
+    <ul>
+        <li style="text-align: center;color: #0000ff">{$page}</li>
+    </ul>
+</div>

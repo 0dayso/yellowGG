@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>Msg</title>
+</head>
+<body>
+
+<hr>
+
+<div class="container-fluid">
+  <form action="{:U('msg')}" method="POST" target="api_ret" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">聊天类型</label>
+      <div class="col-sm-9">
+        <select name="chat_type" class="form-control">
+          <option value="1">系统消息</option>
+          <option value="2">产品消息</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息格式</label>
+      <div class="col-sm-9">
+        <select name="txt_type" class="form-control">
+          <option value="1">文本</option>
+          <option value="2">图片</option>
+          <option value="3">贴图</option>
+          <option value="4">语音</option>
+          <option value="5">位置</option>
+          <option value="100" selected>复合</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息类型</label>
+      <div class="col-sm-9">
+        <input type="text" name="msg_type" value="" class="form-control" placeholder="7:图文消息 8:运营消息 10:灰底混排 11:气泡混排">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">用户ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="uid" value="12200022" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">发送人ID</label>
+      <div class="col-sm-9">
+        <input type="text" name="sender" value="10000" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息内容</label>
+      <div class="col-sm-9">
+        <textarea name="txt" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">图片路径</label>
+      <div class="col-sm-9">
+        <input type="text" name="img" value="http://feed.chujianapp.com/20151209/7546edddbfa7870bd0782381910143d9.jpg@200w" class="form-control" placeholder="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">描述(运营消息)</label>
+      <div class="col-sm-9">
+        <textarea name="desc" class="form-control"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">消息JSON</label>
+      <div class="col-sm-9">
+        <textarea name="json" class="form-control">[
+    {
+        "type": "icon",
+        "name": "icon_gift"
+    },
+    {
+        "type": "text",
+        "content": "文本1",
+        "color": "000000",
+        "fontSize": "14"
+    },
+    {
+        "type": "text",
+        "content": "文本2"
+    },
+    {
+        "type": "link",
+        "content": "链接1",
+        "url": "http://wwww.baidu.com/",
+        "color": "AA0000",
+        "fontSize": "14"
+    },
+    {
+        "type": "link",
+        "content": "链接2",
+        "url": "http://wwww.baidu.com/"
+    },
+    {
+        "type": "intent",
+        "content": "应用内跳转",
+        "name": "10001",
+        "color": "AA6600"
+    }
+]</textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-9">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+  <iframe src="about:blank" name="api_ret" width="100%" frameborder="0" scrolling="auto" class="api-ret"></iframe>
+
+</div>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

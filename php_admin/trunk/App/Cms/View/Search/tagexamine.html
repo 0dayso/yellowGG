@@ -1,0 +1,89 @@
+ 
+<div id="content">
+    <table id="modify_user_info" class="table table-bordered">
+        <thead>
+        <tr> 
+            <th style="text-align: center">ID</th>
+            <th style="text-align: center">标签名称</th>
+            <if condition="$_GET['type'] eq 1">
+                <th style="text-align: center">审核员</th>
+                <th style="text-align: center">备注</th>
+            </if>
+            <th style="text-align: center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            <volist name="list" id="vo">
+                <tr class="gradeX">
+                    <td style="text-align: center" class="tagid" va="{$vo.id}">{$vo.id}</td>
+                    <td style="text-align: center">{$vo.title}</td>
+                    <if condition="$_GET['type'] eq 1">
+                        <td style="text-align: center">{$vo.nickname}</td>
+                        <td style="text-align: center">{$vo.remarks}</td>
+                    </if>
+                    <td style="text-align: center">
+                        <if condition="$_GET['type'] eq 0" >
+                            <a href="javascript:void(0)" class="btn btn-primary btn-mini tag-no" va="{$vo.id}" >不给通过</a>
+                        <elseif condition="$_GET['type'] eq 1" />
+                            未通过
+                        <else/>
+                            已通过
+                        </if>
+                    </td>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+
+    <if condition="$_GET['type'] eq 0" >
+        <div style="float: right">
+            <input type="submit" id="confirm_all_pass" class="btn btn-w-m btn-warning" value="全部通过"/>
+        </div>              
+    </if>
+    
+    <div class="pagination alternate">
+        <ul>
+            <li style="text-align: center;color: #0000ff">{$page}</li>
+        </ul>
+    </div>
+</div>
+ 
+<script src="/Public/layer/layer.min.js" type="text/javascript"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<!--end-Footer-part-->
+<script language="javascript" type="text/javascript">
+    $(function () {
+         
+        var  arr  = [];
+        $(".tagid").each(function() {
+            arr.push($.trim($(this).attr('va')));
+        });
+        var  list  =  arr.join(',');
+
+        $('#confirm_all_pass').click(function(){
+            layer.confirm('你确定要全部通过吗？',function(){
+                $.post("{:U('search/tagko')}",{list:list},function(data){
+                    if(data=='ok'){
+                        window.location.href = '';
+                    }
+                });
+            });
+
+        });
+
+        $('.tag-no').click(function(){
+            var id = $(this).attr('va');
+            var indexsd = layer.prompt({title:"不通过原因！"}, function(title){
+                $.post("{:U('search/tagnopass')}",{id:id,remarks:title},function(data){
+                    if(data=='ok'){
+                        window.location.href = '';
+                    } 
+                }); 
+                
+            });
+
+        });
+ 
+        
+    });
+</script> 

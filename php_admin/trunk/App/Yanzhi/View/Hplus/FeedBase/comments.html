@@ -1,0 +1,45 @@
+<style>
+.text-center th { text-align:center; }
+td .text-left { max-width:600px; white-space:normal; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="table-responsive">
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>动态ID</th>
+            <th>评论人</th>
+            <th>被评论人</th>
+            <th>评论时间</th>
+            <th>评论内容</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+<volist name="data['list']" id="v">
+          <tr class="gradeX">
+            <td>{$v['id']}</td>
+            <td><a href="{:U('view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id']}</a></td>
+            <td><a href="{:U('User_base/view?id='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+            <td><a href="{:U('User_base/view?id='.$v['oid'])}" target="_blank" class="label label-default">{$v['oid'] ?: ''}</a></td>
+            <td>{$v['createtime'] ? date('Y-m-d H:i:s',$v['createtime']) : '-'}</td>
+            <td>
+              <div class="text-left">{$v['content']}</div>
+            </td>
+            <td>
+              <a href="{:U('del_comment?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('真的要这么做？')">删除</a>
+            </td>
+          </tr>
+</volist>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div> 

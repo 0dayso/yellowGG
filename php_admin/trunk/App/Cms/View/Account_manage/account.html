@@ -1,0 +1,68 @@
+<div id="content">
+    <!--breadcrumbs-->
+    
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls"> 
+                            <select id="form-search-type" name="search" class="form-control m-b" style="width:110px;float:left">
+                                <option value="1">按初见号</option>
+                                <option value="2">按昵称</option>
+                            </select>
+                            <input type="hidden" name="type" value="{$type}">
+                            <div class="col-md-2"><input type="text" name="keyword" id="form-search-key" class="form-control"></div>
+                            <input type="submit" value="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户昵称</th>
+                            <th>电话号码</th>
+                            <th>注册时间</th>
+                            <th>性别</th>
+                            <th>出生日期</th>
+                            <th>星座</th>
+                            <th>视频认证</th>
+                            <th>车辆认证</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align:center">{$vo.nickname}</td>
+                                <td style="text-align:center">{$vo.phone}</td>
+                                <td style="text-align:center">{$vo.reg_time}</td>
+                                <td style="text-align:center">{$vo.sex}</td>
+                                <td style="text-align:center">{$vo.birthday}</td>
+                                <td style="text-align:center">{$vo.constellation}</td>
+                                <td style="text-align:center">{$vo.video_verify}</td>
+                                <td style="text-align:center">{$vo.car_verify}</td>
+                                <td style="text-align:center"><a href="{:U('UserFactory/user_info/', array('uid'=>$vo['uid']))}" class="btn btn-primary btn-mini" target="_blank" >查看资料</a>
+                                </td>
+                            </tr>
+                        </volist>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>

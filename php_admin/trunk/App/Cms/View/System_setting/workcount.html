@@ -1,0 +1,321 @@
+ <script src="/Public/layer/laydate/laydate.js"></script>
+ 
+<div id="content">
+    
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+            <form action="" method="post">
+          
+                <div class="col-md-2">
+                     <input name="date" type="text" value="{$date}" onclick="laydate({istime: true, format: 'YYYY-MM'})" class="laydate-icon form-control" placeholder="选择时间" >
+                </div>
+
+                <select name="aid" class="form-control m-b" style="width:110px;float:left"> 
+                    <option value="0">管理员</option>
+                    <volist name="alist" id="vo">
+                        <option value="{$vo.aid}" <if condition="$vo['aid'] eq $aid" >selected</if> >{$vo.nickname}</option>
+                    </volist>
+                </select>　
+                <input type="submit" value="确定" class="btn btn-primary btn-sm" style="float:left">
+            </form>
+
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered" border="2">
+                        <thead>
+                        <tr>
+                            <th colspan="3">一级分类</th>
+                            <th colspan="3">问题类型</th>
+                            <th colspan="3">细化分类</th>
+                            <?php $now = intval(date('d',time())); ?>
+                            <for start="1" end="32">
+                                <if condition="$i eq $now" >
+                                   <th style="background:#1ab394;color:#fff">{$i}</th> 
+                                <else/>
+                                    <th>{$i}</th>
+                                </if>
+                             </for>
+                            <th>合计</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align:center;line-height:200px" rowspan="7" colspan="3">认证类</td>
+                                <td style="text-align:center;line-height:100px" rowspan="3" colspan="3">视频认证</td>
+                                <td style="text-align:center" colspan="3" >通过</td>
+                                <volist name="video['pass']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $pass +=$vo;?></td>
+                                </volist>                        
+                                <td style="text-align:center"><?php echo $pass; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">不通过</td>
+                                <volist name="video['stop']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $stop+=$vo; ?></td>
+                                </volist> 
+
+                                <td style="text-align:center"><?php echo $stop; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">总量</td>
+                                <volist name="video['count']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $count+=$vo; ?></td>
+                                </volist> 
+
+                                <td style="text-align:center"><?php echo $count; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center;line-height:100px" rowspan="3" colspan="3">车辆认证</td>
+                                <td style="text-align:center" colspan="3">通过</td>
+                                <volist name="car['pass']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $carp+=$vo; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $carp; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">不通过</td>
+                                <volist name="car['stop']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $sarp+=$vo; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $sarp; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">总量</td>
+                                <volist name="car['count']" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $ccount+=$vo; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $ccount; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="6">认证总量</td>
+                                <volist name="passed" id="vo">
+                                    <td style="text-align:center"><?php echo $vo; $cv+=$vo; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $cv; ?></td>
+                            </tr>  
+                        </tbody>
+                        <tbody><tr><td style="border:0"></td></tr></tbody>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align:center;line-height:350px" rowspan="9" colspan="3">举报类</td>
+                                <td style="text-align:center;line-height:300px" rowspan="8" colspan="3">举报属实</td>
+                                <td style="text-align:center" colspan="3" >色情传播</td>
+                                <volist name="accus[1]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_1 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_1; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">欺诈&广告</td>
+                                <volist name="accus[2]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_2 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_2; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">骚扰</td>
+                                <volist name="accus[7]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_7 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_7; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center;" colspan="3">托</td>
+                               <volist name="accus[6]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_6 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_6; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">违法&反动政治</td>
+                                <volist name="accus[4]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_4 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_4; ?></td>
+                            </tr>  
+                             
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">招嫖卖淫</td>
+                                <volist name="accus[3]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_3 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_3; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">其他</td>
+                                <volist name="accus[5]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_5 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_5; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">总量</td>
+                                <volist name="accus['count']" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_c += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_c; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">举报非属实</td>
+                                <td style="text-align:center" colspan="3">/</td>
+                                <volist name="accus['return']" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_r += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_r; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="9">认证总量</td>
+                                <volist name="accus['all']" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $accus_a += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_a; ?></td>
+                            </tr> 
+                        </tbody>
+
+                        <tbody><tr><td style="border:0"></td></tr></tbody>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align:center;border-bottom:none" rowspan="9" colspan="3"></td>
+                                <td style="text-align:center;line-height:300px" rowspan="8" colspan="3">图片告警属实操作</td>
+                                <td style="text-align:center" colspan="3" >色情传播</td>
+                                <volist name="images[1]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_1 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_1; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">欺诈&广告</td>
+                                <volist name="images[2]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_2 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_2; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">骚扰</td>
+                                <volist name="images[7]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_7 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_7; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center;" colspan="3">托</td>
+                               <volist name="images[6]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_6 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_6; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">违法&反动政治</td>
+                                <volist name="images[4]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_4 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_4; ?></td>
+                            </tr>  
+                             
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">招嫖卖淫</td>
+                                <volist name="images[3]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_3 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_3; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">其他</td>
+                                <volist name="images[5]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_5 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $accus_5; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">总量</td>
+                                <volist name="images['count']" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $images_c += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $images_c; ?></td>
+                            </tr> 
+                             
+                        </tbody>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td style="text-align:center;border-top:none" align="bottom" rowspan="9" colspan="3">风控类</td>
+                                <td style="text-align:center;line-height:300px" rowspan="8" colspan="3">文字告警属实操作</td>
+                                <td style="text-align:center" colspan="3" >色情传播</td>
+                                <volist name="words[1]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_1 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_1; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">欺诈&广告</td>
+                                <volist name="words[2]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_2 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_2; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">骚扰</td>
+                                <volist name="words[7]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_7 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_7; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center;" colspan="3">托</td>
+                               <volist name="words[6]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_6 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_6; ?></td>
+                            </tr>  
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">违法&反动政治</td>
+                                <volist name="words[4]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_4 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_4; ?></td>
+                            </tr>  
+                             
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">招嫖卖淫</td>
+                                <volist name="words[3]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_3 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_3; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">其他</td>
+                                <volist name="words[5]" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_5 += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_5; ?></td>
+                            </tr> 
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="3">总量</td>
+                                <volist name="words['count']" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $words_c += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $words_c; ?></td>
+                            </tr> 
+                             
+                            <tr class="gradeX">
+                                <td style="text-align:center" colspan="6">认证总量</td>
+                                <volist name="wimall" id="vos">
+                                    <td style="text-align:center"><?php echo $vos; $wimall_a += $vos; ?></td>
+                                </volist> 
+                                <td style="text-align:center"><?php echo $wimall_a; ?></td>
+                            </tr> 
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+         
+    </div>
+
+
+
+
+    <!--Action boxes-->
+</div> 
+ 

@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U()}" method="GET" class="form-inline" style="margin-bottom:20px;">
+        <input type="hidden" name="act" value="filter">
+        <div class="input-prepend input-group">
+          <span class="add-on input-group-addon">日期范围</span>
+          <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+          <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+          <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+        </div>
+        <div class="form-group">
+          <select name="sex" class="form-control">
+            <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+            <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+        <span class="btn btn-white pull-right">记录数：{:count($data['list'])}</span>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>违规</th>
+              <th>5分</th>
+              <th>6分</th>
+              <th>7分</th>
+              <th>8分</th>
+              <th>9分以上</th>
+              <th>合计</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+<php>
+$par =
+[
+  'stime' => $v['date'],
+  'etime' => $v['date'],
+];
+$sex = $_REQUEST['sex'] == '' ? '' : (int)$_REQUEST['sex'];
+</php>
+            <tr>
+              <td><a href="{:U('UserBase/oper_logs?type=scoring&sex='.$sex,$par)}" target="_blank">{$v['date']}</a></td>
+              <td>{$v['score0']}</td>
+              <td>{$v['score5']}</td>
+              <td>{$v['score6']}</td>
+              <td>{$v['score7']}</td>
+              <td>{$v['score8']}</td>
+              <td>{$v['score9']}</td>
+              <td>{$v['cnt_all']}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

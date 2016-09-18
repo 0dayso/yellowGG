@@ -1,0 +1,93 @@
+ <link href="__PUBLIC__/layer/layim.css" rel="stylesheet">
+<div id="content">
+    <!--breadcrumbs-->
+     
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                 
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!-- <h5 style=""><a href="{:U(operate_too/pullconten,array('type'=>''))}" class="btn btn-mini"    >全部</a></h5>
+                    <h5 style=""><a href="{:U(operate_too/pullconten,array('type'=>'1'))}" class="btn btn-mini"   >已回复</a></h5>
+                    <h5 style=""><a href="{:U(operate_too/pullconten,array('type'=>'2'))}" class="btn btn-mini"   >未回复</a></h5>
+                    <h5 style=""><a href="{:U(operate_too/pullconten,array('type'=>'3'))}" class="btn btn-mini"   >已结束</a></h5> -->
+                    <!-- <h5 style="float:right"><a href="javascript:void(0)" class="btn btn-mini"   >发起聊天</a></h5> -->
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>最后回复内容</th>
+                            <th>最后回复时间</th>
+                            <th>操作</th> 
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="info" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align:center">{$vo.content}</td>
+                                <td style="text-align:center">{$vo.s_time|date="Y-m-d H:i:s",###}</td>
+                                <td style="text-align:center"><a href="{:U('operate_too/chatrecord',array('uid'=>$vo['uid']))}" target="_bank" class="btn btn-mini">查看聊天记录</a></td>
+                                 
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+ 
+</div> 
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script src="__PUBLIC__/layer/layim.js" type="text/javascript"></script>
+<script type="text/javascript">
+     jQuery(function() {
+        
+        $.post("{:U('OperateToo/alltask')}",{type:1},function(data){
+            $('.xxim_chatlist').eq(0).empty();
+            $('.xxim_chatlist').eq(0).append(data.my.list);
+            $('.xxim_chatlist').eq(0).attr('style','display:block');
+            $('.xxim_nums').eq(0).html('（'+data.my.num+'）');
+
+            $('.xxim_chatlist').eq(1).empty();
+            $('.xxim_chatlist').eq(1).append(data.showall.list);
+            $('.xxim_chatlist').eq(1).attr('style','display:block');
+            $('.xxim_nums').eq(1).html('（'+data.showall.num+'）');         
+        },'json');     
+
+        var mytime_2 = setInterval(function(){showme2()}, 8000);
+        function showme2(){
+            $.post("{:U('OperateToo/alltask')}",{type:1},function(data){
+                if(data.my){
+                    $('.xxim_chatlist').eq(0).empty();
+                    $('.xxim_chatlist').eq(0).append(data.my.list);
+                    $('.xxim_chatlist').eq(0).attr('style','display:block');
+                    $('.xxim_nums').eq(0).html('（'+data.my.num+'）');
+                }
+                $('.xxim_chatlist').eq(1).empty();
+                $('.xxim_chatlist').eq(1).append(data.showall.list);
+                $('.xxim_chatlist').eq(1).attr('style','display:block');
+                $('.xxim_nums').eq(1).html('（'+data.showall.num+'）');     
+            },'json');
+        } 
+  
+ 
+    });   
+    
+</script>
+
+
+ 

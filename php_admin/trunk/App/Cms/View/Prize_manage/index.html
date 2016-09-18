@@ -1,0 +1,51 @@
+ 
+    <style type="text/css">
+        .nav-pills li{margin-left:10px}
+    </style>
+ 
+<div id="content">
+    
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+            <div class="btn btn-primary btn-mini mod-smg" style="float:left"  ><a style="color:#fff" href="{:U('PrizeManage/setprize')}">添加奖项</a></div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>奖品名称</th>
+                            <th>兑奖描述</th>
+                            <!-- <th>兑换条件</th> -->
+                            <th>昨日兑换数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:center">{$vo.prize}</td>
+                                <td style="text-align:center">{$vo.description}</td>
+                                <!-- <td style="text-align:center">卡牌数：{$vo.number} </td> -->
+                                <td style="text-align:center">移动：{$vo['phone']['yd']} | 联通：{$vo['phone']['lt']}  | 电信：{$vo['phone']['dx']} </td>
+                                <td style="text-align:center">
+                                    <a href="{:U('prize_manage/setprize/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini" >编辑</a>
+                                    <a href="{:U('prize_manage/delprize/', array('id'=>$vo['id']))}" class="btn btn-primary btn-mini" >删除</a>
+                                </td>
+
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+
+
+ 
+</div> 

@@ -1,0 +1,254 @@
+<php>
+$dat = $data['item'] ?: [];
+</php>
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Alone,Alone@an56.net">
+<title>{$dat['title']} - 爱出差</title>
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//src.chujianapp.com/article/static/css/app.cke-tpls.css">
+<style>
+body { margin:0; padding-top:10px; font-family:微软雅黑; }
+.cf {*zoom:1;}
+.cf:before,.cf:after {display:table;line-height:0;content:"";}
+.cf:after {clear:both;}
+.cl { clear:both; }
+.fl { float:left; }
+.fr { float:right; }
+.btn-group.btn-inline { font-size:0; }
+.btn-group.btn-inline > .btn,
+.btn-group.btn-inline > .btn-group { float:none; }
+td:last-child .dropdown-menu { left:auto; right:0; min-width:inherit; }
+.panel .pagination { margin:0; }
+.an-loading { position:fixed; bottom:10px; right:10px; float:left; display-:none; color:#888; opacity:.6; }
+hr { margin:15px 0; border-color:#ddd; }
+.content { line-height:2; }
+</style>
+<script>var isIE = 0;</script>
+<!--[if IE 9]><script>isIE = 9;</script><![endif]-->
+<!--[if IE 8]><script>isIE = 8;</script><![endif]-->
+<!--[if IE 7]><script>isIE = 7;</script><![endif]-->
+<!--[if lt IE 7]><script>isIE = 6;</script><![endif]-->
+<!--[if lte IE 9]><script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js" charset="utf-8"></script><![endif]-->
+</head>
+<body>
+<div id="doc">
+  <div class="container">
+    <div class="row">
+
+      <div class="logo">
+        <img src="__PUBLIC__/img/logo-acc.png">
+      </div>
+      <div id="main" class="col-md-12">
+        <h2>{$dat['title']}</h2>
+        <hr>
+        <div class="content">{$dat['content']}</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>window.require || document.write('<script src="//cdn.bootcss.com/require.js/2.2.0/require.min.js" charset="utf-8"><\/script>');</script>
+<style>
+@font-face {
+  font-family:'iconfont-10';
+  src:url('http://at.alicdn.com/t/font_1401158182_6869004.eot'); /* IE9 */
+  src:url('http://at.alicdn.com/t/font_1401158182_6869004.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('http://at.alicdn.com/t/font_1401158182_6869004.woff') format('woff'), /* chrome、firefox */
+  url('http://at.alicdn.com/t/font_1401158182_6869004.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+  url('http://at.alicdn.com/t/font_1401158182_6869004.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont { -webkit-font-smoothing:antialiased;-webkit-text-stroke-width:.2px;-moz-osx-font-smoothing:grayscale; }
+.iconfont-10 { font-family:'iconfont-10' !important;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:.2px;-moz-osx-font-smoothing:grayscale; }
+</style>
+<script>
+(function(ready)
+{
+
+  var cdn = 'http://cdn.bootcss.com/';
+
+  require.config(
+  {
+    waitSeconds:60 * 10,
+    paths:
+    {
+      'jquery'               : [cdn + 'jquery/1.11.1/jquery.min','http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min'],
+      'require-css'          : cdn + 'require-css/0.1.8/css.min',
+      'bootstrap'            : cdn + 'bootstrap/3.3.5/js/bootstrap.min',
+      'bootstrap-css'        : cdn + 'bootstrap/3.3.5/css/bootstrap.min',
+      'vue'                  : cdn + 'vue/1.0.22/vue.min',
+      'moment'               : cdn + 'moment.js/2.11.2/moment.min',
+      'moment-zh'            : cdn + 'moment.js/2.11.2/locale/zh-cn',
+      'animate-css'          : cdn + 'animate.css/3.3.0/animate.min',
+      'font-awesome'         : cdn + 'font-awesome/4.3.0/css/font-awesome.min',
+      'nprogress'            : cdn + 'nprogress/0.2.0/nprogress.min',
+      'messenger'            : cdn + 'messenger/1.4.0/js/messenger.min',
+      'messenger-future'     : cdn + 'messenger/1.4.0/js/messenger-theme-future',
+      'messenger-css'        : cdn + 'messenger/1.4.0/css/messenger',
+      'messenger-future-css' : cdn + 'messenger/1.4.0/css/messenger-theme-future',
+      'jquery-qrcode'        : cdn + 'jquery.qrcode/1.0/jquery.qrcode.min',
+      'webui-popover'        : cdn + 'webui-popover/1.2.7/jquery.webui-popover.min',
+      'json2'                : cdn + 'json2/20150503/json2.min'
+    },
+    shim:
+    {
+      'bootstrap'            : {deps:['jquery'],exports:'jQuery.fn.button'},
+      'nprogress'            : {deps:['css!nprogress'],exports:'NProgress'},
+      'messenger'            : {deps:['jquery','css!messenger-css'],exports:'Messenger'},
+      'messenger-future'     : {deps:['messenger','css!messenger-future-css'],exports:'Messenger'},
+      'json2'                : {exports:'JSON'}
+    },
+    map:
+    {
+      '*' : {'css' : 'require-css'}
+    }
+  });
+
+  define('an-cover',['jquery'],function($)
+  {
+    (function(fun)
+    {
+      $.fn.anCover = function()
+      {
+        var cfg = arguments[0] || {},
+            ele = $(this);
+        ele.each(function() { fun(this,cfg) });
+        $(window).resize(function()
+        {
+          var win = $(this),
+              _ww = win.width(),
+              _wh = win.height(),
+              ter;
+          ter = setInterval(function()
+          {
+            if(win.width() == _ww && win.height() == _wh) ele.anCover(cfg),clearInterval(ter);
+          },500);
+        });
+      }
+      $('img.an-cover').anCover();
+    })
+    (function(ele,cfg)
+    {
+      var img = $(ele),
+          src = img.attr('src'),
+          _im = new Image();
+          tim = isNaN(parseInt(cfg.animateSpeed)) ? 500 : parseInt(cfg.animateSpeed);
+      _im.src = src;
+      function cover()
+      {
+        var box = img.parent().css('overflow','hidden'),
+            _bf = box.css('float'),
+            _bw = box.css('float','left').width(),
+            _bh = parseFloat(cfg.height) || box.height(),
+            _iw = _im.width,
+            _ih = _im.height,
+            mgt,mgl;
+        cfg.widthByHeight && (_bh = _bw * (parseFloat(cfg.widthByHeight) || 1),box.height(_bh));
+        _iw / _ih <= _bw / _bh
+        ? (function()
+        {
+          img.width(_bw).height('auto').css('max-height','none');
+          mgt = _bh - img.height();
+          mgt = mgt > 0 ? 0 : mgt / 2;
+          img.animate({marginTop:mgt},tim);
+        })()
+        : (function()
+        {
+          box.css('text-align','center');
+          img.width('auto').height(_bh).css('max-width','none');
+          mgl = _bw - img.width();
+          mgl = mgl > 0 ? 0 : mgl / 2;
+          img.animate({marginLeft:mgl},tim);
+        })();
+        box.css('float',_bf);
+        //console.log('cover',img,{_bw:_bw,_bh:_bh,_iw:_iw,_ih:_ih,mgt:mgt,mgl:mgl,tim:tim});
+      }
+      if(_im.complete) cover();
+      else _im.onload = cover;
+    });
+    return $;
+  });
+
+  define('vue-comm',['vue'],function(Vue)
+  {
+    Vue.filter('trim',function(val)
+    {
+      return (val == null ? '' : (val + '')).replace(/^\s+|\s+$/g,'');
+    });
+    return Vue;
+  });
+
+  // - jQuery
+  require(['jquery','bootstrap','nprogress'],function($)
+  {
+    $(ready);
+
+    $(function($)
+    {
+      require(['css!animate-css','css!font-awesome']);
+    });
+  });
+
+})
+
+// - jQuery
+(function($)
+{
+  window.body = $('body:first');
+  window.loader = $('.an-loading');
+
+  require(['nprogress'],function(NProgress)
+  {
+    window.nprogress = NProgress.configure({trickleRate:.1}).start();
+    $(document)
+    .on('ajaxStart',function()
+    {
+      NProgress.start();
+    })
+    .on('ajaxComplete',function()
+    {
+      NProgress.done();
+    });
+  });
+
+  require(['vue-comm'],function(Vue)
+  {
+    new Vue(
+    {
+      el : '#doc'
+      ,data :
+      {
+        list : []
+      }
+      ,ready : function()
+      {
+        window.nprogress && nprogress.done();
+      }
+      ,methods :
+      {
+      }
+    });
+  });
+
+  require(['an-cover'],function($)
+  {
+    $('.ckt-gallery .ckt-gallery-img img').anCover(
+    {
+      widthByHeight : 0.75
+    });
+  });
+
+  return $;
+});
+</script>
+</body>
+</html>

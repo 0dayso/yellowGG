@@ -1,0 +1,103 @@
+<style>
+table .form-inline { display:inline-block; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>排序号</th>
+              <th>签约类型</th>
+              <th>提现比例</th>
+              <th>每日提现次数</th>
+              <th>属性</th>
+              <th>描述</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<php>
+$form = 'form_add';
+</php>
+            <tr>
+              <td>添加</td>
+              <td>
+                <input type="text" name="sort" value="" placeholder="选填，升序" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="attrs[name]" value="" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="number" name="attrs[cash_rate]" value="" placeholder="必填" min="0" max="100" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="number" name="attrs[cash_times]" value="" placeholder="必填" min="0" max="10" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <label>
+                  <input type="checkbox" name="attrs[auto_hot]" value="1" form="{$form}">
+                  自动加入热门
+                </label>
+              </td>
+              <td>
+                <input type="text" name="remark" value="" placeholder="选填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <form action="{:U('contract_type_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="">
+                  <button type="submit" class="btn btn-primary">添加</button>
+                </form>
+              </td>
+            </tr>
+<volist name="data['list']" id="v">
+<php>
+$form = 'form_'.$v['id'];
+</php>
+            <tr>
+              <td>{$v['id']}</td>
+              <td>
+                <input type="text" name="sort" value="{$v['sort']}" placeholder="选填，升序" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="text" name="attrs[name]" value="{$v['attrs']['name'] ?: $v['attrs']['type']}" placeholder="必填" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="number" name="attrs[cash_rate]" value="{$v['attrs']['cash_rate']}" placeholder="必填" min="0" max="100" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <input type="number" name="attrs[cash_times]" value="{$v['attrs']['cash_times']}" placeholder="必填" min="0" max="10" form="{$form}" class="form-control input-sm">
+              </td>
+              <td>
+                <label>
+                  <input type="checkbox" name="attrs[auto_hot]" value="1"{$v['attrs']['auto_hot'] ? 'checked' : ''} form="{$form}">
+                  自动加入热门
+                </label>
+              </td>
+              <td>
+                <input type="text" name="remark" value="{$v['remark']}" placeholder="选填" form="{$form}" class="form-control input-sm tip" data-original-title="{$v['remark']}">
+              </td>
+              <td>
+                <form action="{:U('contract_type_save')}" method="POST" id="{$form}" class="form-inline">
+                  <input type="hidden" name="id" value="{$v['id']}">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                </form>
+                <a href="{:U('hosts?contract_type='.$v['id'])}" target="_blank" class="btn btn-success">主播列表</a>
+                <a href="{:U('contract_type_del?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$pager ? $pager->show() : $page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

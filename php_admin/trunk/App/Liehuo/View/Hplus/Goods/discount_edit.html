@@ -1,0 +1,333 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.form-horizontal .control-label { width:auto; min-width:10em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+
+        <form action="{:U('discount_save')}" method="POST" class="form-horizontal">
+          <input type="hidden" name="id" value="{$data['id']}">
+          <div class="form-filter" data-action="{:U('mass_send_count')}">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">商品类型</label>
+              <div class="col-sm-10">
+                <select name="type" class="form-control filter-fields">
+<php>
+$arr =
+[
+  'diamond'    => '钻石充值',
+  'vips'       => '烈火会员',
+  'like'       => '喜欢',
+  'super_like' => '超喜欢',
+  'gift'       => '礼物',
+  'broadcast'  => '广播/喇叭',
+];
+</php>
+<volist name="arr" id="v">
+                  <option value="{$key}"{:array_key_exists($data['goods_id'],$data['goods_'.$key]) ? ' selected' : ''}>{$v}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_diamond']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''}>{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="vips">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_vips']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''}>{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="like">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_like']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''}>{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="super_like">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_super_like']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''}>{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="gift">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_gift']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''} style="height:80px;padding-top:30px;background:url({$v['pic']}) no-repeat right top / 80px;">{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" data-filter="broadcast">
+              <label class="col-sm-2 control-label">商品选择</label>
+              <div class="col-sm-10">
+                <select name="goods_id" class="form-control">
+<volist name="data['goods_broadcast']" id="v">
+                  <option value="{$key}"{:boolval($data['goods_id'] == (string)$key) ? ' selected' : ''}>{$v['name'] ?: $data['goods_list'][$key]['name'] ?: $key}</option>
+</volist>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">活动开始</label>
+              <div class="col-sm-4">
+                <input type="text" name="discount_stime" value="{$data['discount_stime'] ? date('Y-m-d H:i:s',$data['discount_stime']) : ''}" placeholder="选填" class="form-control date-time">
+              </div>
+              <label class="col-sm-2 control-label">活动结束</label>
+              <div class="col-sm-4">
+                <input type="text" name="discount_etime" value="{$data['discount_etime'] ? date('Y-m-d H:i:s',$data['discount_etime']) : ''}" placeholder="选填" class="form-control date-time">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">指定版本</label>
+              <div class="col-sm-10">
+                <input type="text" name="app_version" value="{$data['app_version']}" placeholder="选填，指定版本号享受此优惠，如：5.1.0,5.1.1，多个用英文逗号分隔" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">指定环境</label>
+              <div class="col-sm-10">
+                <input type="text" name="env_ip" value="{$data['env_ip']}" placeholder="选填，指定环境享受此优惠，如：192.168.83.101,127.0.0.1，多个用英文逗号分隔" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="UserBase LocationBase active">
+              <label class="col-sm-2 control-label">时间范围</label>
+              <div class="col-sm-10">
+                <div class="input-prepend input-group" style="display:block;">
+                  <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+                  <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+                  <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+                </div>
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift broadcast">
+              <label class="col-sm-2 control-label">商品名</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[name]" value="{$data['attrs']['name']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">商品状态</label>
+              <div class="col-sm-10">
+<php>
+$arr =
+[
+  0 => '禁用',
+  1 => '正常',
+];
+</php>
+<volist name="arr" id="v">
+                <label class="radio radio-inline"><input type="radio" name="attrs[status]" value="{$key}"{:boolval($data['attrs']['status'] == (string)$key) ? ' checked' : ''}>{$v}</label>
+</volist>
+              </div>
+            </div>
+            <div class="form-group" data-filter="vips diamond">
+              <label class="col-sm-2 control-label">现金价格</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[price]" value="{$data['attrs']['price']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">会员价格</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[price_vip]" value="{$data['attrs']['price_vip']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="vips like super_like gift broadcast">
+              <label class="col-sm-2 control-label">钻石价格</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[diamond]" value="{$data['attrs']['diamond']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">数量</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[amount]" value="{$data['attrs']['amount']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="like super_like">
+              <label class="col-sm-2 control-label">数量</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[get_results]" value="{$data['attrs']['get_results']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="vips">
+              <label class="col-sm-2 control-label">天数</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[get_results]" value="{$data['attrs']['get_results']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">赠送返还</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[amount_give]" value="{$data['attrs']['amount_give']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="vips">
+              <label class="col-sm-2 control-label">商品描述</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[describe]" value="{$data['attrs']['describe']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips">
+              <label class="col-sm-2 control-label">优惠信息</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[discount]" value="{$data['attrs']['discount']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond gift">
+              <label class="col-sm-2 control-label">图片路径</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[pic]" value="{$data['attrs']['pic']}" placeholder="选填，http://..." class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="like super_like">
+              <label class="col-sm-2 control-label">购买限制</label>
+              <div class="col-sm-10">
+<php>
+$arr =
+[
+  0 => '普通',
+  1 => '会员',
+  2 => '分享',
+];
+</php>
+<volist name="arr" id="v">
+                <label class="radio radio-inline"><input type="radio" name="attrs[goods_type]" value="{$key}"{:boolval($data['attrs']['goods_type'] == (string)$key) ? ' checked' : ''}>{$v}</label>
+</volist>
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift">
+              <label class="col-sm-2 control-label">返还钻石</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_diamond]" value="{$data['attrs']['rebate_diamond']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift">
+              <label class="col-sm-2 control-label">返还会员</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_vip]" value="{$data['attrs']['rebate_vip']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift">
+              <label class="col-sm-2 control-label">返还喜欢</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_like]" value="{$data['attrs']['rebate_like']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift">
+              <label class="col-sm-2 control-label">返还超喜欢</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_super_like]" value="{$data['attrs']['rebate_super_like']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond vips like super_like gift">
+              <label class="col-sm-2 control-label">返还魅力</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_glamour]" value="{$data['attrs']['rebate_glamour']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充类型</label>
+              <div class="col-sm-10">
+<php>
+$arr =
+[
+  ''         => '默认',
+  'discount' => '本次活动内本档首充',
+];
+</php>
+<volist name="arr" id="v">
+                <label class="radio radio-inline"><input type="radio" name="attrs[first_type]" value="{$key}"{:boolval($data['attrs']['first_type'] == (string)$key) ? ' checked' : ''}>{$v}</label>
+</volist>
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充赠送</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[give_first]" value="{$data['attrs']['give_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充商品名</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[name_first]" value="{$data['attrs']['name_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充优惠信息</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[discount_first]" value="{$data['attrs']['discount_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充返还VIP</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_vip_first]" value="{$data['attrs']['rebate_vip_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充返还喜欢</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_like_first]" value="{$data['attrs']['rebate_like_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" data-filter="diamond">
+              <label class="col-sm-2 control-label">首充返还超赞</label>
+              <div class="col-sm-10">
+                <input type="text" name="attrs[rebate_super_like_first]" value="{$data['attrs']['rebate_super_like_first']}" placeholder="选填" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">活动备注</label>
+              <div class="col-sm-10">
+                <input type="text" name="remark" value="{$data['remark']}" placeholder="选填" class="form-control">
+                <!--textarea name="remark" placeholder="选填" class="form-control">{$data['remark']}</textarea-->
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">保存</button>
+              <a href="{:U('discount_list')}" class="btn btn-success">返回列表</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  //
+
+});
+</script>

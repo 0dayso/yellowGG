@@ -1,0 +1,65 @@
+<style>
+.gradeX td,.gradeX th { text-align:center; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title"><span class="icon"><i class="icon-th"></i></span></div>
+        <div class="widget-content nopadding">
+          <form>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>总安装量</th>
+                    <th>标签总量</th>
+                    <th>当日新增启动</th>
+                    <th>每日注册用户数量</th>
+                    <th>每日登录用户</th>
+                    <th>今日活跃用户</th>
+                    <th>次日留存(0~100)</th>
+                    <th>去新日活</th>
+                    <th>老用户活跃率(0~100)</th>
+                    <th>今日动态数量</th>
+                    <th>当日聊天总量</th>
+                    <th>创建时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+<volist name="data.list" id="v">
+                  <tr class="gradeX">
+                    <td>{$v.id}</td>
+                    <td>{$v.total_install}</td>
+                    <td>{$v.total_tag}</td>
+                    <td>{$v.day_start}</td>
+                    <td>{$v.day_reg}</td>
+                    <td>{$v.day_login}</td>
+                    <td>{$v.day_activity}</td>
+                    <td>{$v.day_rentent}</td>
+                    <td>{$v.day_activity_without_new}</td>
+                    <td>{$v.day_old_user_activity}</td>
+                    <td>{$v.day_feed}</td>
+                    <td>{$v.day_chat}</td>
+                    <td>{$v.create_time|date='Y-m-d H:i',###}</td>
+                  </tr>
+</volist>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f;">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<script src="/Public/layer/extend/layer.ext.js"></script>

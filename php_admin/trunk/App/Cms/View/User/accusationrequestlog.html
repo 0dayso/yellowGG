@@ -1,0 +1,28 @@
+
+    <!--<p>举报及封禁历史记录：</p>-->
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>举报用户</th>
+            <th>被举报用户</th>
+            <th>处理管理员</th>
+            <th>处理原因</th>
+            <th>处理状态</th>
+            <th>处理备注</th>
+            <th>受理时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="accusation" id="vo">
+            <tr class="gradeX">
+                <td style="text-align: center">{$vo.uid}</td>
+                <td style="text-align:center">{$vo.offender_uid}</td>
+                <td style="text-align:center">{$vo.aid}</td>
+                <td style="text-align:center">{$vo.reason}</td>
+                <td style="text-align:center">{$vo.status}</td>
+                <td style="text-align:center">{$vo.remark}</td>
+                <td style="text-align:center">{$vo.certificate_time}</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>

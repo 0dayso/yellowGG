@@ -1,0 +1,51 @@
+<style>
+.text-center th { text-align:center; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div style="clear:both;"></div>
+        <div class="widget-content nopadding">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>被封禁人ID</th>
+                  <th>举报记录ID</th>
+                  <th>举报人ID</th>
+                  <th>操作管理员</th>
+                  <th>封禁状态</th>
+                  <th>封禁理由</th>
+                  <th>备注</th>
+                  <th>处理时间</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['list']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td><a href="{:U('User_base/view?uid='.$v['oid'])}" target="_blank" class="label label-default">{$v['oid']}</a></td>
+                  <td><a class="label label-default">{$v['report_id'] ?: ''}</a></td>
+                  <td><a href="{:U('User_base/view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+                  <td>{$data['accusation_admins'][$v['aid']]['nickname']}</td>
+                  <td>{$data['accusation_states'][$v['status']]}</td>
+                  <td>{$data['accusation_reasons'][$v['reason']]}</td>
+                  <td>{$v['remark']}</td>
+                  <td>{:date('Y-m-d H:i:s',$v['create_time'])}</td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align: center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div> 

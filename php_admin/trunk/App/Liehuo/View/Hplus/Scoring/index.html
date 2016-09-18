@@ -1,0 +1,206 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.animated { z-index:inherit; }
+.gradeX td,.gradeX th { text-align:center; }
+.col-score { display:none !important; }
+.hover-show-img { position:relative; }
+.hover-show-img img { display:none; position:absolute; left:0; top:100%; }
+.hover-show-img:hover img { display:block; }
+.scoring-sex { font-size:1.5em; }
+.scoring-stop-assign.active { opacity:.6; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <div class="pull-left">
+          <a class="btn btn-primary hover-show-img">打分标准<img src="__PUBLIC__/img/scoring-dfbz.png"></a>
+          <a class="btn btn-primary hover-show-img">违规示例<img src="__PUBLIC__/img/scoring-wgsl.jpg"></a>
+          <a class="btn btn-primary hover-show-img">5分示例<img src="__PUBLIC__/img/scoring-score5.png"></a>
+          <a class="btn btn-primary hover-show-img">6分示例<img src="__PUBLIC__/img/scoring-score6.jpg"></a>
+          <a class="btn btn-primary hover-show-img">7分示例<img src="__PUBLIC__/img/scoring-score7.jpg"></a>
+          <a class="btn btn-primary hover-show-img">8分示例<img src="__PUBLIC__/img/scoring-score8.jpg"></a>
+          <a class="btn btn-primary hover-show-img">9分示例<img src="__PUBLIC__/img/scoring-score9.jpg"></a>
+        </div>
+        <div class="pull-right form-inline">
+          <a href="{:U('stop_assign')}" target="_blank"
+             class="btn btn-success scoring-stop-assign{$assign_stop ? ' active' : ''}"
+             data-toggle="button"
+             aria-pressed="{$assign_stop ? 'true' : 'false'}">继续打分</a>
+          <select name="sex" class="form-control" data-ajax="{:U('sex_assign')}">
+            <option value="">所有</option>
+            <option value="1"<php>echo $_SESSION['scoring_assign_sex'] == '1' ? ' selected' : '';</php>>女生</option>
+            <option value="0"<php>echo $_SESSION['scoring_assign_sex'] == '0' ? ' selected' : '';</php>>男生</option>
+          </select>
+          <span class="btn btn-success">剩余队列：<!--<b class="scoring-count">-</b> / --><b class="scoring-total">-</b></span>
+          <a href="{:U('logs')}" target="_blank" class="btn btn-success">打分团记录</a>
+          <a href="{:U('over')}" class="btn btn-danger">结束打分</a>
+<if condition="$is_open && 0">
+          <a href="{:U('common/logout')}" class="btn btn-white">登出</a>
+</if>
+        </div>
+      </div>
+      <hr>
+      <div class="table-responsive-">
+        <table id="scoring-box" class="table table-bordered">
+          <thead>
+            <tr class="gradeX">
+              <th>用户ID</th>
+              <th>照片内容</th>
+              <th>创建时间</th>
+              <th>响应时间</th>
+              <th class="col-score">照片分值</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody class="list-scoring">
+  <tr class="gradeX scoring-demo" data-id="">
+    <td>0</td>
+    <td><img src="http://feed.chujianapp.com/20151029/def35484404e32e1abca5abfd3663a84.logo" class="zoom"></td>
+    <td>演示数据</td>
+    <td><b class="scoring-timeout label label-default" data-time="{:time()}" data-timeout="1"></b></td>
+    <td class="col-score">
+      <input type="number" name="score-no" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+      <a class="act-scoring-no btn btn-primary btn-mini">打分</a>
+    </td>
+  </tr>
+          </tbody>
+        </table>
+        <div style="min-height:200px;">&nbsp;</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-scoring-item">
+<$
+$ = _G.jQuery;
+tim = (_G.parseInt(create_time) || 0) * 1000;
+sex_obj = {'0':'男','1':'女'};
+sex_cls = {'0':'success','1':'danger'};
+$>
+  <tr class="gradeX animated- fadeInRightBig" data-id="<$=uid$>" data-resource="<$=resource$>">
+    <td>
+      <a href="{:U('User_base/view')}?uid=<$=uid$>" target="_blank" class="label label-default"><$=uid$></a>
+      <b class="label label-danger"><$=contract_name || ''$></b>
+      <br><div class="td-content" style="max-width:220px;"><$=remark$></div>
+    </td>
+    <td>
+      <i class="thumbnail"><img src="<$=img$>" class="zoom resource"><b class="label label-<$=sex_cls[sex] || 'default'$> scoring-sex"><$=sex_obj[sex] || ''$></b></i>
+    </td>
+    <td><$=_G.moment(tim).format('YYYY-MM-DD HH:mm:ss')$></td>
+    <td><b class="scoring-timeout label label-default" data-time="<$=tim$>" data-timeout="<$=timeout$>"></b></td>
+    <td class="col-score">
+      <input type="number" name="score" step="1" min="0" max="10" class="form-control input-sm">
+    </td>
+    <td>
+      <div class="btn-group tip" data-original-title="查询盗图">
+        <a href="http://image.baidu.com/n/pc_search?queryImageUrl=<$=img$>" target="_blank" class="label label-default scoring-shitu-disabled">百度</a>
+        <a href="http://st.so.com/stu?imgurl=<$=img$>" target="_blank" class="label label-default">360</a>
+      </div>
+<$
+include('tpl-scoring-quick');
+if(score_history)
+{
+$>
+      <div>最近评分记录：<$=(score_history || []).join('  ')$></div>
+<$
+}
+$>
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="tpl-scoring-quick">
+      <a class="act-scoring btn btn-primary btn-mini hide">打分</a>
+      <div class="btn-group">
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-danger btn-sm" data-score="0.01">不合格</a>
+          <a class="act-scoring-quick btn btn-warning btn-sm" data-score="4.99">传失败</a>
+        </div>
+<$
+//快捷打分
+scoring_quick =
+{
+  '5':false,
+  '6':false,
+  '7':false,
+  '8':false,
+  '9':false
+};
+$.each(scoring_quick,function(k,v)
+{
+  var hsb = typeof v == 'object' && v,
+      sco = k;
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="<$=sco$>"><$=sco$></a>
+<$
+  if(hsb)
+  {
+$>
+          <ul class="dropdown-menu">
+<$
+    $.each(v,function(i2,v2)
+    {
+      var sco = v2;
+$>
+            <li><a class="act-scoring-quick" data-score="<$=sco$>"><$=sco$></a></li>
+<$
+    });
+$>
+          </ul>
+<$
+  }
+$>
+        </div>
+<$
+});
+$>
+        <div class="btn-group">
+          <a class="act-scoring-quick btn btn-primary btn-sm" data-score="10">10</a>
+        </div>
+      </div>
+</script>
+
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.10.6/moment.min.js"></script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.Scoring =
+{
+  route:
+  {
+    query:'{:U('query')}',
+    save :'{:U('save')}',
+    del  :'{:U('del')}',
+    shitu:'{:U('shitu')}'
+  },
+  option:
+  {
+    feed_img_root          : '{$feed_img_root}' || '//feed.chujian.im/',
+    feed_timeout           : parseInt('{$feed_timeout}') || 60,
+    feed_timeout_highlight : parseInt('{$feed_timeout_highlight}') || 1,
+    // Ajax刷新时间
+    ajax_interval          : (parseInt('{$ajax_interval}') || 3) * 1000,
+    ajax_real_time         : 0
+  },
+  rank:
+  {
+    fail:{:json_encode($score_rank_fail ?: array())}
+  },
+  score_box9_7:{:json_encode($score_box9_7 ?: array())},
+  score_box9_8:{:json_encode($score_box9_8 ?: array())},
+  score_box9_9:{:json_encode($score_box9_9 ?: array())}
+};
+
+$(document).on('require.ready',function()
+{
+  require.config({urlArgs:'v=20160622'});
+  require(['app-scoring']);
+});
+</script>

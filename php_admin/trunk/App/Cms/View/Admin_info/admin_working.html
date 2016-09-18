@@ -1,0 +1,31 @@
+<div style="display: none" class="AdminWorking">
+    <form class="form-horizontal" id="working" onsubmit="return false">
+        <div class="control-group">
+            <if condition="$list.status EQ 0">
+                <label class="control-label">上班打卡：</label>
+                <div class="controls">
+                    <input type="text" class="form-control" style="width:200px" placeholder="请输入用户名" id="start_working" name="start_working"/>
+                </div>
+            </if>
+            <if condition="$list.status EQ 1">
+                <label class="control-label">上班时间：</label>
+                <div class="controls">
+                    <input type="text" class="form-control" style="width:200px" value="{$list.start_working_time}" readonly/>
+                </div>
+            </if>
+        </div>
+
+        <if condition="$list.status EQ 1">
+            <div class="control-group">
+                <label class="control-label">下班打卡：</label>
+                <div class="controls">
+                    <input type="text" class="form-control" style="width:200px" placeholder="请输入用户名" id="close_working" name="close_working"/>
+                </div>
+            </div>
+        </if>
+
+        <div class="form-actions" style="text-align:left">
+            <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+        </div>
+    </form>
+</div>

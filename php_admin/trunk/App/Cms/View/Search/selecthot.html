@@ -1,0 +1,146 @@
+<div class="widget-content nopadding">
+    <form class="form-horizontal" id="form-search" method="get">
+        <div class="controls">
+            <div class="col-sm-3" style="padding:0">
+                 <input type="text" name="uid"   class="laydate-icon form-control" placeholder="用户uid" value="{$_GET['uid']}">
+            </div>
+            <input type="submit" class="btn btn-primary btn-sm" value="搜索">
+        </div>
+    </form>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="text-align: center">UID</th>
+            <th style="text-align: center">上传时间</th>
+            <!--<th style="text-align: center">标签ID</th>-->
+            <th style="text-align: center">内容</th>
+            <th style="text-align: center">标签</th>
+            <th style="text-align: center">标签当日点赞数</th>
+            <th style="text-align: center">当日反对数</th>
+            <th style="text-align: center">操作</th>
+            <th style="text-align: center">手动点赞</th>
+            <th style="text-align: center">查看手动点赞记录</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list.list" id="vo" >
+            <tr class="gradeX">
+                <td style="text-align: center">
+                    <if condition="$vo['status'] eq 0 " >
+                        <a style="color:#000000" href="{:U('User/user_info/', array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid']))}"  target="_blank" >{$vo['uid']}</a>
+                    <else/>
+                        <a style="color:blue" href="{:U('User/user_info/', array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid']))}"  target="_blank" >{$vo['uid']}</a>
+                    </if>
+
+                </td>
+                <td style="text-align: center">{$vo['create_time']|date="Y-m-d H:i:s",###}</td>
+                <!--<td style="text-align: center">{$vo['id']}</td>-->
+                <td style="text-align: center">
+                    <img src="http://surging.chujian.im/{$vo['thumb']}" width="100" height="100" />
+                </td>
+                <td style="text-align: center">
+                    {$vo.title}
+                    <span title="动态更新" class="label label-primary">{$vo.snum}</span>
+                </td>
+                <td style="text-align: center" class="t_thumb{$vo.did}">
+                    <if condition="$vo.t_thumb_up_cnt eq 0 ">
+                            {$vo.t_thumb_up_cnt}
+                        <else/>
+                            <a style="color:red;font-size:xx-large">{$vo.t_thumb_up_cnt}</a>
+                    </if>
+                </td>
+                <td style="text-align: center" class="t_thumb{$vo.did}">{$vo.t_thumb_down_cnt}</td>
+                <td style="text-align: center">
+                    <input type="submit" class="btn btn-primary btn-sm agingsuring" va="{$vo['uid']}"  value="查看">
+                </td>
+                <td style="text-align: center">
+                    <input type="text"  name="" value="" style="text-align:center" va="{$vo.id}" uid="{$vo.uid}" did="{$vo.did}" >
+                    <input type="submit" class="add_up" value="确定添加"  >
+                </td>
+                <td style="text-align: center">
+                    <a class="btn btn-primary btn-sm" href="{:U('search/praiselist',array('tag'=>$vo['id']))}" target="_blank"  >查看</a>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+
+    <div class="pagination alternate">
+            {$list.page}
+    </div>
+
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+
+        $('.del-items').click(function(){
+            var id = $(this).attr('did');
+            var _this = $(this);
+            var al = layer.confirm('你确定要删除吗？',function(){
+                $.post("{:U('banner/del_items')}",{id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.msg('删除成功!');
+                        layer.close(al);
+                    }
+                })
+            });
+        });
+
+        $('.agingsuring').click(function(){
+
+
+            var uid  = $(this).attr('va');
+
+            $.post("{:U('search/get_surging_html')}",{uid:uid},function(data){
+                var pageii = $.layer({
+                    type: 1,
+                    title: false,
+                    area: ['1000px', '700px'],
+                    shift: 'top', //从左动画弹出
+                    page: {
+                        html: '<div id="addsurginged"  style="overflow:scroll;width:1000px;height:700px; padding:20px; border:1px solid #ccc; background-color:#eee;">'+data+'</div>'
+                    }
+                });
+            });
+
+
+        });
+
+        $('.add_up').click(function () {
+            var _this = $(this);
+            var num   = parseInt(_this.prev().val());
+            if(num>20){
+                layer.alert('最多可以加20个赞！');
+                return false;
+            }
+            layer.confirm('确定要点赞吗？',function(){
+
+                var uid   = _this.prev().attr('uid');
+                var tagid = _this.prev().attr('va');
+                var did   = _this.prev().attr('did');
+
+                $.post("{:U('search/visaup')}",{tagid:tagid,num:num,uid:uid},function(data){
+                    if(data=='ok'){
+                        /*var nums = parseInt($('.t_thumb'+did).text());
+                        $('.t_thumb'+did).text(num+nums);*/
+                        layer.msg('加赞成功！');
+                    }else{
+                        layer.msg('加赞失败！');
+                    }
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+
+    });
+</script>

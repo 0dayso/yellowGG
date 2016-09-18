@@ -1,0 +1,73 @@
+<include file="Common/top"/>
+</head>
+<body>
+<div id="doc">
+<include file="Common/head"/>
+  <div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+      <form action="{:U()}" method="POST" class="form-inline">
+        <div class="form-group">
+          <input type="text" name="phone" value="{$_REQUEST['phone']}" placeholder="手机号，至少6位" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+      </form>
+    </div>
+    <hr>
+    <div class="row-fluid{$data['user'] ? '' : ' hide'}">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>用户ID</th>
+              <th>昵称</th>
+              <th>性别</th>
+              <th>头像</th>
+              <th>评分</th>
+              <th>注册时间</th>
+              <th>最后活跃</th>
+              <th>城市</th>
+              <th>设备机型</th>
+              <th>滑动数</th>
+              <th>送赞数</th>
+              <th>匹配数</th>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['user']" id="v">
+<php>
+$sta = $data['stat'][$v['uid']] ?: [];
+$usr = $data['user'][$v['uid']] ?: [];
+$loc = $data['location'][$v['uid']] ?: [];
+$sex = $usr['sex'];
+$sco = (int)$usr['score'];
+$sco < 0 && $sco = '未评分';
+$avatar = $usr['albums'][0];
+$res = is_array($avatar) ? $avatar : ['resource' => $avatar];
+</php>
+            <tr>
+              <td>{$usr['uid']}</td>
+              <td>{$usr['nickname']}</td>
+              <td>{$Think.config.USER_SEX_IS.$sex}</td>
+              <td>
+<if condition="$res['resource']">
+                <img src="http://feed.chujianapp.com/{$res['resource']}@300w" style="max-height:100px;">
+</if>
+              </td>
+              <td>{$sco}</td>
+              <td>{$usr['reg_time'] ? date('Y-m-d H:i:s',$usr['reg_time']) : '-'}</td>
+              <td>{$usr['active_time'] ? date('Y-m-d H:i:s',$usr['active_time']) : '-'}</td>
+              <td>{$loc['province']} {$loc['city']} {$loc['area']}</td>
+              <td>{$usr['device']} {$usr['device_model']} {$usr['device_version']}</td>
+              <td>{$sta['nope_num'] + $sta['free_thumb_num'] + $sta['pay_thumb_num'] + $sta['free_like_num'] + $sta['pay_like_num']}</td>
+              <td>{$sta['free_thumb_num'] + $sta['pay_thumb_num'] + $sta['free_like_num'] + $sta['pay_like_num']}</td>
+              <td>{$sta['free_match_num'] + $sta['pay_match_num']}</td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Common/foot"/>

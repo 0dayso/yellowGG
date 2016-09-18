@@ -1,0 +1,89 @@
+ 
+<div id="content">
+  
+    <!--Action boxes-->
+    <div class="container-fluid widget-box">
+            <form class="form-horizontal" id="form-search" method="post"  style="width:100%;float:left">
+                 
+                用 户 ID：<input type="text" value="{$_GET['uid']}" name="uid" id="user_id" class="form-control" style="margin:10px 0px 10px 0" ><br/>
+                <if condition="$_GET['uid'] neq ''" >
+                    <div class="controls">
+                    消息类别：  <input type="radio" value="1" name="send_t" id="man" checked >系统  
+                                <input type="radio" value="2" name="send_t" id="wman">  警告  
+                    </div>
+                    <div class="controls">
+                    警告原因：  
+                            <input type="radio" value="1" name="reason" class="reason-in" >色情传播 
+                            <input type="radio" value="2" name="reason" class="reason-in" >欺诈&amp;广告 
+                            <input type="radio" value="3" name="reason" class="reason-in" >招嫖卖淫  
+                            <input type="radio" value="4" name="reason" class="reason-in" >违法&amp;反动政治 
+                            <input type="radio" value="5" name="reason" class="reason-in" >其他 
+                            <input type="radio" value="6" name="reason" class="reason-in" >托 
+                            <input type="radio" value="7" name="reason" class="reason-in" >骚扰 
+                    </div>
+                </if>
+                发送内容：<br/><div class="col-lg-4 m-l-n"><textarea name="content" id="sentcontent" class="form-control" ></textarea></div>
+                            <!-- <input type="reset" value="重置" class="btn btn-primary " />&nbsp; -->
+            </form>
+            <div id="senbut" class="btn btn-primary"  >发送</div>　　　　　　
+                
+            <if condition="$_GET['uid'] neq ''" >
+                <div class="controls" style="margin:10px;">
+                    用户：{$_GET['uid']} 被警告次数：{$num}
+                </div>
+                    <div class="widget-content nopadding">
+                    <table id="modify_user_info" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>内容</th>
+                            <th>内容类别</th>
+                            <th>原因</th>
+                            <th>操作员</th>
+                            <th>时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align: center">{$vo.content}</td>
+                                <td style="text-align: center"><if condition="$vo.s_type eq 1">系统<else/>警告</if></td>
+                                <td style="text-align: center">
+                                    <?php $cis = C("STATE_ACCUSATION_PROCESS_REASONS"); echo $cis[$vo['reason']]; ?>
+                                </td>
+                                <td style="text-align: center">{$vo.nikname}</td>
+                                <td style="text-align: center">{$vo.addtime|date="Y-m-d",###}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </if>
+    </div>
+</div>
+         
+
+<script src="/Public/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+    $(function(){
+
+        $('#man').click(function(){
+            $('#mlevel').show();
+            $('#wlevel').hide();
+        });
+        $('#wman').click(function(){
+            $('#mlevel').hide();
+            $('#wlevel').show();
+        });
+
+        $('#senbut').click(function(){
+            layer.confirm('确定群发推送吗？', function(){
+                layer.load('发送中');
+                $('#form-search').submit();               
+            });           
+        });
+
+    });
+</script>

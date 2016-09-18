@@ -1,0 +1,809 @@
+[ 2016-09-09T10:39:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T10:39:53+08:00 ] 127.0.0.1 /liehuo/index.php/index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T10:39:53+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T10:39:53+08:00 ] 127.0.0.1 /liehuo/index.php/index/verify_code/?rand=0.3132771630714708
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T10:39:57+08:00 ] 127.0.0.1 /liehuo/index.php/index/check_login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `cj_admin` WHERE `nickname` = '施芳洋' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin_group_admin` [ RunTime:0.0020s ]
+SQL: SELECT `action_id` FROM `cj_admin_group_admin` LEFT JOIN cj_action_admin_group ON cj_action_admin_group.admin_group_id=cj_admin_group_admin.admin_group_id  WHERE `aid` = '54' GROUP BY action_id  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `cj_admin` [ RunTime:0.0020s ]
+SQL: UPDATE `cj_admin` SET `last_login_time`='2016-09-09 10:39:57' WHERE `aid` = 54 LIMIT 1  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_oper_log` [ RunTime:0.0020s ]
+SQL: INSERT INTO `cj_oper_log` (`type`,`aid`,`uid`,`remark`,`create_time`) VALUES ('login','54','0','登陆后台;
+管理员ID:54;
+IP:127.0.0.1','1473388797') [ RunTime:0.0010s ]
+NOTIC: [2048] Declaration of Common\Model\AuthModel::check() should be compatible with Think\Model::check($value, $rule, $type = 'regex') E:\workspace\liehuo\php_admin\trunk\App\Common\Model\AuthModel.class.php 第 117 行.
+SQL: SHOW COLUMNS FROM `cj_admin_auth_access` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `cj_admin_auth_rule` [ RunTime:0.0020s ]
+SQL: SELECT a.auth_id,r.id,r.name,r.title,r.condition FROM cj_admin_auth_access a left join cj_admin_auth_rule r on r.id = a.rule_id  WHERE a.auth_id = 54 AND r.status = 1  [ RunTime:0.0010s ]
+SQL: SELECT `id`,`name`,`title`,`condition` FROM `cj_admin_auth_rule` WHERE `status` = 1  [ RunTime:0.0020s ]
+
+[ 2016-09-09T10:39:57+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T10:53:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_subs/id/43
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:03:55+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:04:14+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:07:54+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:08:31+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:08:49+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:08:50+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.015600s ]
+
+[ 2016-09-09T13:08:50+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:08:50+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:08:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:08:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:08:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:14:13+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:21:49+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:23:01+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:23:03+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:23:51+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:24:06+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:24:45+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:24:45+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:24:49+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-09T13:26:19+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:32:46+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:32:51+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:32:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:32:55+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:41+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/5
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:43+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:34:45+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:46+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:48+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/9
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:34:50+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/10
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:34:52+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/11
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:34:56+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:58+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/13
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:34:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/14
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:35:01+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/15
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:37:01+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/16
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:37:03+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:37:04+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/18
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:37:06+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/19
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:37:07+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/20
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:37:09+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/21
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:37:17+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/22
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-09T13:37:21+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/178
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:39:58+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/178
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:40:25+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/178
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:40:48+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/178
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:41:50+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_subs/id/43
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:44:24+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/22
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:44:33+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/22
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:44:51+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/22
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:45:11+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/22
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:45:25+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:50:16+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:50:22+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/12
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:50:24+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:50:26+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T13:50:28+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T13:50:30+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T14:50:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T14:51:15+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T14:51:18+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:13:45+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:14:25+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:14:55+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:14:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:23:43+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 表达式错误:create_time
+
+[ 2016-09-09T15:25:04+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:25:20+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:26:22+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:26:27+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 表达式错误:create_time
+
+[ 2016-09-09T15:26:38+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 表达式错误:create_time
+
+[ 2016-09-09T15:26:40+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 表达式错误:create_time
+
+[ 2016-09-09T15:26:40+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+ERR: 表达式错误:create_time
+
+[ 2016-09-09T15:26:56+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+ERR: 表达式错误:etime
+
+[ 2016-09-09T15:27:06+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-08&etime=2016-09-08&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:27:16+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:27:30+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:27:57+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:28:02+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:29:56+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:29:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:30:28+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:30:31+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:30:38+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001001s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-09T15:31:04+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=111111
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:31:18+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:31:23+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:32:20+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:32:23+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:34:35+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:34:40+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:43:18+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-03&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:43:23+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-04&etime=2016-09-06&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:43:26+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:43:33+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:50:18+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:50:21+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:50:23+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:50:25+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/5
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:50:27+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:50:35+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:57:37+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:57:39+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/kwd/12200041/p/9
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:57:46+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:57:49+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-09-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:57:54+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T15:57:58+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/2016-08-11/etime/2016-09-09/kwd/12200041/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T15:58:01+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/2016-08-11/etime/2016-09-09/kwd/12200041/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:17:34+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:17:37+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/2016-08-11/etime/2016-09-09/kwd/12200041/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:17:38+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/2016-08-11/etime/2016-09-09/kwd/12200041/p/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:17:41+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/2016-08-11/etime/2016-09-09/kwd/12200041/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:18:59+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:19:00+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:25:25+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:25:40+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:26:36+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:26:39+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:26:53+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:26:54+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:32:32+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-09T16:32:34+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:33:24+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:33:30+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:34:34+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:34:37+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:35:20+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:35:27+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:35:32+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:35:38+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=12200041
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:35:41+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:44:24+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=2016-08-11&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+
+[ 2016-09-09T16:44:33+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:47:38+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:48:02+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg?act=filter&uid=&activity_id=&pub_key=&stime=1970-01-01&etime=2016-09-09&kwd=
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:48:07+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:48:09+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:50:39+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:50:42+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:50:43+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:50:45+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T16:50:46+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:50:46+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T16:50:47+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T18:13:42+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T18:13:43+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+
+[ 2016-09-09T18:13:44+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T18:13:58+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+
+[ 2016-09-09T19:16:28+08:00 ] 127.0.0.1 /liehuo/index.php/live/fun_bagg/act/filter/stime/1970-01-01/etime/2016-09-09/p/3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+

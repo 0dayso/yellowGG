@@ -1,0 +1,65 @@
+ 
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <form class="form-horizontal" id="form-horizontal">
+                        <div class="controls" style="margin-left: 10px">搜索：
+                            <select name="search" id="search-type">
+                                <option value="1">按管理员</option>
+                                <option value="2">按用户昵称</option>
+                            </select>
+
+                            <input type="hidden" name="type" value="{$type}" />
+                            <input type="text" name="keyword" />
+                            <input type="submit" value="搜索" />
+                        </div>
+                    </form>
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span></div>
+
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>初见号</th>
+                            <th>用户昵称</th>
+                            <th>管理员</th>
+                            <th>操作时间</th>
+                            <th>描述</th>
+                            <th>备注</th>
+                            <!--<th>操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.id}</td>
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align: center">{$vo.user_name}</td>
+                                <td style="text-align: center">{$vo.admin_name}</td>
+                                <td style="text-align: center">{$vo.certificate_time}</td>
+                                <td style="text-align: center">{$vo.log}</td>
+                                <td style="text-align: center">{$vo.remark}</td>
+                                <!--<td style="text-align: center">
+                                    <a href="{:U('AdminLog/delete_car_log/',array('id'=>$vo['id']))}" class="btn btn-primary btn-mini">删除记录</a>
+                                </td>-->
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 

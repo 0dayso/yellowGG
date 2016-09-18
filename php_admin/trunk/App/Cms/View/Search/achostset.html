@@ -1,0 +1,148 @@
+<div id="content">
+    <!--breadcrumbs-->
+    
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                
+                 
+                    <!-- <a href="" class="btn btn-primary btn-sm" style="float:right">被赞最多</a> -->
+                     
+                    <form class="form-horizontal" id="form-search" method="get">
+                        <div class="controls"> 
+                            <select id="form-search-type" name="lib" class="form-control m-b" style="width:110px;float:left">
+                                <option value="">选择库</option>
+                                <volist name="select" id="vo">
+                                    <option value="{$vo.id}" <if condition="$_GET['lib'] eq $vo['id']"  >selected</if> >{$vo.title}</option>
+                                </volist>
+                            </select>
+                            
+                            <div class="col-sm-4">
+                                <label class="radio-inline" style="padding-top:0px">
+                                    <input type="text" name="valid_begin" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon form-control" placeholder="选择时间" value="{$_GET['valid_begin']}">
+                                </label>
+                                <label class="radio-inline" style="padding-top:0px">
+                                    至
+                                </label>
+                                <label class="radio-inline" style="padding-top:0px">
+                                    <input type="text" name="valid_end" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="form-control laydate-icon" placeholder="选择时间" value="{$_GET['valid_end']}">
+                                </label>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-sm" value="确定">
+                        </div>
+                    </form>
+             
+                <div>
+                    <form action="" method="post" id="from-gold">
+                        <input type="hidden" name="lib" value="{$_GET['lib']}" >
+                        <div class="widget-content nopadding">
+                            <table id="accusation_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">性别</th>
+                                    <th style="text-align: center">认证标签 / 被赞次数</th>
+                                    <th style="text-align: center">金币</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($list['list'] as $key => $value) { ?>
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">
+                                            <a  target="_blank" href="/index.php/user/user_info/menu/account_manage/type/all_user/uid/<?php echo $value[0]['uid']; ?>"><?php echo $key; ?></a>
+                                        </td>
+                                        <td style="text-align:center"><?php echo ($value[0]['sex']==0)?'男':'女'; ?></td>
+                                        <td style="text-align:left">
+                                            <volist name="value" id="vo" >
+                                                <input type="checkbox" class="utagis" name="utag[]" u="{$vo.uid}" value="{$vo.uid}-{$vo.id}" >
+                                                {$vo.title}/<if condition="$vo.thumb_up_id eq ''" >0<else/>{$vo.thumb_up_id}</if>　
+                                            </volist>
+                                        </td>
+                                        <td style="text-align:center;width:200px" >
+                                            <input type="hidden" name="user[]" value="<?php echo $value[0]['uid']; ?>"   >
+                                            <input type="text" name="golds[]" id="<?php echo $value[0]['uid']; ?>-i" class="form-control user-gold"  >
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+                    </form>
+                </div>
+                <div style="float: right;clear:both">
+                    <input type="submit"  class="btn btn-primary btn-sm" id="sx" value="筛选">
+                    <input type="submit"  class="btn btn-w-m btn-warning" value="金币分配" id="gold">
+                    <input type="submit"  class="btn btn-w-m btn-warning" value="确认发放" id="sendgold">
+                  
+                </div>
+
+                
+                  
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ <script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+ <script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#sx').click(function(){
+            $('#from-gold').submit();
+        });
+
+        $('#gold').click(function(){
+            var arr   = new Array;
+            $('.utagis:checked').each(function(i){
+                var _this = $('.utagis:checked').eq(i);
+                arr[i]    = _this.attr('u');
+            });
+            
+            if(typeof(arr[0]) == 'undefined'){
+                layer.alert('亲,你没有选择标签！');
+                return false;
+            }
+
+            var indexsd = layer.prompt({title:"输入金币额度！"}, function(title){
+                for(var i=0;i<arr.length;i++){
+                    $('#'+arr[i]+'-i').val(title);
+                }
+                layer.close(indexsd);                
+            });
+
+        });
+
+        $('#sendgold').click(function(){
+            var gold = new Array;
+            $('.user-gold').each(function(i){
+                var _this = $('.user-gold').eq(i);
+                gold[i]   = _this.val();
+            });
+
+            if( gold[0] == ''){
+                layer.alert('亲,你没有分配金币！');
+                return false;
+            }
+
+            var send = layer.confirm('你确定要发放金币么？',function(){
+                $('#from-gold').attr('action',"{:U('search/sendgold')}");
+                $('#from-gold').submit();
+                layer.close(send);
+            });
+ 
+        });
+
+
+    });
+</script>
+ 

@@ -1,0 +1,67 @@
+<div id="header">
+    <h1><a href="dashboard.html">初见管理后台</a></h1>
+</div>
+
+<div id="user-nav" class="navbar navbar-inverse">
+    <ul class="nav">
+        <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-hand-right"></i>  <span class="text">欢迎您</span><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="{:U('AdminInfo/index')}"><i class="icon-user"></i>我的个人信息</a></li>
+                <li class="divider"></li>
+                <li><a href="{:U('AdminTask/index')}"><i class="icon-check"></i>我的任务</a></li>
+                <li class="divider"></li>
+                <li><a href="{:U('Common/logout')}"><i class="icon-key"></i>退出系统</a></li>
+            </ul>
+        </li>
+
+        <li class="">
+            <a title="" href="{:U('TaskHall/index')}">
+                <i class="icon icon-home"></i> <span class="text">任务大厅</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a title="" href="{:U('ContentManage/index')}">
+                <i class="icon icon-folder-close"></i> <span class="text">内容管理</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('AccountManage/index')}">
+                <i class="icon icon-user"></i> <span class="text">帐号管理</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('Test/index')}">
+                <i class="icon icon-arrow-right"></i> <span class="text">测试</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('SystemSetting/index')}">
+                <i class="icon icon-cog"></i> <span class="text">后台管理</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('FaceCarRate/facecarinfo')}">
+                <i class="icon icon-rate"></i> <span class="text">打分系统</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('PrizeManage/index')}">
+                <i class="icon icon-prize"></i> <span class="text">奖品管理</span>
+            </a>
+        </li>
+        <li class="">
+            <a title="" href="{:U('OperateToo/index')}">
+                <i class="icon icon-thumbs-up"></i> <span class="text">运营工具</span>
+            </a>
+        </li>
+
+    </ul>
+</div>
+<!--close-top-Header-menu-->
+<!--start-top-serch-->
+<div id="search" style="display:none">
+    <input type="text" placeholder="搜索"/>
+    <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
+</div>
+<!--close-top-serch-->

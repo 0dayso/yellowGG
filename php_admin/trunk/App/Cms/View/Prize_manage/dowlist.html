@@ -1,0 +1,46 @@
+ 
+    <style  >
+        .nav-pills li{margin-left:10px}
+    </style>
+ 
+<div id="content">
+     
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>奖品名称</th>
+                            <th>用户ID</th>
+                            <th>电话号码</th>
+                            <th>运营商</th>
+                            <th>提交时间</th>
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="info.list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align:center">{$vo.prize}</td>
+                                <td style="text-align:center">{$vo.uid}</td>
+                                <td style="text-align:center">{$vo.phone}</td>
+                                <td style="text-align:center">{$vo.operators}</td>
+                                <td style="text-align:center">{$vo.convert_time|date='Y-m-d H:i:s',###}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+ 
+        
+    </div>
+
+
+     
+</div> 

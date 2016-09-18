@@ -1,0 +1,584 @@
+<include file="Common/top"/>
+<style>
+.map-baidu { min-height:500px; }
+</style>
+</head>
+<body>
+<div id="doc">
+<include file="Common/head"/>
+  <div class="container-fluid">
+    <div class="row-fluid">
+
+      <div id="nav-side" class="col-md-2">
+<include file="Common/side"/>
+      </div>
+
+      <div id="main" class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">表单</h3>
+          </div>
+<php>
+$dat = $data['item'] ?: [];
+$adt = $data['values'] ?: [];
+$loc = $data['location'] ?: [];
+$isa = !$dat['sid'];
+</php>
+          <form action="{:U('save')}" method="POST">
+            <input type="hidden" name="sid" value="{$dat['sid']}">
+            <table class="table table-form">
+              <col style="width:10em;">
+              <tr>
+                <th>名称</th>
+                <td>
+                  <div class="col-md-6">
+                    <input type="text" name="name" value="{$dat['name']}" placeholder="必填" required class="form-control">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>模型</th>
+                <td>
+                  <div class="col-md-6">
+                    <select name="model_id" class="form-control"{:boolval($isa) ? '' : ' readonly disabled'}>
+                      <option value="">请选择</option>
+<volist name="data['models']" id="v">
+                      <option value="{$v['id']}"<php>echo $dat['model_id'] == (string)$v['id'] ? ' selected' : '';</php>>{$v['name']}</option>
+</volist>
+                    </select>
+<if condition="!$isa && $dat['model_id']">
+                    <input type="hidden" name="model_id" value="{$dat['model_id']}">
+</if>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>封面图</th>
+                <td>
+                  <div class="form-group">
+                    <div class="col-md-2" v-if="item.cover">
+                      <div class="thumbnail">
+                        <img :src="item.cover" class="zoom" style="width:100%;">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" name="cover" value="{$dat['cover']}" v-model="item.cover" placeholder="" class="form-control">
+                      <input type="file" name="file" class="image-upload-comm" data-url="{:U('Common/upload?type=images')}" data-target="[name=cover]">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>特色</th>
+                <td>
+                  <div class="col-md-6">
+                    <textarea name="description" placeholder="" maxlength="120" class="form-control">{$dat['description']}</textarea>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>位置</th>
+                <td>
+                  <div class="col-md-2">
+                    <div class="input-group">
+                      <input type="text" name="province" value="{$loc['province']}" placeholder="必填" required class="form-control">
+                      <span class="input-group-addon">省</span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group">
+                      <input type="text" name="city" value="{$loc['city']}" placeholder="必填" required class="form-control">
+                      <span class="input-group-addon">市</span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="input-group">
+                      <input type="text" name="area" value="{$loc['area']}" placeholder="必填" required class="form-control">
+                      <span class="input-group-addon">区/县</span>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-addon">街道</span>
+                      <input type="text" name="street" value="{$loc['street']}" placeholder="必填" required class="form-control">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-addon">地标</span>
+                      <input type="text" name="landmark" value="{$loc['landmark']}" placeholder="必填" required class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-addon">详细位置</span>
+                      <input type="text" name="location" value="{$loc['location']}" placeholder="必填" required class="form-control">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="col-md-12 form-inline">
+                    <div class="input-group">
+                      <span class="input-group-addon">经纬度</span>
+                      <input type="text" name="lng" value="{$loc['lng']}" class="form-control">
+                      <span class="input-group-addon">-</span>
+                      <input type="text" name="lat" value="{$loc['lat']}" class="form-control">
+                    </div>
+                    <a class="btn btn-default act-map-location">定位</a>
+                  </div>
+                </td>
+              </tr>
+<volist name="data['fields']" id="a">
+<php>
+$field = $key;
+$vls = (array)$adt[$field]['value'];
+$val = is_array($vls) ? reset($vls) : $vls;
+$als = [''];
+$a['attrs']['step'] != '' && $als[] = 'step="'.$a['attrs']['step'].'"';
+$a['attrs']['min']  != '' && $als[] = 'min="'.$a['attrs']['min'].'"';
+$a['attrs']['max']  != '' && $als[] = 'max="'.$a['attrs']['max'].'"';
+</php>
+              <tr>
+                <th>{$a['name']}</th>
+                <td>
+<if condition="in_array($a['type'],['illust'])">
+                  <field-illust :values="values" :field="{$field}"></field-illust>
+<elseif condition="in_array($a['type'],['goods','rooms','bshours'])"/>
+                  <field-{$a['type']} :values="values" :field="{$field}"></field-{$a['type']}>
+<else/>
+                  <div class="col-md-6">
+<if condition="in_array($a['type'],['text','number','range','date','time','datetime'])">
+                    <input type="{$a['type']}" name="fields[{$field}][]" value="{$val}" placeholder="{$a['placeholder']}" class="form-control"{:implode(' ',$als)}>
+<elseif condition="in_array($a['type'],['radio','checkbox'])"/>
+<volist name="a['choices']['data']" id="v">
+                    <label>
+                      <input type="{$a['type'] == 'radio' ? 'radio' : 'checkbox'}" name="fields[{$field}][]" value="{$key}"{:in_array((string)$key,$vls) ? ' checked' : ''}>
+                      {$v}
+                    </label>
+                    &nbsp;&nbsp;
+</volist>
+</if>
+                  </div>
+</if>
+                </td>
+              </tr>
+</volist>
+              <tr>
+                <th></th>
+                <td class="text-left">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success">保存</button>
+                    <a href="{:U('index')}" class="btn btn-default">返回列表</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/x-template" id="tpl-field-illust">
+  <div class="col-md-2" v-for="(i,v) in list">
+    <div class="field-illust thumbnail form-group">
+      <a class="close" @click="del($index)">&times;</a>
+      <input type="hidden" name="fields[{{field}}][attrs][list][{{ $index }}][image]" value="{{v.image}}" v-model="v.image" required>
+      <div class="file-upload-wrap">
+        <img :src="v.image || 'http://static.chujianapp.com/images/201606/dc04bf532b255b085e336257e32a1472.jpg?default'" style="width:100%;">
+        <input type="file" name="file" @click="upload($event,$index)" data-url="{:U('Common/upload?type=images')}" data-target="[name1='fields[{{field}}][attrs][list][{{ $index }}][image]']">
+      </div>
+      <div class="caption">
+        <div><textarea name="fields[{{field}}][attrs][list][{{ $index }}][text]" v-model="v.text" placeholder="说明，选填" rows="1" class="form-control" style="resize:vertical;">{{v.text}}</textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="field-illust-add col-md-1" @click="add"><i class="fa fa-plus fa-5x"></i></div>
+</script>
+
+<script type="text/x-template" id="tpl-field-goods">
+  <div class="col-md-2" v-for="(i,v) in list">
+    <div class="field-goods thumbnail form-group">
+      <a class="close" @click="del($index)">&times;</a>
+      <input type="hidden" name="fields[{{field}}][attrs][list][{{ $index }}][image]" value="{{v.image}}" v-model="v.image" required>
+      <div class="file-upload-wrap">
+        <img :src="v.image || 'http://static.chujianapp.com/images/201606/4197c385a096b9bc494da10fb579285e.jpg?default'" style="width:100%;">
+        <input type="file" name="file" @click="upload($event,$index)" data-url="{:U('Common/upload?type=images')}" data-target="[name1='fields[{{field}}][attrs][list][{{ $index }}][image]']">
+      </div>
+      <div class="caption">
+        <div><textarea name="fields[{{field}}][attrs][list][{{ $index }}][name]" v-model="v.name" placeholder="名称，必填" rows="1" class="form-control" style="resize:vertical;">{{v.name}}</textarea></div>
+        <div><input type="number" name="fields[{{field}}][attrs][list][{{ $index }}][peice]" value="{{v.peice}}" v-model="v.peice" placeholder="价格，选填" step="0.01" min="0" class="form-control"></div>
+      </div>
+    </div>
+  </div>
+  <div class="field-goods-add col-md-1" @click="add"><i class="fa fa-plus fa-5x"></i></div>
+</script>
+
+<script type="text/x-template" id="tpl-field-rooms">
+  <div class="col-md-2" v-for="(i,v) in list">
+    <div class="field-rooms thumbnail form-group">
+      <a class="close" @click="del($index)">&times;</a>
+      <input type="hidden" name="fields[{{field}}][attrs][list][{{ $index }}][image]" value="{{v.image}}" v-model="v.image" required>
+      <div class="file-upload-wrap">
+        <img :src="v.image || 'http://static.chujianapp.com/images/201606/4197c385a096b9bc494da10fb579285e.jpg?default'" style="width:100%;">
+        <input type="file" name="file" @click="upload($event,$index)" data-url="{:U('Common/upload?type=images')}" data-target="[name1='fields[{{field}}][attrs][list][{{ $index }}][image]']">
+      </div>
+      <div class="caption">
+        <div><textarea name="fields[{{field}}][attrs][list][{{ $index }}][name]" v-model="v.name" placeholder="名称，选填" rows="1" class="form-control" style="resize:vertical;">{{v.name}}</textarea></div>
+        <div><input type="number" name="fields[{{field}}][attrs][list][{{ $index }}][amount]" value="{{v.amount}}" v-model="v.amount" placeholder="容纳人数，选填" step="1" min="0" class="form-control"></div>
+      </div>
+    </div>
+  </div>
+  <div class="field-rooms-add col-md-1" @click="add"><i class="fa fa-plus fa-5x"></i></div>
+</script>
+
+<script type="text/x-template" id="tpl-field-bshours">
+  <div class="col-md-11" v-for="(gid,g) in groups">
+    <div class="row">
+      <div class="col-md-11">
+        <div>
+          <label class="hide">
+            <input type="checkbox" v-model="data.checkall_days[gid]" value="7" @change="checkall_days(gid)">
+            整周 &nbsp;|&nbsp;
+          </label>
+          <label v-for="(day,week) in days">
+            <input type="checkbox" v-model="g.days[day]" value="{{day}}" :checked="!!groups[gid].days[day]" :disabled="(!!checks[day] && check_days[day] != gid)" @change="renew">
+            {{week}} &nbsp;&nbsp;
+          </label>
+        </div>
+        <div>
+          <label class="hide">
+            <input type="checkbox" v-model="data.checkall_hours[gid]" value="24" @change="checkall_hours(gid)">
+            全日 &nbsp;|&nbsp;
+          </label>
+          <label v-for="hour of 24">
+            <input type="checkbox" v-model="g.hours[hour]" value="{{hour}}" :checked="!!groups[gid].hours[hour]" :disabled="!g.days" @change="renew">
+            {{hour}} &nbsp;
+          </label>
+        </div>
+      </div>
+      <div class="col-md-1" @click="del(gid)"><i class="fa fa-remove fa-5x"></i></div>
+    </div>
+  </div>
+  <div class="col-md-1" @click="add" v-if="groups.length <= 7"><i class="fa fa-plus fa-5x"></i></div>
+  <input type="hidden" name="fields[{{field}}][]" value="{{v}}" v-for="(i,v) in list">
+  <pre class="col-md-12 hide">{{ $data | json }}</pre>
+</script>
+
+<include file="Common/foot"/>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body')
+  .on('click','.act-map-location',function()
+  {
+    var the = $(this),
+        zoo = the.data('zoom') || 14,
+        kwd = $.trim($('[name="city"]:enabled').val())
+            + $.trim($('[name="area"]:enabled').val())
+            + $.trim($('[name="street"]:enabled').val())
+            + $.trim($('[name="landmark"]:enabled').val())
+            + $.trim($('[name="location"]:enabled').val()),
+        lni = $('[name="lng"]:enabled'),
+        lai = $('[name="lat"]:enabled'),
+        lng = $.trim(lni.val()),
+        lat = $.trim(lai.val()),
+        mod = $('#modal-comm').modal(),
+        box = mod.find('.modal-body'),
+        ele = box.find('.map-baidu');
+    ele.length || (ele = $('<div/>').addClass('map-baidu').appendTo(box.empty()));
+    require(['baidu-map'],function()
+    {
+      var map = ele.data('map'),
+          mrk = ele.data('marker'),
+          geo = new BMap.Geocoder(),
+          poi = $.trim(kwd) || '上海',
+          fmt = function(str)
+          {
+            return str.replace(/(广西|宁夏|新疆|西藏|内蒙古).*$|(省|市|自治[区州]|地区)$/g,'$1');
+          };
+      lng == '0' && (lng = '');
+      lat == '0' && (lat = '');
+      lng && lat && (poi = new BMap.Point(lng,lat));
+      if(!map)
+      {
+        map = new BMap.Map(ele[0]);
+        map.addEventListener('load',function()
+        {
+          if(!mrk)
+          {
+            mrk = new BMap.Marker(typeof poi == 'object' ? poi : map.getCenter());
+            mrk.enableDragging();
+            (function(fun)
+            {
+              mrk.addEventListener('dragend',fun);
+              mrk.addEventListener('click',function(e)
+              {
+                fun(e);
+                mod.modal('hide');
+              });
+              map.addEventListener('dblclick',function(e)
+              {
+                fun(e);
+                mrk.setPosition(e.point);
+              });
+            })
+            (function(e)
+            {
+              lni.val(e.point.lng);
+              lai.val(e.point.lat);
+              geo.getLocation(e.point,function(ret)
+              {
+                var dat = ret.addressComponents || {},
+                    pls = ret.surroundingPois || [];
+                dat.province && $('[name="province"]:enabled').val(function(){ return $.trim($(this).val()) || fmt(dat.province); });
+                dat.city     && $('[name="city"]:enabled').val(function(){ return $.trim($(this).val()) || fmt(dat.city); });
+                dat.district && $('[name="area"]:enabled').val(function(){ return $.trim($(this).val()) || dat.district; });
+                (dat.street || dat.streetNumber) && $('[name="street"]:enabled').val(function(){ return $.trim($(this).val()) || (dat.street + dat.streetNumber); });
+                pls[0] && $('[name="landmark"]:enabled').val(function(){ return $.trim($(this).val()) || pls[0].title || ''; });
+                console.log(ret);
+              });
+            });
+            map.addOverlay(mrk);
+            ele.data('marker',mrk);
+          }
+          mrk.setPosition(poi);
+          map.enableScrollWheelZoom();
+          ele.data('map',map);
+        });
+        0 && map.addControl(new BMap.CityListControl(
+        {
+          anchor : BMAP_ANCHOR_TOP_LEFT,
+          offset : new BMap.Size(10,20),
+          onChangeAfter : function()
+          {
+            console.log(arguments);
+          }
+        }));
+        map.centerAndZoom(poi,zoo);
+      }
+    });
+    return false;
+  });
+
+  require(['vue-comm'],function(Vue)
+  {
+    var ill =
+    {
+      props    : ['values','field']
+      ,data    : function()
+      {
+        return {
+          list : []
+        };
+      }
+      ,ready   : function()
+      {
+        this.list = ((this.values[this.field] || {}).attrs || {}).list || [];
+        //console.log(this);
+      }
+      ,methods :
+      {
+        add : function()
+        {
+          this.list || (this.list = []);
+          this.list.push(
+          {
+            image : '',
+            text  : ''
+          });
+        },
+        del : function(idx)
+        {
+          var the = this.list[idx];
+          this.list.$remove(the);
+        },
+        upload : function(e,idx)
+        {
+          var vue = this,
+              odt = vue.list[idx];
+          require(['jquery','blueimp-fileupload','messenger-future'],function($)
+          {
+            var the = $(e.target),
+                tar = the.data('target') || '[name="image"]',
+                box = the.parents('.form-group:first'),
+                ipt = box.find(tar),
+                old = ipt.val() || '';
+            the.fileupload(
+            {
+              dataType:'json',
+              formData:{ajax:1},
+              paramName:'file',
+              change:function()
+              {
+                the.attr('disabled',true);
+                ipt.val('');
+              },
+              done:function(e,ret)
+              {
+                var data = ret.result || {},
+                    tip = data.info || data.message || '';
+                tip && Messenger().post(
+                {
+                  type:data.status == 1 ? 'success' : 'error',//info
+                  message:tip,
+                  showCloseButton:true
+                });
+                if(data.status && data.data)
+                {
+                  var dat = data.data || {};
+                  odt.image = dat.resource || dat.filename;
+                  vue.list.$set(idx,odt);
+                  ipt.val(odt.image);
+                }
+                else ipt.val(old);
+                the.removeAttr('disabled');
+              },
+              fail:function()
+              {
+                the.removeAttr('disabled');
+                ipt.val(old);
+              }
+            });
+            return false;
+          });
+        }
+      }
+    };
+
+    Vue.component('field-illust',$.extend({},ill,
+    {
+      template : '#tpl-field-illust'
+    }));
+
+    Vue.component('field-goods',$.extend({},ill,
+    {
+      template : '#tpl-field-goods'
+    }));
+
+    Vue.component('field-rooms',$.extend({},ill,
+    {
+      template : '#tpl-field-rooms'
+    }));
+
+    // - 营业时间
+    Vue.component('field-bshours',
+    {
+      template : '#tpl-field-bshours'
+      ,props   : ['values','field']
+      ,data    : function()
+      {
+        return {
+          list : [],
+          data : {},
+          days : ['周一','周二','周三','周四','周五','周六','周日'],
+          groups : [],
+          checks : {},
+          check_days : {}
+        };
+      }
+      ,ready   : function()
+      {
+        this.list = (this.values[this.field] || {}).value || [];
+        this.init();
+        this.renew();
+        //console.log(this);
+      }
+      ,methods :
+      {
+        add : function()
+        {
+          this.groups || (this.groups = []);
+          this.groups.push({});
+        },
+        del : function(idx)
+        {
+          var the = this.groups[idx];
+          this.groups.$remove(the);
+          this.renew();
+        },
+        init : function()
+        {
+          var vue = this,
+              reg = /^d(\d+)h(\d+)g(\d+)$/i,
+              lst = {};
+          $.each(vue.list || [],function(i,v)
+          {
+            var arr = reg.exec(v) || [],
+                gid = parseInt(arr[3]) || 0,
+                day = parseInt(arr[1]) || 0,
+                hour = parseInt(arr[2]) || 0;
+            lst[gid] || (lst[gid] = {days:{},hours:{}});
+            lst[gid].days[day]   = true;
+            lst[gid].hours[hour] = true;
+          });
+          $.each(lst,function(gid,v)
+          {
+            vue.groups.push(v);
+          });
+        },
+        renew : function()
+        {
+          var vue = this,
+              dat = {},
+              lst = [];
+          $.each(vue.groups || {},function(gid,g)
+          {
+            $.each(g.days || {},function(day,dv)
+            {
+              dv && $.each(g.hours || {},function(hour,hv)
+              {
+                if(hv)
+                {
+                  dat[day] || (dat[day] = {});
+                  dat[day][hour] = parseInt(gid) || 0;
+                  vue.check_days[day] = gid;
+                }
+              });
+            });
+          });
+          $.each(dat,function(day,val)
+          {
+            $.each(val || {},function(hour,gid)
+            {
+              lst.push('d' + day + 'h' + hour + 'g' + gid);
+            });
+          });
+          vue.checks = dat;
+          vue.list   = lst;
+        }
+      }
+    });
+
+    var vue = new Vue(
+    {
+      el : '#doc'
+      ,data :
+      {
+        list   : [],
+        item   : {:json_encode($data['item'] ?: new stdclass)},
+        values : {:json_encode($data['values'] ?: new stdclass)},
+        null   : null
+      }
+      ,ready : function()
+      {
+        //console.log(this);
+      }
+      ,methods :
+      {
+      }
+    });
+  });
+
+  (function()
+  {
+    if($('input[name="sid"]').val() == '') $('tr:contains("营业日") :checkbox').prop('checked',true);
+  })();
+
+});
+</script>
+</body>
+</html>

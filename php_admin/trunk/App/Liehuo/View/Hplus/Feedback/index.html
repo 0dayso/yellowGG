@@ -1,0 +1,764 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+#page-wrapper { min-height:600px; }
+.typeahead { z-index: 1051; }
+.chat-user-typeahead:focus ~ .typeahead { display:block !important; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <form action="{:U()}" method="GET" class="form-inline hide">
+      <input type="hidden" name="act" value="filter">
+      <div class="input-prepend input-group">
+        <span class="add-on input-group-addon">日期范围</span>
+        <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+        <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+        <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+      </div>
+      <div class="form-group">
+        <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">搜索</button>
+      <hr>
+    </form>
+    <div class="clearfix pull-right" style="margin:-66px 20px 30px 0;">
+      <a href="{:U('stop_assign')}" target="_blank"
+         class="btn btn-success chat-stop-assign{$chat_assign_stop ? ' active' : ''}"
+         data-toggle="button"
+         aria-pressed="{$chat_assign_stop ? 'true' : 'false'}">接收会话</a>
+      <a class="btn btn-success">
+        会话：
+        <b class="chat-new-count">-</b> /
+        <b class="chat-lst-count">-</b> /
+        <b class="chat-all-count">-</b>
+      </a>
+      <a href="{:U('notes')}" target="_blank" class="btn btn-primary">历史记录</a>
+      <a href="{:U('unreads')}" target="_blank" class="btn btn-primary">未读消息库</a>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="list-group">
+          <div class="input-group">
+            <input type="text" name="uid" placeholder="用户UID" class="form-control chat-user-typeahead">
+            <span class="input-group-btn chat-user-add">
+              <button type="button" class="btn btn-primary">新增会话</button>
+            </span>
+          </div>
+          <hr>
+          <div class="chat-user-list msg-user-list">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="chat-box">
+          <div class="chat-logs clearfix">
+          </div>
+        </div>
+        <form class="chat-form">
+          <input type="hidden" name="uid" value="0">
+          <div class="input-group has-success">
+            <input type="text" name="msg" placeholder="回复内容" disabled class="form-control input-lg">
+            <div class="input-group-btn dropup">
+              <button type="button" class="btn btn-primary chat-form-submit">发送</button>
+              <button type="button" class="btn btn-primary chat-form-image"><i class="fa fa-image"></i></button>
+              <button type="button" class="btn btn-danger chat-close-quick tip" data-remark="已完成" data-original-title="已完成"><i class="fa fa-check"></i></button>
+              <button type="button" class="btn btn-danger chat-close-quick tip" data-remark="未获得后续反馈" data-original-title="未获得后续反馈"><i class="fa fa-question"></i></button>
+              <b class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></b>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a data-href="{:U('UserBase/chat_logs?filter=feedback&day=30')}" target="_blank" class="chat-history">聊天记录</a></li>
+                <li><a class="chat-change-assign" data-href="{:U('change_assign')}">转移会话</a></li>
+                <li><a class="chat-close-modal" data-href="{:U('close_chat')}">结束会话</a></li>
+                <!--li><a class="chat-close-modal" data-href="{:U('close_chat?pause=1')}">暂停会话</a></li-->
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="chat-logs- clearfix">
+<volist name="data['list']" id="v">
+<php>
+$is_self = $v['sender'] == $_REQUEST['uid'];
+</php>
+  <div class="media chat-msg{$is_self ? ' chat-myself' : ''}" data-id="{$v['smsid']}">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <small class="chat-time">{$v['time']}</small>
+        <a href="{:U('view?uid='.$v['sender'].'&tab=tab-user-chat')}" target="_blank" class="label label-primary">{$v['sender']}</a> 对
+        <a href="{:U('view?uid='.$v['recver'].'&tab=tab-user-chat')}" target="_blank" class="label label-primary">{$v['recver']}</a> 说：
+      </p>
+      <p class="chat-text">
+<if condition="$v['texttype'] == '2' && $v['text_json']['thumbnailPhotoUrl']">
+        <img src="{$v['text_json']['thumbnailPhotoUrl']}" data-src="{$v['text_json']['originPhotoUrl'] ?: $v['text_json']['thumbnailPhotoUrl']}" class="zoom">
+<elseif condition="$v['texttype'] == '3' && $v['text_json']['emoticonUrl']"/>
+        <img src="{$v['text_json']['emoticonUrl']}" title="{$v['text_json']['emoticonName']}">
+<elseif condition="$v['texttype'] == '4' && $v['text_json']['voiceUrl']"/>
+        <a href="{$v['text_json']['voiceUrl']}" target="_blank" class="label label-success">[语音] {$v['text_json']['voiceTime']}s</a>
+<elseif condition="$v['texttype'] == '5' && $v['text_json']['locationAddress']"/>
+        <img src="{$v['text_json']['locationImageUrl']}" class="zoom">
+        <br>[位置] {$v['text_json']['locationAddress']}
+<else/>
+        {$v['text_html'] ?: $v['text']}
+</if>
+      </p>
+    </div>
+  </div>
+</volist>
+    </div>
+  </div>
+</div>
+
+<div id="modal-chat-image" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{:U('send_image')}" method="POST" enctype="multipart/form-data" class="form-block" onsubmit="return false;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">发送图片</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="file" name="image" required accept="image/jpeg,.jpeg,image/png,image/gif">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-feedback-close" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-block">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">操作确认</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>备注：</label>
+            <input type="text" name="remark" placeholder="必填" class="form-control">
+          </div>
+          <div class="form-group">
+            <label><input type="radio" name="qremark" value="已完成"> 已完成</label> &nbsp;
+            <label><input type="radio" name="qremark" value="未获得后续反馈"> 未获得后续反馈</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary chat-close">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="tpl-chat-user-item">
+  <a class="list-group-item chat-user-item" data-uid="<$=sender$>">
+    <b><$=sender$></b><br>
+    <small>最后回复:<span class="chat-time-last"><$=time_last$></span></small>
+    <span class="badge chat-logs-num"><$=count$></span>
+  </a>
+</script>
+
+<script type="text/html" id="tpl-chat-log-item">
+<$
+url = '{:U('UserBase/view')}';
+url += /\?/.test(url) ? '&' : '?';
+url2 = '{:U('UserBase/oper_logs?type=feedback')}';
+url2 += /\?/.test(url2) ? '&' : '?';
+$>
+  <div class="media chat-msg<$=is_self ? ' chat-myself' : ''$>" data-id="<$=smsid$>">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <small class="chat-time"><$=time$></small>
+        <a href="<$==_G.Chat.recver == sender ? (url + 'uid=' + sender) : (url2 + 'uid=' + recver)$>" target="_blank" class="label label-primary popover-avatar" data-placement="top"><$=sender$></a> 对
+        <a href="<$==_G.Chat.recver == recver ? (url + 'uid=' + recver) : (url2 + 'uid=' + sender)$>" target="_blank" class="label label-primary popover-avatar" data-placement="top"><$=recver$></a> 说：
+      </p>
+      <div class="chat-text">
+<$
+if(texttype == '2' && text_json && text_json.thumbnailPhotoUrl)
+{
+$>
+        <img src="<$=text_json.thumbnailPhotoUrl$>" data-src="<$=text_json.originPhotoUrl || text_json.thumbnailPhotoUrl$>" class="zoom">
+<$
+}
+
+else if(texttype == '3' && text_json && text_json.emoticonUrl)
+{
+$>
+        <img src="<$=text_json.emoticonUrl$>" title="<$=text_json.emoticonName$>">
+<$
+}
+
+else if(texttype == '4' && text_json && text_json.voiceUrl)
+{
+$>
+        <a href="<$=text_json.voiceUrl$>" target="_blank" class="label label-success jplayer-voice">[语音] <$=text_json.voiceTime$>s</a>
+<$
+}
+
+else if(texttype == '5' && text_json && text_json.locationImageUrl)
+{
+$>
+        <img src="<$=text_json.locationImageUrl$>" class="zoom">
+        <br>[位置] <$=text_json.locationAddress$>
+<$
+}
+
+else if(texttype == '100' && text_json && text_json.type == 7)
+{
+  jso = text_json.json || {};
+$>
+        <div class="msg-articles clearfix articles-1">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="msg-article-tit">
+<$ if(jso.sessionThumbImageUrl) { $>
+                <img src="<$=jso.sessionThumbImageUrl$>" class="zoom">
+<$ } $>
+              </div>
+<$ if(jso.comment) { $>
+              <p class="msg-article-desc"><$=jso.comment$></p>
+<$ } $>
+            </li>
+          </ul>
+        </div>
+<$
+}
+
+else if(/*chattype == '6' && */texttype == '100' && text_json && text_json.res)
+{
+  jso = text_json || {};
+$>
+        <div class="msg-articles msg-snap clearfix articles-1">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="msg-article-tit">
+<$ if(jso.res) { $>
+                <img src="<$=jso.res$>" class="zoom">
+<$ } $>
+              </div>
+<$ if(jso.txt || 1) { $>
+              <p class="msg-article-desc">【瞬间】<$=jso.txt$></p>
+<$ } $>
+            </li>
+          </ul>
+        </div>
+<$
+}
+
+else if(text_json && text_json.text)
+{
+  tip = {body:text_json.text};
+$>
+        <$==text_json.text$>
+<$
+}
+
+else
+{
+$>
+        <$==text_html || text$>
+<$
+}
+$>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="tpl-chat-tip-item">
+<$
+if(texttype == '-1' && text_json)
+{
+$>
+  <div class="chat-msg chat-tip clearfix text-center" data-id="tip-<$=smsid$>">
+    <span class="label label-default">客服【<$=text_json.admin_name || text_json.admin_id$>】<$=time$> <$=text_json.remark$></span>
+  </div>
+<$
+}
+$>
+</script>
+
+<script>window.JSON || document.write('<script src="//cdn.bootcss.com/json2/20150503/json2.min.js"><\/script>');</script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  window.Chat =
+  {
+    sender:10000,
+    recver:0,
+    users:{},
+    chats:{},
+    route:
+    {
+      get_users           : '{:U('get_users')}',
+      get_chats           : '{:U('get_chats')}',
+      get_chats_rtime     : '{:U('get_chats_rtime')}',
+      send                : '{:U('send')}',
+      close_chat          : '{:U('close_chat')}',
+      stop_assign         : '{:U('stop_assign')}',
+      get_users_typeahead : '{:U('get_users_typeahead')}'
+    },
+    days:parseInt('{$_REQUEST['day'] ?: $_REQUEST['days']}') || 7,
+    callback:
+    {
+      tip:function(data)
+      {
+        require(['messenger-future'],function()
+        {
+          Messenger.options = {extraClasses:'messenger-fixed messenger-on-top messenger-on-right'};
+          Messenger().post(
+          {
+            type:data.ret == 0 ? 'success' : 'error',//info
+            message:data.msg,
+            showCloseButton:true
+          });
+        });
+      }
+    },
+    time:new Date().getTime()
+  };
+
+  $('body')
+  // 获取聊天记录
+  .on('click','.chat-user-item[data-uid]',function()
+  {
+    var the = $(this),
+        uid = parseInt(the.attr('data-uid')) || 0;
+    the.addClass('active').removeClass('list-group-item-danger').trigger('chat-query')
+    .siblings().removeClass('active');
+    Chat.recver = uid;
+    $('.chat-form').find('[name="uid"]').val(uid)
+    .end().find(':disabled').removeAttr('disabled')
+    .end().find('[name="msg"]').val('').focus()
+    .end().find('.chat-history').attr('href',function()
+    {
+      var url = $(this).attr('data-href');
+      url += /\?/.test(url) ? '&' : '?';
+      return url + 'uid=' + uid;
+    });
+    $('.chat-new-count').text($('.chat-user-item.list-group-item-danger').length || '-');
+  })
+  .on('chat-query','[data-uid]',function()
+  {
+    var the = $(this),
+        box = $('.chat-logs'),
+        tip = box.find('.tip-msg'),
+        lst = $(),
+        uid = parseInt(the.attr('data-uid')) || 0,
+        day = parseInt(the.attr('data-day')) || Chat.days;
+    if(!uid) return false;
+    box.empty();
+    tip.length || (tip = $('<h3/>').addClass('tip-msg').prependTo(box));
+    tip.html('加载中...');
+    $.ajax(
+    {
+      url:Chat.route.get_chats,
+      data:{ajax:1,uid:uid,day:day},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      $.each(dat.list || {},function(i,v)
+      {
+        var tpl = 'tpl-chat-log-item';
+        if(v.texttype == '-1') tpl = 'tpl-chat-tip-item';
+        v.is_self = v.sender == Chat.sender;
+        v.text_json || (v.text_json = {});
+        lst = lst.add($(template(tpl,v)).appendTo(box));
+      });
+      if(lst.length) tip.remove();
+      else tip.html('暂无记录！');
+      $('.chat-user-item[data-uid="' + uid + '"]').find('.chat-logs-num').html(lst.not('.chat-myself').length)
+      .end().find('.chat-time-last').text(lst.find('.chat-time').last().text());
+      $(window).trigger('resize');
+    });
+    return false;
+  })
+  // 实时消息接收
+  .on('chat-rtime-query','.chat-logs',function()
+  {
+    var box = $(this);
+    $.ajax(
+    {
+      url:Chat.route.get_chats_rtime,
+      data:{ajax:1},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {},
+          ubx = $('.chat-user-list'),
+          uls = ubx.find('.chat-user-item');
+      $.each(dat.list || {},function(i,v)
+      {
+        var uid = parseInt(v.sender) || 0,
+            the = uls.filter('[data-uid="' + uid + '"]'),
+            num = the.find('.chat-logs-num'),
+            cnt = parseInt($.trim(num.text())) || 0,
+            tip = false;
+        v || (v = {});
+        v.text_json || (v.text_json = {});
+        if     (v.texttype == '2' && v.text_json.thumbnailPhotoUrl) tip = {icon:v.text_json.thumbnailPhotoUrl};
+        else if(v.texttype == '3' && v.text_json.emoticonUrl)       tip = {icon:v.text_json.emoticonUrl};
+        else if(v.texttype == '4' && v.text_json.voiceUrl)          tip = {body:'语音消息'};
+        else if(v.texttype == '5' && v.text_json.locationImageUrl)  tip = {body:v.text_json.locationAddress,icon:v.text_json.locationImageUrl};
+        else if(v.text_json.text)                                   tip = {body:v.text_json.text};
+        else if(v.text)                                             tip = {body:v.text};
+        if(!uid);
+        else if(the.length)
+        {
+          num.text(cnt + 1);
+          if(the.is('.active'))
+          {
+            box.append(template('tpl-chat-log-item',v));
+            $(window).trigger('resize');
+          }
+          else the.addClass('list-group-item-danger');
+        }
+        else
+        {
+          ubx.find('.tip-msg').remove();
+          the = $(template('tpl-chat-user-item',{sender:v.sender,count:0})).appendTo(ubx);
+          the.addClass('list-group-item-danger');
+          uls = uls.add(the);
+          num = the.find('.chat-logs-num');
+          num.text(cnt + 1);
+        }
+        v.time && the.find('.chat-time-last').text(v.time);
+        // 桌面提醒
+        if(window.Notification && uid && tip)
+        {
+          var ntf = new Notification(uid + ' 说：',tip);
+          ntf.onshow = function()
+          {
+            ntf.close && setTimeout(function(){ ntf.close(); },5000);
+          };
+          ntf.onclick = function()
+          {
+            window.focus();
+            $('.chat-user-item[data-uid="' + uid + '"]').trigger('click');
+          };
+        }
+      });
+      $('.chat-new-count').text(uls.filter('.list-group-item-danger').length || 0);
+      $('.chat-lst-count').text(uls.length || 0);
+      $('.chat-all-count').text(dat.count_all || 0);
+    });
+    return false;
+  })
+  .on('chat-reset','.chat-logs',function()
+  {
+    Chat.recver = 0;
+    $(this).html('<h3 class="text-center tip-msg">请选择联系人</h3>');
+    $('.chat-user-item.active').removeClass('active');
+    return false;
+  })
+
+  // 新增会话
+  .on('click','.chat-user-add',function()
+  {
+    var uid = $(this).siblings('[name="uid"]').val(),
+        box = $('.chat-user-list'),
+        old = box.find('[data-uid="' + uid + '"]');
+    if(!uid) return false;
+    if(old.length >= 1)
+    {
+      var ptp = box.offset().top,
+          ctp = old.offset().top,
+          top = ptp >= ctp ? (ptp - ctp) : (ctp - ptp);
+      old.not('.active').click();
+      //box.animate({scrollTop:top},200);
+    }
+    else
+    {
+      box.find('.tip-msg').remove();
+      $(template('tpl-chat-user-item',{sender:uid,count:''})).prependTo(box).click();
+      box.animate({scrollTop:0},200);
+    }
+  })
+  .on('keyup change','.chat-user-typeahead',function()
+  {
+    var the = $(this),
+        kwd = $.trim(the.val());
+    require(['bootstrap3-typeahead'],function()
+    {
+      the.attr('autocomplete','off');
+      if(kwd.length < 3) the.typeahead('destroy');
+      kwd.length >= 3 && !isNaN(kwd) && $.ajax(
+      {
+        url:Chat.route.get_users_typeahead,
+        data:{kwd:kwd},
+        dataType:'json'
+      })
+      .done(function(data)
+      {
+        var dat = data.data,
+            src = [];
+        $.each(dat.list || [],function(i,v)
+        {
+          v.uid && src.push(
+          {
+            id:v.uid,
+            name:v.nickname + '<' + v.phone + '>' + '(' + v.uid + ')'
+          });
+        });
+        the.typeahead(
+        {
+          source:src
+        });
+      });
+    });
+  })
+  .on('change','.chat-user-typeahead',function()
+  {
+    var the = $(this),
+        val = the.val();
+    if(val && isNaN(val))
+    {
+      the.val((/\((\d{6,})\)/i.exec(val) || [])[1] || val);
+    }
+  })
+
+  // 关闭对话框
+  .on('click','.chat-close-modal',function()
+  {
+    var obj = $(this),
+        url = obj.attr('data-href') || obj.attr('href'),
+        box = $('#modal-feedback-close');
+    if(box.length < 1) return confirm('真的要这么做吗？');
+    box.modal()
+    .find('form:first').attr('action',url);
+    $(window).trigger('resize');
+    return false;
+  })
+  // 结束会话
+  .on('click','.chat-close',function()
+  {
+    var the = $('.chat-user-item.active'),
+        uid = the.attr('data-uid'),
+        frm = $(this).parents('form:first'),
+        url = frm.attr('action') || Chat.route.close_chat,
+        rmk = frm.find('[name="remark"]').val() || frm.find('[name="qremark"]:checked').val();
+    if(!uid) alert('请选择联系人');
+    else if(!rmk) alert('备注不能为空');
+    else $.ajax(
+    {
+      url:url,
+      type:'POST',
+      data:{uid:uid,remark:rmk},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      if(!data.ret)
+      {
+        the.remove();
+        frm.find('[name="remark"]').val('');
+        frm.parents('.modal').modal('hide');
+        $('.chat-logs').trigger('chat-reset');
+      }
+      else if(data.msg) alert(data.msg);
+    });
+    return false;
+  })
+  .on('submit','#modal-feedback-close form',function()
+  {
+    $(this).find('.chat-close').trigger('click');
+    return false;
+  })
+  // 快捷结束会话
+  .on('click','.chat-close-quick',function()
+  {
+    var box = $('#modal-feedback-close');
+    box.find('form:first').attr('action',Chat.route.close_chat);
+    box.find('[name="remark"]').val($(this).data('remark'));
+    box.find('.chat-close').trigger('click');
+    return false;
+  })
+
+  // 获取用户列表
+  .on('chat-user-query','*',function()
+  {
+    var the = $(this),
+        box = the.empty(),
+        tip = box.find('.tip-msg'),
+        lst = $();
+    tip.length || (tip = $('<h3/>').addClass('tip-msg').prependTo(box));
+    tip.html('加载中...');
+    $.ajax(
+    {
+      url:Chat.route.get_users,
+      data:{ajax:1,day:Chat.days},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      $.each(dat.list || {},function(i,v)
+      {
+        v.is_self = v.sender == Chat.sender;
+        lst = lst.add($(template('tpl-chat-user-item',v)).appendTo(box));
+      });
+      if(lst.length) tip.remove();
+      else tip.html('暂无记录！');
+    });
+    setInterval(function()//setInterval
+    {
+      $('.chat-logs').trigger('chat-rtime-query');
+    },1000 * 5);
+    return false;
+  })
+
+  // 发送消息
+  .on('click','.chat-form-submit',function()
+  {
+    $(this).parents('form:first').trigger('submit');
+  })
+  .on('submit','.chat-form',function()
+  {
+    var the = $(this),
+        ipt = the.find('[name="msg"]'),
+        uid = the.find('[name="uid"]').val(),
+        msg = ipt.val();
+    if(ipt.is('[disabled]')) return false;
+    ipt.attr('disabled',true);
+    $.ajax(
+    {
+      url:Chat.route.send,
+      type:'POST',
+      data:{ajax:1,uid:uid,msg:msg},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      data.msg && Chat.callback.tip(data);
+      if(!data.ret) require(['moment'],function(moment)
+      {
+        var dat =
+        {
+          smsid:0,
+          sender:Chat.sender,
+          recver:uid,
+          text:msg,
+          time:moment().format('YYYY-MM-DD HH:mm:ss'),
+          is_self:true
+        };
+        $('.chat-logs').append(template('tpl-chat-log-item',dat));
+        ipt.val('').focus();
+        $(window).trigger('resize');
+      });
+    })
+    .always(function()
+    {
+      ipt.removeAttr('disabled');
+    });
+    return false;
+  })
+  // 发送图片消息
+  .on('click','.chat-form-image',function()
+  {
+    var box = $('#modal-chat-image'),
+        uid = Chat.recver;
+    uid && require(['jquery','blueimp-fileupload','messenger-future'],function($)
+    {
+      var ipt = box.modal().find('[name="image"]:enabled'),
+          url = ipt.parents('form:first').attr('action');
+      ipt.fileupload(
+      {
+        url:url,
+        dataType:'json',
+        formData:{ajax:1,uid:uid},
+        change:function()
+        {
+          ipt.attr('disabled',true);
+        },
+        done:function(e,ret)
+        {
+          var data = ret.result || {};
+          data.msg && Chat.callback.tip(data);
+          box.modal('hide');
+          if(!data.ret && data.data) require(['moment'],function(moment)
+          {
+            var dat = data.data || {};
+            $('.chat-logs').append(template('tpl-chat-log-item',dat));
+            $(window).trigger('resize');
+          });
+          ipt.removeAttr('disabled');
+        }
+      });
+    });
+  })
+
+  // 暂停/开启接收新会话
+  .on('click','.chat-stop-assign',function()
+  {
+    var the = $(this),
+        url = the.attr('data-href') || the.attr('href'),
+        val = the.attr('aria-pressed') == 'true' ? 0 : 1;
+    $.get(url,{stop:val});
+  })
+
+  // 转移会话
+  .on('click','.chat-change-assign',function()
+  {
+    var the = $(this),
+        url = the.attr('data-href') || the.attr('href'),
+        uid = Chat.recver,
+        aid = uid ? prompt('请输入客服ID：') : 0,
+        usr = $('.chat-user-item[data-uid="' + uid + '"]');
+    if(uid && aid) $.get(url,{uid:uid,aid:aid})
+    .done(function(data)
+    {
+      data.msg && Chat.callback.tip(data);
+      if(!data.ret)
+      {
+        usr.remove();
+        $('.chat-logs').trigger('chat-reset');
+      }
+    });
+  });
+
+
+  $(window)
+  .on('resize',function()
+  {
+    var box = $('.chat-box'),
+        hei = $(this).height() - box.offset().top - 100;
+    box.height(hei);
+    $('.chat-user-list').css('max-height',hei);
+    setTimeout(function(){ box.animate({scrollTop:box.find('.chat-logs').height()},500); },100);
+  })
+  .trigger('resize');
+
+  $('.chat-user-list').trigger('chat-user-query');
+  $('.chat-logs').trigger('chat-reset');
+  $('.chat-form').find('[name="msg"]').attr('disabled',true)
+  .end().find('[name="uid"]').val(0);
+  if(window.Notification && Notification.permission != 'granted') Notification.requestPermission();
+
+  (function(fun)
+  {
+    setTimeout(fun,1000);
+  })
+  (function()
+  {
+    var uid = (/[?&]uid=([^&]+)/i.exec(location.search) || [])[1]
+        || (/\/uid\/([^\/\\?&]+)/i.exec(location.pathname) || [])[1]
+        || (location.hash || '').replace(/^#+\/?/,''),
+        btn = $('.chat-user-add');
+    btn.siblings('[name="uid"]').val(uid);
+    btn.click();
+  });
+
+});
+</script>

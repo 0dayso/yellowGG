@@ -1,0 +1,45 @@
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>UID</th>
+            <th>标签</th>
+        </tr>
+        </thead>
+        <tbody>
+        <form method="post" action="" >
+            <volist name="list.list" id="vo"   >
+                <tr class="gradeX">
+                    <td style="text-align: center">
+                        <a target="_blank" href="{:U('User/user_info/',array('menu'=>'account_manage','type'=>'all_user','uid'=>$key,'tag'=>'show'))}">{$key}</a>
+                    </td>
+                    <td style="text-align: left">
+                        <volist name="vo" id="vos"   >
+                            <a href="javascript:void(0)" style="color:#000" >{$vos.title}<select name="{$vos.id}" class="tagclass" style="margin:0 20px 20px 0" ><option>选择分类</option>{$list.opt}</select></a>
+                        </volist>
+                    </td>
+                </tr>
+            </volist>
+        </form>
+        </tbody>
+    </table>
+</div>
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+
+        $('.tagclass').change(function(){
+            var _this  = $(this);
+            var clect  = $(this).val();
+            var taguid = $(this).attr('name');
+            $.post("{:U('search/change')}",{clect:clect,tag:taguid}, function (data) {
+                if(data =='ok'){
+                    _this.parent().empty();
+                }
+            });
+
+        });
+
+    });
+</script>

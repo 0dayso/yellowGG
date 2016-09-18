@@ -1,0 +1,151 @@
+
+<!--sidebar-menu-->
+<!--main-container-part-->
+<div id="content">
+   
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+
+                <div>
+                    <input type="hidden" id="menu" value="{$menu}" />
+                    <input type="hidden" id="type" value="{$type}" />
+                    <input type="hidden" id="offender_uid" value="{$offender_uid}" />
+                </div>
+
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                    <!--<h5><if condition="$Think.const.ACTION_NAME eq 'index'">等待审核<else />用户回收站</if></h5>-->
+                    <if condition="$menu eq 'admin_task'">
+                        <div style="text-align: left">
+                            状态
+                        </div>
+                        <div style="text-align: right">
+                            <select id="status" name="status">
+                                <option value=1>拒绝受理</option>
+                                <option value=2>封禁1天</option>
+                                <option value=3>封禁3天</option>
+                                <option value=4>封禁5天</option>
+                                <option value=5>永久封禁</option>
+                            </select>
+                            <input id="process_accusation" type="submit" value="批量处理" />
+                        </div>
+                    </if>
+                </div>
+
+                <div class="widget-content nopadding">
+                    <table id="accusation_table" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <if condition="$menu EQ 'admin_task'">
+                                <th style="text-align: center">ID</th>
+                            </if>
+                            <th style="text-align: center">举报人</th>
+                            <th style="text-align: center">举报人昵称</th>
+                            <th style="text-align: center">举报时间</th>
+                            <th style="text-align: center">举报类型</th>
+                            <th style="text-align: center">查看聊天</th>
+                            <if condition="$menu EQ 'admin_task'">
+                                <th style="text-align: center">分类</th>
+                            </if>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <if condition="$menu EQ 'admin_task'">
+                                    <td style="text-align: center">{$vo.id}<input type="hidden" id="{$vo.accusation_id}" value="{$vo.accusation_id}"></td>
+                                </if>
+                                <td style="text-align: center">{$vo.uid}</td>
+                                <td style="text-align: center">{$vo.nickname}</td>
+                                <td style="text-align: center">{$vo.sub_time}</td>
+                                <td style="text-align: center">{$vo.report_type}</td>
+                                <td style="text-align: center">
+                                    <a href="{:U('Accusation/get_chat_log/',array('uid'=>$vo['uid'],'offender_uid'=>$offender_uid))}" class="btn btn-primary btn-mini" target="_blank">查看</a>
+                                </td>
+                                <if condition="$menu EQ 'admin_task'">
+                                    <td style="text-align: center">
+                                        <select style="width: 50%" id="accusation_reason" class="accusation_reason" name="accusation_reason">
+                                            <option value=1>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.1}</option>
+                                            <option value=2>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.2}</option>
+                                            <option value=3>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.3}</option>
+                                            <option value=4>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.4}</option>
+                                            <option value=5>{$Think.config.STATE_ACCUSATION_PROCESS_REASONS.5}</option>
+                                        </select>
+                                    </td>
+                                </if>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+ 
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $ ('#process_accusation').click(function(){
+            var  menu                  = $('#menu').val();
+            var  type                  = $('#type').val();
+            var  offender_uid          = $('#offender_uid').val();
+            var  uid_arr               = [];
+            var  id_arr                = [];
+            var  select_content_array  = [];
+            var  sub_time_arr          = [];
+            var  status = $("#status").find("option:selected").val();
+
+            $("#accusation_table tbody tr td:nth-child(1)").each(function() {
+                id_arr.push($.trim($(this).html()));
+            });
+            var  id  =  id_arr.join(';');
+
+            $("#accusation_table tbody tr td:nth-child(2)").each(function() {
+                uid_arr.push($.trim($(this).html()));
+            });
+            var  uid  =  uid_arr.join(';');
+
+            $("#accusation_table tbody tr td:nth-child(3)").each(function() {
+                sub_time_arr.push($(this).html());
+            });
+            var  sub_time  =  sub_time_arr.join(';');
+
+            $('.accusation_reason option:selected').each(function(){
+                var temp = $(this).val();
+                select_content_array.push(temp);
+            });
+            var  select_content =  select_content_array.join(';');
+
+            $ .ajax({
+                url : "{:U('Accusation/process_accusation')}" ,
+                type : "POST",
+                data: {menu:menu,type:type,uid:uid,offender_uid:offender_uid,sub_time:sub_time,status:status,id:id,select_content:select_content},
+                success : function(data) {
+                    if (data. info=='操作成功'){
+                        location.href= "{:U('Accusation/index',array('menu'=>'admin_task','type'=>'unprocessed'))}" ;
+                        return false;
+                    }
+                    else {
+                        bootbox.alert( data.info );
+                        commonAjaxSubmit ('', '#loginform');
+                    }
+                },
+                error : function(data){
+                    if (data.status =='1'){
+                        bootbox.alert( '地址有误');
+                        return false;
+                    }
+                    commonAjaxSubmit ('', '#loginform');
+                }
+            });
+        });
+    });
+</script>
+ 

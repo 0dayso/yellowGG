@@ -1,0 +1,49 @@
+<div id="sidebar">
+    <ul>
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>管理员管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('SystemSetting/admin')}">管理员</a></li>
+        <li><a href="{:U('SystemSetting/group')}">管理员组</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>第三方接口</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('CostView/view_cost')}">短信平台费用查看</a></li>
+        <li><a href="{:U('CostView/sent_message')}">发送短信</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>用户信息查看</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('SystemSetting/check_user_image')}">每日用户上传图片数量</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>机器人帐号</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('RobotUpload/index')}">图片上传</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>工作管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('SystemSetting/workcount')}">工作量统计</a></li>
+        <li><a href="{:U('SystemSetting/operation')}">操作日志</a></li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">active</if>">
+        <a href="#"><i class="icon icon-th-list"></i> <span>推送管理</span> </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'system_setting'">style="display:block"</if>>
+        <li><a href="{:U('SystemSetting/pushmessage')}">群发消息</a></li>
+        </ul>
+        </li>
+
+    </ul>
+</div>

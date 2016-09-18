@@ -1,0 +1,399 @@
+<style>
+* { margin:0;padding:0;list-style-type:none; }
+img,a { border:0; }
+.piccon { height:20px;margin:20px 0 0 0px; }
+.piccon li { float:left;padding:0 0px; }
+#preview { position:absolute;border:1px solid #ccc;background:#333;padding:5px;display:none;color:#fff; }
+/*覆盖层*/
+#overlay { position:absolute;background-color: rgb(119,119,119);opacity: 0.5;cursor: pointer;width:100%;height: 100%;top: 0px;left: 0px }
+/*弹出层*/
+#wrap { position:absolute;background-color: rgba(18,18,18,0.73);width: 100%;height:50%;/*top: 10%;*/ }
+.xubox_layer { top: 20px; }
+.pic-rotate { -webkit-transform: rotate(0deg);-webkit-transform-origin: 50% 50%;  }
+.row-fluid img { height:85%; }
+.tab-content { padding-top:10px; }
+.user-info th { text-align:right; }
+.text-center th { text-align:center; }
+
+.chat-logs .chat-msg { clear:both; float:left; max-width:640px; }
+.chat-logs .chat-info { border:0; line-height:2; }
+.chat-logs .chat-text { padding:1em; border-radius:1em; background:#DDD; }
+.chat-logs .chat-myself { float:right; }
+.chat-logs .chat-myself .chat-info { text-align:right; }
+.chat-logs .chat-myself .chat-text { background-color:#9D9; }
+
+.list-feed .thumbnail { position:relative; margin-bottom:30px; }
+.list-feed .thumbnail img { cursor:zoom-in; transition:all .3s ease-in-out; }
+.list-feed .thumbnail img:hover { transform:scale(1.2); transform-origin:50% 100%; }
+.list-feed .feed-score { position:absolute; top:-10px; right:-10px; display:block; width:50px; height:50px; line-height:50px; padding:0; border-radius:999px; text-align:center; opacity:.88; }
+@media(max-width:520px)
+{
+  .col-xxs-12 { width:100%; }
+}
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="widget-box">
+      <div class="widget-title">
+        <ul id="myTab" class="nav nav-tabs">
+          <li><a data-toggle="tab" href="#tab1" class="tab-user-info">用户资料</a></li>
+          <li><a data-toggle="tab" href="#tab2" class="tab-user-feed">动态 <span class="badge">{$data['feeds_pager']->totalRows}</span></a></li>
+          <li><a data-toggle="tab" href="#tab-user-chat">聊天记录</a></li>
+          <li><a data-toggle="tab" href="#tab-user-closure">举报封禁历史</a></li>
+          <li><a href="{:U('')}" target="_bank">警告</a></li>
+          <li><a data-toggle="tab" href="#tab6">操作记录</a></li>
+        </ul>
+      </div>
+
+      <div class="widget-content">
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade in active" id="tab1">
+            <table class="table table-bordered user-info">
+              <col width="98">
+              <tr>
+                <th>用户ID</th>
+                <td>{$data['item']['uid']}</td>
+              </tr>
+              <tr>
+                <th>昵称</th>
+                <td>
+                  <a class="editable required"
+                     data-type="text"
+                     data-name="nickname"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请输入新昵称：">{$data['item']['nickname']}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>手机号</th>
+                <td>
+                  <a class="editable required"
+                     data-type="text"
+                     data-name="phone"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请输入新手机号："
+                     data-validate="^1[34578]\d{9}$">{$data['item']['phone']}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>性别</th>
+                <td>
+                  <php>$sex = $data['item']['sex'];</php>
+                  <a class="editable-disabled"
+                     data-type="select"
+                     data-name="sex"
+                     data-pk="{$data['item']['uid']}"
+                     data-url="{:U('set_field')}"
+                     data-title="请选择性别："
+                     data-value="{$data['item']['sex']}"
+                     data-source="[{value:0,text:'男'},{value:1,text:'女'}]">{$Think.config.USER_SEX_IS.$sex}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>设置密码</th>
+                <td>
+                  <form action="{:U('set_field')}" method="POST" class="form-inline">
+                    <input type="hidden" name="uid" value="{$data['item']['uid']}">
+                    <div class="form-group">
+                      <label></label>
+                      <input type="hidden" name="name" value="password">
+                      <input type="text" name="value" placeholder="设置新密码" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-danger">确定</button>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <th>注册时间</th>
+                <td>{$data['item']['reg_time'] ? date('Y-m-d H:i:s',$data['item']['reg_time']) : '-'}</td>
+              </tr>
+              <tr>
+                <th>最后登录</th>
+                <td>{$data['user_location']['update_time'] ? date('Y-m-d H:i:s',$data['user_location']['update_time']) : '-'}</td>
+              </tr>
+              <tr>
+                <th>登录城市</th>
+                <td>
+                  {$data['user_location']['province']} {$data['user_location']['city']}
+                  （{$data['user_location']['lat']},{$data['user_location']['lng']}）
+                </td>
+              </tr>
+              <tr>
+                <th>用户类型</th>
+                <td>{$data['user_types'][$data['item']['type']]}</td>
+              </tr>
+<if condition="($data['item']['type'] eq 2) or ($data['item']['dblocking_time'] gt time())">
+              <tr>
+                <th>解封时间</th>
+                <td>
+                  {$data['item']['dblocking_time'] ? date('Y-m-d H:i:s',$data['item']['dblocking_time']) : '-'}
+                  <a href="{:U('unclosure?id='.$data['item']['uid'])}" class="btn btn-danger btn-xs" onclick="return confirm('确定这么做？')">解除封禁</a>
+                </td>
+              </tr>
+</if>
+              <tr style="display:none;">
+                <th>最新动态</th>
+                <td>
+                  <div class="list-feed">
+                    <div class="thumbnail" style="max-width:200px;">
+                      <a><img src="__FEED_IMG_ROOT__{$data['user_location']['latest_feed_img']}"></a>
+                      <span class="feed-score label label-default">{$data['user_location']['latest_score']}</span>
+                      <div class="caption">
+                        <p><b>时间：</b>{$data['user_location']['latest_feed_time'] ? date('Y-m-d H:i:s',$data['user_location']['latest_feed_time']) : '-'}</p>
+                        <p class="text-center">
+                          <a href="{:U('Feed_base/view?id='.$data['user_location']['latest_feed'])}" target="_blank" class="btn btn-sm btn-primary">详情</a>
+                          <a href="{:U('Feed_base/view?id='.$data['user_location']['latest_feed'])}" class="btn btn-sm btn-danger" onclick="return confirm('确定这么做？')">删除</a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="tab-pane fade" id="tab2">
+            <div class="row list-feed">
+<volist name="data['feeds']" id="v">
+<php>
+$score_show = $v['score'] ?: $v['base_score'];
+$score_css = 'default';
+$score_show >= 1 && $score_css = 'primary';
+$score_show >= 5 && $score_css = 'success';
+$score_show >= 8 && $score_css = 'danger';
+</php>
+              <div class="feed-item col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-auto-height" data-id="{$v['id']}">
+                <div class="thumbnail">
+                  <a><img src="__FEED_IMG_ROOT__{$v['resource']}"></a>
+                  <span class="feed-score label label-{$score_css}">{$score_show}</span>
+                  <div class="caption">
+                    <p><b>时间：</b>{:date('Y-m-d H:i:s',$v['create_time'])}</p>
+                    <p>{$v['text']}</p>
+                    <p class="text-center">
+                      <a href="{:U('Feed_base/view?id='.$v['id'])}" target="_blank" class="btn btn-sm btn-primary">详情</a>
+                      <a data-href="{:U('Feed_base/del?id='.$v['id'])}" class="btn btn-sm btn-danger act-feed-del">删除</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+</volist>
+            </div>
+            <div class="pagination alternate">
+              <ul>
+                <li style="text-align:center;color:#00f">{$data['feeds_pager']->show()}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="tab3">
+          </div>
+
+          <div class="tab-pane fade" id="tab-user-chat">
+            <div>
+              <a class="btn btn-success get-chat-log" data-uid="{$data['item']['uid']}" data-day="7">最近7天</a>
+              <a class="btn btn-success get-chat-log" data-uid="{$data['item']['uid']}" data-day="30">最近30天</a>
+            </div>
+            <hr>
+            <div class="chat-logs"></div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-user-closure">
+            <form action="{:U('closure')}" method="POST" class="form-inline">
+              <input type="hidden" name="report_id" value="{$_REQUEST['report_id']}">
+              <input type="hidden" name="uid" value="{$data['item']['uid']}" placeholder="被举报人ID">
+              <div class="form-group">
+                <select name="status" class="form-control">
+                  <option value="">封禁状态</option>
+<volist name="data['accusation_states']" id="v">
+                  <option value="{$key}">{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="reason" class="form-control">
+                  <option value="">封禁理由</option>
+<volist name="data['accusation_reasons']" id="v">
+                  <option value="{$key}">{$v}</option>
+</volist>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>备注：</label>
+                <input type="text" name="remark" placeholder="" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-primary">提交</button>
+            </form>
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>举报记录ID</th>
+                  <th>举报人ID</th>
+                  <th>被封禁人ID</th>
+                  <th>操作管理员</th>
+                  <th>封禁状态</th>
+                  <th>封禁理由</th>
+                  <th>备注</th>
+                  <th>处理时间</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['accusation_logs']" id="v">
+                <tr class="gradeX">
+                  <td>{$v['id']}</td>
+                  <td><a class="label label-default">{$v['report_id'] ?: ''}</a></td>
+                  <td><a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid'] ?: ''}</a></td>
+                  <td><a href="{:U('view?uid='.$v['oid'])}" target="_blank" class="label label-default">{$v['oid']}</a></td>
+                  <td>{$data['accusation_admins'][$v['aid']]['nickname']}</td>
+                  <td>{$data['accusation_states'][$v['status']]}</td>
+                  <td>{$data['accusation_reasons'][$v['reason']]}</td>
+                  <td>{$v['remark']}</td>
+                  <td>{:date('Y-m-d H:i',$v['create_time'])}</td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+            <h3>被举报记录</h3>
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>举报人UID</th>
+                  <th>被举报人UID</th>
+                  <th>动态ID</th>
+                  <th>举报类型</th>
+                  <th>举报时间</th>
+                  <th>受理时间</th>
+                  <th>操作状态</th>
+                </tr>
+              </thead>
+              <tbody>
+<volist name="data['reports']" id="v">
+                <tr>
+                  <td>{$v['id']}</td>
+                  <td><a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['uid']}</a></td>
+                  <td><a href="{:U('view?uid='.$v['uid'])}" target="_blank" class="label label-default">{$v['offender_uid']}</a></td>
+                  <td><a href="{:U('Feed_base/view?id='.$v['feed_id'])}" target="_blank" class="label label-primary">{$v['feed_id']}</a></td>
+                  <td>{$data[report_types][$v['report_type']]}</td>
+                  <td>{:date('Y-m-d H:i:s',$v['dtime'])}</td>
+                  <td>{$v['atime'] ? date('Y-m-d H:i:s',$v['atime']) :'-'}</td>
+                  <td><span class="tip" data-original-title="{$v['reason'] ? $data['report_reasons'][$v['reason']] : ''}">{$data['report_status'][$v['status']]}</span></td>
+                </tr>
+</volist>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-pane fade" id="tab6">
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<include file="Feed_base/modal-feed-del"/>
+
+<script type="text/html" id="tpl-chat-log-item">
+<$
+G = $G('window');
+$>
+  <div class="media chat-msg<$=is_self ? ' chat-myself' : ''$>" data-id="<$=smsid$>">
+    <div class="media-body">
+      <p class="media-heading chat-info">
+        <small class="chat-time"><$=time$></small>
+        <a class="label label-primary"><$=sender$></a> 对
+        <a class="label label-primary"><$=recver$></a> 说：
+      </p>
+      <p class="chat-text"><$=text$></p>
+    </div>
+  </div>
+</script>
+
+<link rel="stylesheet" href="//cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
+<script src="//cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/layer/extend/layer.ext.js"></script>
+<script>window.JSON || document.write('<script src="//cdn.bootcss.com/json2/20150503/json2.min.js"><\/script>');</script>
+<script src="__PUBLIC__/js/artTemplate-v3.0.0.js"></script>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+jQuery(function($)
+{
+
+  window.template && (function()
+  {
+    template.config('openTag','<$');
+    template.config('closeTag','$>');
+    template.helper('$G',function(key){ return eval(key); });
+  })();
+
+  // 图片放大
+  layer.photosPage(
+  {
+    parent:'.list-feed',
+    title:''
+  });
+
+  (function()
+  {
+    //$.fn.editable.defaults.mode = 'inline';
+    $('.editable').editable(
+    {
+      success : function(ret,val)
+      {
+        if(ret.status != 1) return ret.info || false;
+        else return {newValue:val};
+      }
+    })
+    .filter('.required').editable('option','validate',function(val)
+    {
+      if(!$.trim(val)) return '该字段不能为空！';
+    })
+    .end().filter('[data-validate]').editable('option','validate',function(val)
+    {
+      var the = $(this),
+          pat = the.attr('data-validate'),
+          arr = /^\/([^]+)\/([a-z]*)$/i.exec(pat) || [];
+      if(arr[0]) pat = new RegExp(arr[1],arr[2] || '');
+      else       pat = new RegExp(pat);
+      if(!pat.test(val)) return '格式错误！';
+    });
+  })();
+
+  // 获取聊天记录
+  $('body')
+  .on('click','.get-chat-log',function()
+  {
+    var the = $(this),
+        box = $('.chat-logs').empty(),
+        tip = box.find('.tip-msg'),
+        lst = $(),
+        uid = parseInt(the.attr('data-uid')) || 0,
+        day = parseInt(the.attr('data-day')) || 0;
+    tip.length || (tip = $('<h3/>').addClass('tip-msg').prependTo(box));
+    tip.html('加载中...');
+    $.ajax(
+    {
+      url:'{:U('get_chat_log')}',
+      data:{uid:uid,day:day},
+      dataType:'json'
+    })
+    .done(function(data)
+    {
+      var dat = data.data || {};
+      $.each(dat.list,function(i,v)
+      {
+        v.is_self = v.sender == uid;
+        lst = lst.add($(template('tpl-chat-log-item',v)).appendTo(box));
+      });
+      if(lst.length) tip.remove();
+      else tip.html('暂无记录！');
+    });
+  });
+
+});
+</script>

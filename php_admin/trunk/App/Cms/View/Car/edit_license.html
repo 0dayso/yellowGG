@@ -1,0 +1,49 @@
+ 
+<div id="content">
+    
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <form class="form-horizontal" id="save-data">
+                    <div class="control-group">
+                        <label class="control-label">行驶证：</label>
+                        <div class="controls">
+                            <input type="hidden" id="cj-car-license-series-id" value="{$info.license_series_id}" />
+                            <input id="car-license-series" type="text" class="input" size="150" value="{$info.series}"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">车型：</label>
+                        <div class="controls">
+                            <select id="car-style" style="width:200px;" value="{$info.style_name}">
+                                <option value="{$info.style_id}" selected="selected">{$info.style_name}</option>
+                                <foreach name="list" item="vo" >
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="text-align:left">
+                        <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    $(function(){
+        $('#save-data').on('submit',function() {
+            var id = $('#cj-car-license-series-id').val();
+            var series  = $('#car-license-series').val();
+            var style_id   = $('#car-style option:selected').val();
+            location.href="{:U('Car/process_license')}?id="+id+"&series="+series+"&style_id="+style_id;
+            return false;
+        });
+    });
+</script>
+ 

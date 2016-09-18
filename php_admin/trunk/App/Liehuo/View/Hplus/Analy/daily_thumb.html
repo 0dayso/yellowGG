@@ -1,0 +1,261 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <input type="hidden" name="uid" value="{$_REQUEST['uid']}">
+          <input type="hidden" name="type" value="{$_REQUEST['type']}">
+          <input type="hidden" name="rdrs_type" value="{$_REQUEST['rdrs_type']}">
+          <input type="hidden" name="time_type" value="{$time_type ?: $_REQUEST['time_type']}">
+          <div class="input-prepend input-group">
+            <span class="add-on input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+          </div>
+          <div class="form-group">
+            <select name="device" class="form-control">
+              <option value="">全部设备</option>
+<volist name="data['devices']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['device'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="ch_id" class="form-control">
+              <option value="">全部渠道</option>
+<volist name="data['channels']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['ch_id'] == (string)$key ? ' selected' : '';</php>>{$v['ch_name']}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="adver_id" class="form-control">
+              <option value="">全部广告</option>
+<php>$oss = ['安卓','IOS'];</php>
+<volist name="data['advers']" id="v">
+<php>$pkg = $data['packages'][$v['pkg_id']] ?: [];</php>
+              <option value="{$key}"<php>echo $_REQUEST['adver_id'] == (string)$key ? ' selected' : '';</php>>{$v['name'] ?: $v['ch_serial']} ({$oss[$pkg['pkg_device']]} {$pkg['pkg_version']})</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <select name="pkg_id" class="form-control">
+              <option value="">全部包</option>
+<php>$oss = ['安卓','IOS'];</php>
+<volist name="data['packages']" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['pkg_id'] == (string)$key ? ' selected' : '';</php>>{$oss[$v['pkg_device']]} {$v['pkg_name']} ({$v['pkg_version']})</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <select name="sex" class="form-control">
+              <option value="">性别</option>
+<php>$sexs = C('USER_SEX_IS');</php>
+<volist name="sexs" id="v">
+              <option value="{$key}"<php>echo $_REQUEST['sex'] == (string)$key ? ' selected' : '';</php>>{$v}</option>
+</volist>
+            </select>
+          </div>
+<if condition="ACTION_NAME == 'daily_user'">
+          <div class="form-group">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="用户ID..." class="form-control">
+          </div>
+</if>
+          <button type="submit" class="btn btn-primary">搜索</button>
+          <a href="{:U('',$all_params ?: [])}" class="btn btn-white">全部</a>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('?download=1',array_merge($_GET ?: [],['page_size' => 'export']))}" class="btn btn-success hide">导出</a>
+          <span class="btn btn-white">记录数：{$pager ? $pager->totalRows : count($data['list'])}</span>
+        </div>
+      </div>
+      <hr>
+      <div class="row-fluid clearfix">
+        <div id="hchart-recv_user" class="highcharts col-md-6"></div>
+        <div id="hchart-recv_num" class="highcharts col-md-6"></div>
+      </div>
+      <hr>
+      <div class="row-fluid clearfix">
+        <div id="hchart-send_user" class="highcharts col-md-6"></div>
+        <div id="hchart-send_num" class="highcharts col-md-6"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr>
+<volist name="data['cols']" id="k">
+              <th>{$k}</th>
+</volist>
+            </tr>
+          </thead>
+          <tbody>
+<volist name="data['list']" id="v">
+            <tr>
+<volist name="data['cols']" id="k">
+              <td>{$v[$k]}</td>
+</volist>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+window.Data = $.parseJSON('{:json_encode($data)}') || {};
+window.Data.fields =
+{
+  'recv_user' : '被赞人数',
+  'recv_num'  : '被赞次数',
+  'send_user' : '送赞人数',
+  'send_num'  : '送赞次数'
+};
+
+$(document).on('require.ready',function()
+{
+
+  function fun(typ,dat,hco,tit)
+  {
+    var lst = dat.list || {},
+        dtx = [],
+        dty = {},
+        cfg = hco;
+    $.each(lst[typ] || {},function(tid,v)
+    {
+      var key = typ;
+      dty[key] || (dty[key] = {data:[]});
+      dty[key].type = 'pie',
+      dty[key].name = typ;
+      dty[key].data.push([window.Data.types[tid] || tid,v]);
+    });
+    cfg.xAxis.categories = dtx;
+    cfg.series = [dty[typ]];
+    cfg.title.text = tit || '点赞分布';
+    $('#hchart-' + typ).empty().highcharts(cfg);
+  }
+
+  require(['highcharts','moment'],function()
+  {
+    var hco =
+        {
+          title:
+          {
+            text:'',
+            x:-20 //center
+          },
+          subtitle:
+          {
+            text:'',
+            x:-20
+          },
+          xAxis:
+          {
+            categories:[],
+            dateTimeLabelFormats:
+            {
+              second:'%Y-%m-%d<br>%H:%M:%S',
+              minute:'%Y-%m-%d<br>%H:%M',
+              hour:'%Y-%m-%d<br>%H:%M',
+              day:'%Y-%m-%d',
+              week:'%Y-%m-%d',
+              month:'%Y-%m',
+              year:'%Y'
+            }
+          },
+          yAxis:
+          {
+            title:
+            {
+              text:''
+            },
+            labels:
+            {
+              format:'{value}'
+            },
+            min:0,
+            allowDecimals:false,
+            plotLines:[]
+          },
+          series:[],
+          tooltip:
+          {
+            valueSuffix:'个',
+            crosshairs:[true,false],
+            shared:true,
+            useHTML:true,
+            formatter:function()
+            {
+              var s = '';
+              console.log(this);
+              (function(point)
+              {
+                s += '<span>范围: </span>';
+                s += '<b style="color:' + point.color + ';">' + point.name + ' </b>';
+                s += '<br><span>数量: </span>';
+                s += '<b style="color:#222;">' + point.y + '</b>';
+                s += '<br><span>占比: </span>';
+                s += '<b style="color:#222;">' + parseFloat(point.percentage).toFixed(1) + ' %</b>';
+              })(this.point);
+              return s;
+            }
+          },
+          plotOptions:
+          {
+            pie:
+            {
+              allowPointSelect: true,
+              cursor:'pointer',
+              dataLabels:
+              {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style:
+                {
+                  color:(Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+              },
+              showInLegend:true
+            }
+          },
+          legend:
+          {
+            //layout:'vertical',
+            //align:'right',
+            //verticalAlign:'middle',
+            borderWidth:0
+          },
+          credits:{text:''}
+        };
+
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors,function(color)
+    {
+      return {
+        radialGradient:{cx:0.5,cy:0.3,r:0.7},
+        stops:
+        [
+          [0,color],
+          [1,Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+        ]
+      };
+    });
+
+    // hcharts
+    $.each(['recv_user','recv_num','send_user','send_num'],function(i,typ)
+    {
+      fun(typ,window.Data || {},hco,window.Data.fields[typ]);
+    });
+
+  });
+
+});
+</script>

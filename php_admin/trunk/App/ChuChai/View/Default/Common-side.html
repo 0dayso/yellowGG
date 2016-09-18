@@ -1,0 +1,13 @@
+        <nav class="panel panel-default affix-">
+          <div class="panel-heading">
+            <h3 class="panel-title">导航</h3>
+          </div>
+          <div class="nav list-group">
+<volist name="navs" id="v">
+<php>
+$url = U($key);
+</php>
+            <a href="{$url}" class="list-group-item{:boolval(U('',$_GET) == $url) ? ' active' : ''}">{$v}</a>
+</volist>
+          </div>
+        </nav>

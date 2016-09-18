@@ -1,0 +1,456 @@
+ 
+<div id="content">
+   
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-title">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab1" onclick="showUserInfo()">用户资料</a></li>
+                    <li><a data-toggle="tab" href="#tab2" onclick="showActionLog()">操作记录</a></li>
+                    <li><a data-toggle="tab" href="#tab3" onclick="showUserPic()">相册</a></li>
+                    <li><a data-toggle="tab" href="#tab4" onclick="showChatLog()">聊天记录</a></li>
+                    <li><a data-toggle="tab" href="#tab5" onclick="showAccusationLog()">举报封禁历史</a></li>
+                    <li><a   href="{:U('system_setting/pushmessage',array('uid'=>$_GET['uid']))}" target="_bank" >警告</a></li>
+                    <li><a data-toggle="tab" href="#tab6" id="tag6" onclick="showtagLog()">认证</a></li>
+                </ul>
+            </div>
+
+            <div class="widget-content">
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="tab1">
+                        <include file="User:editable_single_user_info" />
+                    </div>
+
+                    <div class="tab-pane fade" id="tab2">
+                        <include file="User:editable_single_user_action_log" />
+                    </div>
+
+                    <div class="tab-pane fade in active" id="tab3">
+                        <include file="User:editable_single_user_pic" />
+                    </div>
+
+                    <div class="tab-pane fade" id="tab4">
+                        <include file="User:editable_single_user_chat_log" />
+                    </div>
+
+                    <div class="tab-pane fade" id="tab5">
+                        <include file="User:editable_single_user_accusation_log" />
+                    </div>
+
+                    <div class="tab-pane fade" id="tab6">
+                        <include file="User:editable_single_user_tag" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<script src="__PUBLIC__/layer/layer.min.js" type="text/javascript"></script>
+<script src="/Public/layer/extend/layer.ext.js" type="text/javascript"></script>
+<script src="/Public/layer/laydate/laydate.js"></script>
+<!-- <script src="__PUBLIC__/rotate/js/jquery.rotate.min.js" type="text/javascript"></script> -->
+<style>
+    *{margin:0;padding:0;list-style-type:none;}
+    img,a{border:0;}
+    .piccon{height:20px;margin:20px 0 0 0px;}
+    .piccon li{float:left;padding:0 0px;}
+    #preview{position:absolute;border:1px solid #ccc;background:#333;padding:5px;display:none;color:#fff;}
+
+    /*覆盖层*/
+    #overlay{
+        position:absolute;
+        background-color: rgb(119, 119, 119);
+        opacity: 0.5;
+        cursor: pointer;
+        width:100%;
+        height: 100%;
+        top: 0px;
+        left: 0px
+    }
+
+    /*弹出层*/
+    #wrap{
+        position:absolute;
+        background-color: rgba(18, 18, 18, 0.73);
+        width: 100%;
+        height:50%;
+        /*top: 10%;*/
+    }
+
+    .xubox_layer {
+      top: 20px;
+      
+    }
+
+    .pic-rotate{
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: 50% 50%;
+    }
+
+    
+    .row-fluid img {
+        height:85%;
+    }
+     
+</style>
+<script>
+    var tags = "{$_GET['tag']}";
+    if(tags!=''){
+        document.getElementById('tag6').click();
+    }
+
+    var uid = "{$_GET['uid']}";
+    $('#delinfo-pic').click(function(){
+        var ckva = $("input[name='reason']:checked").val();
+        if( typeof(ckva) =='undefined' ){
+            layer.alert('请选择违规原因！');
+            return false;
+        }
+        $('#one-inputpic').submit();
+    });
+
+    //点击图片即可触发
+    layer.photosPage({
+        parent: '#extimgs',
+        title: '直接获取页面元素包含的所有图片',
+        id: 112 //相册id，可选
+    });
+
+    //点击图片即可触发
+    layer.photosPage({
+        parent: '#inline-video',
+        title: '视频认证',
+        id: 112 //相册id，可选
+    });
+    //点击图片即可触发
+    layer.photosPage({
+        parent: '#inline-car',
+        title: '车认证',
+        id: 112 //相册id，可选
+    });
+
+    $('#myTabContent').on('click',function(){
+        //点击图片即可触发 聊天记录
+        layer.photosPage({
+            parent: '#myTabContent',
+            title: '聊天记录',
+            id: 112 //相册id，可选
+        });
+    });
+
+
+
+    function showUserInfo() {
+        $('.UserInfo').show();
+    }
+    function showActionLog() {
+        $('.ActionLog').show();
+        $('.UserInfo').hide();
+        $('.UserPic').hide();
+        $('.ChatLog').hide();
+        $('.AccusationLog').hide();
+
+        var lodings = layer.load('加载中...', 3);
+        var uid  = "{$_GET['uid']}";
+        $.post("/index.php/user/getcarvideolog",{uid:uid},function(data){
+            $('#tab2').empty();
+            $('#tab2').append(data);
+            layer.close(lodings);
+        });
+
+
+    }
+    function showUserPic() {
+        $('.UserPic').show();
+        $('.ActionLog').hide();
+        $('.UserInfo').hide();
+        $('.ChatLog').hide();
+        $('.AccusationLog').hide();
+    }
+    function showChatLog() {
+        $('.ChatLog').show();
+        $('.UserPic').hide();
+        $('.ActionLog').hide();
+        $('.UserInfo').hide();
+        $('.AccusationLog').hide();
+    }
+    function showAccusationLog() {
+        $('.AccusationLog').show();
+        $('.UserPic').hide();
+        $('.ActionLog').hide();
+        $('.UserInfo').hide();
+        $('.ChatLog').hide();
+        var lodings = layer.load('加载中...', 3);
+        var uid  = "{$_GET['uid']}";
+        $.post("/index.php/user/accusationrequestlog",{uid:uid},function(data){
+            $('#requestlog6').empty();
+            $('#requestlog6').append(data);
+            layer.close(lodings);
+        });
+
+
+
+    }
+    function showtagLog() {
+        $('.user_tag').show();
+        $('.AccusationLog').hide();
+        $('.UserPic').hide();
+        $('.ActionLog').hide();
+        $('.UserInfo').hide();
+        $('.ChatLog').hide();
+    }
+    var indexs = '';
+
+
+    //无论是点击覆盖层还是点击弹出层，都隐藏该弹出系列
+    function hideBoth(){
+        $('.carousel-inner > .row-fluid').removeClass('active');
+        layer.close(indexs); 
+
+    }
+
+    $(function(){
+        var uid   = $('#uid').val();
+        $('#change-phone').on('click',function(){
+            var phone = $('#phone').val();
+            location.href ="{:U('User/change_user_phone_num')}?uid="+uid+"&phone="+phone;
+        });
+
+        $('#undo-video-verify').on('click',function(){
+            /*location.href ="{:U('UserFactory/undo_video_verify')}?uid="+uid;*/
+            location.href ="{:U('CertificateVideo/undo_certificate')}?uid="+uid;
+        });
+
+        $('#undo-car-verify').on('click',function(){
+            location.href ="{:U('CertificateCar/undo_certificate')}?uid="+uid;
+        });
+
+        showUserInfo();
+
+
+        $('#submit-f').click(function(){
+            var name = $('#closure-f .select2-chosen').html();
+            
+            if(name == '请选择' ){
+                layer.alert('请选择,举报内容!');
+            }else{
+                $('#closure-f').submit();
+            }
+        });
+
+        // 个人信息里
+        var indexed = '';
+        $('.alert-upl').click(function(){
+ 
+            var name  = $(this).attr('va');
+            var uid   = "{$user['uid']}";
+            var field = $(this).attr('name');
+            var wis   = $(this).parent().text().indexOf('：');
+            var f_name= $(this).parent().text().substr(0,wis);
+         
+            $('#qeuding-c').attr('name',name);
+            $('#qeuding-c').attr('uid',uid);
+            $('#qeuding-c').attr('field',field);
+            $('#qeuding-c').attr('f_name',f_name);
+            
+
+
+            index = $.layer({
+                type: 1,
+                area: ["auto","auto"],
+                shade: false,
+                title: "修改内容",
+                border: [10, 0.3, '#000'],
+                page: {dom :"#alert-divck"}
+            });
+        });
+
+        $('#qeuding-c').click(function(){
+            var field  = $(this).attr('field');
+            var name   = $(this).attr('name');
+            var uid    = $(this).attr('uid');
+            var f_name = $(this).attr('f_name');
+            var ch     = $('input[name="reason"]:checked').val();
+            $.post("{:U('user/modify_content_info')}",{field:field,uid:uid,title:name,reason:ch,f_name:f_name},function(data){
+                if(data==1){
+                    window.location.reload();
+                }
+            });
+          
+        });
+
+
+        $('#return-c').click(function(){
+            layer.close(index);
+        });
+
+        $('.zday').click(function(){
+            var day = $(this).attr('day');
+            var rep = "{$_GET['reporter']}";
+            $.post("{:U('user/getchatlog')}",{day:day,uid:uid,rep:rep},function(data){
+                if(data!=''){
+                    $('.chat-pl').remove();
+                    $('#choatlog').append(data);
+                }else{
+                    layer.alert('没有聊天记录！');
+                }
+            });
+        });
+
+        $('#yesday').click(function(){
+            var day = $(this).prev().val();
+            var rep = "{$_GET['reporter']}";
+            if(day==''){
+                layer.alert('请填写时间天数！');
+                return false;
+            }
+            $.post("{:U('user/getchatlog')}",{day:day,uid:uid,rep:rep},function(data){
+                if(data!=''){
+                    $('.chat-pl').remove();
+                    $('#choatlog').append(data);
+                }else{
+                    layer.alert('没有聊天记录！');
+                }
+            });
+        });
+
+        $('#changeg_add').click(function(){
+            layer.confirm('你确定要增加金币吗？', function (){
+                var gol = $('#gold_coin_cnt').val();
+                var uid = "{$user.uid}";
+                if(gol == ''){
+                    layer.alert('请输入金币！');
+                    return false;
+                }
+
+
+                $.post("{:U('user/glodchange')}",{glod:gol,uid:uid,type:'add'},function(data){
+                    if(data=='ok'){
+                        layer.alert('金币增加成功');
+                        window.location.href = '';
+                    }
+                    if(data=='bu'){
+                        layer.msg('金币不可以是0');
+                    }
+                });
+            });
+
+
+        });
+        $('#changeg_j').click(function(){
+            layer.confirm('你确定要扣除金币吗？', function (){
+                var gol = $('#gold_coin_cnt').val();
+                var uid = "{$user.uid}";
+                if(gol == ''){
+                    layer.alert('请输入金币！');
+                    return false;
+                }
+
+                $.post("{:U('user/glodchange')}",{glod:gol,uid:uid,type:'dec'},function(data){
+                    if(data=='ok'){
+                        layer.alert('金币扣除成功');
+                        window.location.href = '';
+                    }
+                    if(data=='no'){
+                        layer.msg('金币已经是0了，不能扣除了！');
+                    }
+                    if(data=='bu'){
+                        layer.msg('金币不可以是0');
+                    }
+                });
+            });
+
+
+
+        });
+
+        $('#saved-tag').click(function(){
+            var classid = parseInt($('#class_tag_id').val());
+            if(classid==0){
+                layer.msg('请选择分类');
+                return false;
+            }
+            var tag = layer.prompt({title: '标签名称！'}, function(name){
+                $('#u-tag').val(name);
+                $('#post_tag_class_id').val(classid);
+                $('.tagfrom').submit();
+            });
+        });
+
+
+
+        // 删除用户动态
+        var resonsh = '';
+        $('#del-surging').click(function(){
+            var sid = '';
+            $('.surging-del').each(function(i){
+                if($(this).prop('checked')==true){
+                    sid += $('.surging-del').eq(i).val()+',';
+                }
+            });
+
+            if(sid==''){
+                layer.alert('请选择动态！');
+                return false;
+            }
+            resonsh = $.layer({
+                type: 1,
+                shade: [0],
+                area: ['auto', 'auto'],
+                title: false,
+                page: {dom : '#accusation_tables'}
+            });
+
+            $('#dels-query').attr('vid',sid);
+        });
+
+
+        $('#dels-query').click(function(){
+            var id = $(this).attr('vid');
+            var resan = $("input[name='reason']:checked").val();
+            if(typeof(resan) != 'string'){
+                layer.msg('请选择违规原因！');
+                return false;
+            }
+            var yesd = layer.confirm('确定要删除吗？',function(){
+                $.post("{:U('user/delusersurging')}",{uid:uid,id:id,reason:resan},function(data){
+                    if(data=='ok'){
+                        layer.msg('删除成功！');
+                        layer.close(yesd);
+                        layer.close(resonsh);
+
+                        var strs= new Array(); //定义一数组
+                        strs=id.split(","); //字符分割
+                        for (i=0;i<strs.length ;i++ )
+                        {
+                            $('.u-v-s'+strs[i]).hide();
+                        }
+
+                    }
+                });
+            });
+
+        });
+
+        $('#clear-tsurging').click(function(){
+            $.post("{:U('user/clearuserall')}",{uid:uid},function (data) {
+                if(data == 'ok'){
+                    layer.msg('清理完成！');
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+    });
+
+</script>
+ 

@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<style>
+.form-horizontal .control-label { width:auto; min-width:10em; }
+</style>
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('notice_save')}" method="POST" class="form-inline" onsubmit="return confirm('真的要这么做？')">
+          <div class="form-group">
+            <select name="type" class="form-control filter-fields">
+<volist name="data['types']" id="v">
+              <option value="{$key}"{:boolval(($data['item']['type'] ?: $_REQUEST['type']) == (string)$key) ? ' selected' : ''}>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="input-group" data-filter="{:Liehuo\\Model\\LiveNoticeModel::TYPE_ROOM}">
+            <span class="input-group-addon">直播ID</span>
+            <input type="text" name="live_id" value="{$data['item']['live_id'] ?: $_REQUEST['live_id']}" placeholder="必填..." class="form-control">
+          </div>
+          <div class="input-group" data-filter="{:Liehuo\\Model\\LiveNoticeModel::TYPE_PACT}">
+            <span class="input-group-addon">间隔时间</span>
+            <input type="text" name="attrs[interval]" value="" placeholder="必填..." class="form-control" style="max-width:5em;">
+            <span class="input-group-addon">分钟</span>
+          </div>
+          <div class="form-group" data-filter="{:Liehuo\\Model\\LiveNoticeModel::TYPE_PACT}">
+            <label>
+              <input type="checkbox" name="attrs[is_first]" value="1">
+              进房首条是否显示
+            </label>
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon">内容</span>
+            <input type="text" name="text" value="" require placeholder="必填..." class="form-control">
+          </div>
+          <div class="input-group" data-filter="-999">
+            <span class="input-group-addon">颜色</span>
+            <input type="text" name="attrs[color]" value="" placeholder="选填..." class="form-control color-picker" style="max-width:6em;">
+          </div>
+          <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+      </div>
+      <hr>
+
+      <div class="clearfix">
+        <form action="{:U()}" method="GET" class="form-inline pull-left">
+          <input type="hidden" name="act" value="filter">
+          <div class="input-prepend- input-group">
+            <span class="input-group-addon">日期范围</span>
+            <input type="text" value="" class="form-control date-range" data-stime="{$_REQUEST['stime']}" data-etime="{$_REQUEST['etime']}">
+            <input type="hidden" name="stime" value="{$_REQUEST['stime']}">
+            <input type="hidden" name="etime" value="{$_REQUEST['etime']}">
+            <span class="input-group-addon hide">
+              <label class="checkbox"><input type="checkbox" name="time_type" value="finish"<php>echo $_REQUEST['time_type'] == 'finish' ? 'checked' : '';</php>> 完成时间</label>
+            </span>
+          </div>
+          <div class="form-group">
+            <select name="type" class="form-control">
+              <option value="">类型</option>
+<volist name="data['types']" id="v">
+              <option value="{$key}"{:boolval($_REQUEST['type'] == (string)$key) ? ' selected' : ''}>{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group hide">
+            <input type="text" name="kwd" value="{$_REQUEST['kwd']}" placeholder="关键词..." class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+        <div class="pull-right">
+          <a href="{:U('notice_renew')}" class="btn btn-success">更新缓存</a>
+          <span class="btn btn-white">记录数：{$pager->totalRows ?: count($data['list'])}</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead>
+            <tr class="text-nowrap">
+              <th>ID</th>
+              <th>时间</th>
+              <th>类型</th>
+              <th>操作人</th>
+              <th>内容</th>
+              <th>属性</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+<php>
+$ans =
+[
+  'color'    => '内容颜色',
+  'interval' => '时间间隔',
+  'is_first' => '是否首条',
+];
+</php>
+<volist name="data['list']" id="v">
+            <tr class="gradeX">
+              <td>{$v['id']}</td>
+              <td>{$v['create_time'] ? date('Y-m-d H:i:s',$v['create_time']) : '-'}</td>
+              <td>{$data['types'][$v['type']] ?: $v['type']}</td>
+              <td>{$data['admins'][$v['aid']]['nickname'] ?: $v['aid']}</td>
+              <td>
+                <div class="td-content" style="color:{$v['attrs']['color']};">{$v['text']}</div>
+              </td>
+              <td>
+                <div class="td-content">
+<php>
+echo implode('',array_map(function($k,$v) use($ans)
+{
+  if(!$v) return '';
+  return ($ans[$k] ?: $k).':'.$v.'<br>';
+},array_keys($v['attrs']),$v['attrs']));
+</php>
+                </div>
+              </td>
+              <td class="text-nowrap">
+                <a href="{:U('notice_del?id='.$v['id'])}" class="btn btn-danger" onclick="return confirm('真的要这么做？')">删除</a>
+              </td>
+            </tr>
+</volist>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination alternate">
+      <ul>
+        <li style="text-align:center;color:#00f">{$page}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+});
+</script>

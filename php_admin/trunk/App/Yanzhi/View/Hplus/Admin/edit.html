@@ -1,0 +1,47 @@
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <form action="{:U('save')}" method="post" role="form" class="form-horizontal m-t">
+        <input type="hidden" name="id" value="{$data['item']['aid']}">
+        <div class="form-user-reg">
+          <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">管理员昵称：</label>
+            <div class="col-sm-3">
+              <input type="text" name="nickname" value="{$data['item']['nickname']}" placeholder="必填" class="form-control">
+            </div>
+          </div>
+          <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">Email：</label>
+            <div class="col-sm-3">
+              <input type="text" name="email" value="{$data['item']['email']}" placeholder="必填" class="form-control">
+            </div>
+          </div>
+          <div class="form-group draggable ui-draggable">
+            <label class="col-sm-3 control-label">密码：</label>
+            <div class="col-sm-3">
+              <input type="text" name="pwd" value=""<php>echo ACTION_NAME == 'edit' ? ' placeholder="留空则不修改"' : '';</php> class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="form-group draggable ui-draggable">
+          <label class="col-sm-3 control-label">管理权限：</label>
+          <div class="col-sm-6">
+<volist name="data['auth_rules']" id="v">
+            <label class="checkbox-inline">
+              <input type="checkbox" name="rules[]" value="{$v['id']}"<php>echo isset($data['auth_access'][$v['id']]) ? ' checked' : '';</php>> {$v['title']}({$v['name']})
+            </label>
+</volist>
+          </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group draggable ui-draggable">
+          <div class="col-sm-12 col-sm-offset-3">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{:U('index')}" class="btn btn-info">返回列表</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>

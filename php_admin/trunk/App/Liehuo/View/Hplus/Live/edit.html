@@ -1,0 +1,177 @@
+<link rel="stylesheet" href="__PUBLIC__/css/app.comm.css">
+<div id="content">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="clearfix">
+        <form action="{:U('save')}" method="POST" class="form-horizontal table-responsive">
+<php>
+$hst = $data['item'] ?: [];
+$usr = $data['user'] ?: [];
+$sex = $usr['sex'];
+$sls = C('USER_SEX_IS') ?: [];
+$isa = !$hst['uid'];
+</php>
+          <table class="table table-bordered table-striped table-form">
+            <col style="width:10em;">
+            <col>
+            <col style="width:10em;">
+            <col>
+            <col style="width:10em;">
+<if condition="$isa">
+            <tr>
+              <th>用户ID</th>
+              <td>
+                <div class="col-md-6">
+                  <textarea name="uids" placeholder="用户ID，每行一个，或英文逗号分隔" class="form-control">{$_REQUEST['uid']}</textarea>
+                </div>
+              </td>
+            </tr>
+<else/>
+            <tr>
+              <th>用户昵称</th>
+              <td>
+                <div class="col-md-6">
+                  <input type="hidden" name="uid" value="{$hst['uid']}">
+                  <input type="text" value="{$usr['nickname']}" placeholder="{$usr['nickname']}" readonly disabled class="form-control">
+                  <b class="label label-{$sex ? 'danger' : 'success'}">{:array_get([Liehuo\\Model\\LiveHostModel::CONTRACT_TYPE_SIGN => '签约'],$hst['contract_type']) ?: $sls[$sex]}</b>
+                  <b class="label label-danger">{:boolval($usr['vip_level'] && $usr['vip_valid_end'] >= NOW_TIME) ? 'v' : ''}{$usr['glory_grade'] ?: ''}</b>
+<if condition="in_array($usr['type'],[2]) && ($usr['dblocking_time'] gt NOW_TIME)">
+                  <b class="label label-danger">封</b>
+</if>
+                  <a href="{:U('UserBase/view?uid='.$usr['uid'])}" target="_blank" class="btn btn-primary popover-avatar" data-original-title="{$usr['nickname']}">查看详情</a>
+                </div>
+              </td>
+            </tr>
+</if>
+            <tr>
+              <th>签约状态</th>
+              <td>
+                <div class="col-md-6">
+                  <select name="contract_type" class="form-control">
+                    <option value="0">未签约</option>
+<volist name="data['contract_types']" id="v">
+                    <option value="{$key}"{:boolval($hst['contract_type'] == (string)$key) ? ' selected' : ''}>{$v['attrs']['name']}</option>
+</volist>
+                  </select>
+                </div>
+              </td>
+            </tr>
+<if condition="$hst['contract_time']">
+            <tr>
+              <th>签约时间</th>
+              <td>
+                <div class="col-md-6">
+                  {$hst['contract_time'] ? date('Y-m-d H:i:s',$hst['contract_time']) : '-'}
+                </div>
+              </td>
+            </tr>
+</if>
+            <tr>
+              <th>直播类型</th>
+              <td>
+                <div class="col-md-6">
+                  <input type="text" name="attrs[live_type]" value="{$hst['attrs']['live_type'] ?: urldecode($_REQUEST['live_type'])}" placeholder="{$hst['attrs']['live_type']}" class="form-control">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>直播风格</th>
+              <td>
+                <div class="col-md-6">
+                  <input type="text" name="attrs[live_style]" value="{$hst['attrs']['live_style'] ?: urldecode($_REQUEST['live_style'])}" placeholder="{$hst['attrs']['live_style']}" class="form-control">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>选项</th>
+              <td>
+                <div class="col-md-6">
+<volist name="data['propertys']" id="v">
+                  <label><input type="checkbox" name="propertys[]" value="{$key}"{:boolval((int)$hst['propertys'] & (int)$key) ? ' checked' : ''}> {$v}</label><br>
+</volist>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>备注</th>
+              <td>
+                <div class="col-md-6">
+                  <textarea name="remark" placeholder="{$hst['remark'] ?: '选填'}" class="form-control">{$hst['remark']}</textarea>
+                </div>
+              </td>
+            </tr>
+<if condition="!$isa">
+            <tr>
+              <th>进入热门总次数</th>
+              <td>
+                <div class="col-md-6">{$hst['hot_times'] ?: 0}</div>
+              </td>
+            </tr>
+            <tr>
+              <th>直播总时长</th>
+              <td>
+                <div class="col-md-6">{$hst['total_live_time'] ?: 0}</div>
+              </td>
+              <th>直播总次数</th>
+              <td>
+                <div class="col-md-6">{$hst['total_live_times'] ?: 0}</div>
+              </td>
+              <th>总关注数</th>
+              <td>
+                <div class="col-md-6">{$hst['followers'] ?: 0}</div>
+              </td>
+            </tr>
+            <tr>
+              <th>总人气</th>
+              <td>
+                <div class="col-md-6">{$hst['total_likes'] ?: 0}</div>
+              </td>
+              <th>收礼总金额</th>
+              <td>
+                <div class="col-md-6">{$hst['total_income'] ?: 0}</div>
+              </td>
+              <th>提现总金额</th>
+              <td>
+                <div class="col-md-6">{$hst['total_cash'] ?: 0}</div>
+              </td>
+            </tr>
+            <tr>
+              <th>停播次数</th>
+              <td>
+                <div class="col-md-6">{$data['dispose']['live_hot_set']['cnt'] ?: 0}</div>
+              </td>
+              <th>警告次数</th>
+              <td>
+                <div class="col-md-6">{$data['dispose']['live_stop']['cnt'] ?: 0}</div>
+              </td>
+              <th>举报次数</th>
+              <td>
+                <div class="col-md-6">{$data['dispose']['live_warn']['cnt'] ?: 0}</div>
+              </td>
+            </tr>
+</if>
+            <tr>
+              <th></th>
+              <td class="text-left">
+                <button type="submit" class="btn btn-primary">保存</button>
+                <a href="{:U('hosts')}" class="btn btn-success">返回列表</a>
+                <a href="{:U('index')}" class="btn btn-success">直播监控</a>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__PUBLIC__/js/app.comm.js"></script>
+<script>
+$(document).on('require.ready',function()
+{
+
+  $('body');
+
+  $('.table tr').children(':last-child').attr('colspan',99);
+
+});
+</script>

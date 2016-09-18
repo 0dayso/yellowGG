@@ -1,0 +1,125 @@
+<form class="form-horizontal" id="form-search" method="post">
+    <input type="hidden" name="id" value="{$_GET['id']}" >
+    <div class="controls"  > 
+        <div class="col-sm-9" style="padding:0">
+            <label class="radio-inline" style="padding:0px;width:100%">
+                <input type="text" name="item"  class="laydate-icon form-control" placeholder="用户uid" value="">
+            </label>
+        </div>
+        <input type="submit" class="btn btn-primary btn-sm" value="确定">
+    </div>
+</form>
+<br>
+<div class="form-horizontal"   method="post">
+    <div class="controls"  >
+        <div class="col-sm-2" style="padding:0">
+            <label class="radio-inline" style="padding:0px;width:100%">
+                <input type="text"  id="searchp" class="form-control"  placeholder="用户手机号" value="">
+            </label>
+        </div>
+        <input type="submit" class="btn btn-primary btn-sm" id="searchuser" value="搜索用户"><button class="btn btn-danger m-r-sm" id="closes">关闭</button>
+    </div>
+</div>
+<style>
+    .xxim_chatlist-list{width:100%;height:auto;display:block;clear:both;overflow: hidden;background-color: #DDD;padding:0}
+    .xxim_chatlist-list .xxim_childnode{width:300px;display:block;overflow:hidden;float:left;margin:0 auto;padding:0 auto}
+    .xxim_chatlist-list .xxim_childnode img{width:100px;height:100px;float:left;border: 4px solid #DDD5D5;}
+    .xxim_chatlist-list .xxim_childnode div{ width: 200px;height:70px; margin: 29px 0 0 0;float: left;}
+    .xxim_chatlist-list .xxim_childnode span{ display:block}
+</style>
+<ul class="xxim_chatlist-list"  ></ul>
+
+
+<div class="widget-content nopadding">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>推荐用户UID</th>
+                <th>动态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="list" id="vo" >
+                <tr class="gradeX">
+                    <td style="text-align: center">
+                        <a href="{:U('User/user_info/', array('menu'=>$menu,'type'=>$type,'uid'=>$vo[0]['uid']))}"  target="_blank" >{$vo[0]['uid']}</a>
+                    </td>
+                    <td style="text-align: center">
+                        <volist name="vo" id="vos">
+                            <img src="http://surging.chujian.im/{$vos['thumb']}" width="100" height="100" />
+                        </volist>
+                    </td>
+                    <td style="text-align: center">
+
+                        <input type="submit" class="btn btn-primary btn-sm agingsuring" va="{$vo[0]['uid']}"  value="重选动态">
+                        <input type="submit" class="btn btn-primary btn-sm del-items" did="{$vo[0]['id']}"  value="删除">
+                    </td>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+</div> 
+<script src="/Public/layer/layer.min.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function(){
+        $('.del-items').click(function(){
+            var id = $(this).attr('did');
+            var _this = $(this);
+            var al = layer.confirm('你确定要删除吗？',function(){
+                $.post("{:U('recommend/del_items')}",{id:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.msg('删除成功!');
+                        layer.close(al);
+                    }
+                })
+            });
+        });
+
+        $('.agingsuring').click(function(){
+
+            var uid = $(this).attr('va');
+            var id  = "{$_GET['id']}";
+            $.post("{:U('search/get_surging_html')}",{uid:uid,id:id,where:'recommend_id'},function(data){
+                var pageii = $.layer({
+                type: 1,
+                title: false,
+                area: ['1000px', '570px'],
+                shift: 'top', //从左动画弹出
+                page: {
+                    html: '<div style="width:1000px;height:560px; padding:20px; border:1px solid #ccc; background-color:#eee;overflow:scroll;" id="addsurginged">'+data+'</div>'
+                }
+            });
+            });
+
+
+        });
+
+
+        $('#searchuser').click(function(){
+
+            var index = layer.load('搜索中...', 3);
+
+            var search = $('#searchp').val();
+            if(search !='' ){
+                $.post("{:U('search/ajaxsearchuser')}",{phone:search},function(data){
+                    if(data!=''){
+                        $('.xxim_chatlist-list').show();
+                        $('.xxim_chatlist-list').empty();
+                        $('.xxim_chatlist-list').append(data);
+                    }
+                    layer.close(index);
+                });
+            }
+        });
+
+
+        $('#closes').click(function(){
+            $('.xxim_chatlist-list').hide();
+        });
+
+ 
+
+    });
+</script>

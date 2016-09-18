@@ -1,0 +1,39 @@
+ 
+<div id="content">
+ 
+    <div class="container-fluid">
+        <div class="widget-title"> 
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>{$list[0]['admin_group_name']}权限修改  </h5>
+        </div>
+        <div class="row-fluid">
+
+            <form action="" method="post">
+                <input type="hidden" name="admin_group_id" value="{$gid}" >
+                <?php 
+
+                    foreach ($gstr as $value){
+                        $data[] = $value['action_id'];
+                    } 
+                     
+                ?>
+                <a class="btn btn-primary btn-mini">一级权限</a><br/>
+                <volist name="one" id="avo" >
+                        <input type="checkbox"  name="action_id[]"    <?php if(in_array($avo['action_id'],$data)){ echo "checked=checked"; }  ?> value="{$avo.action_id}" />{$avo.name}<br/>
+                </volist>
+                <a class="btn btn-primary btn-mini">二级权限</a><br/>
+                <volist name="two" id="avo" >
+                        <input type="checkbox"  name="action_id[]"    <?php if(in_array($avo['action_id'],$data)){ echo "checked=checked"; }  ?> value="{$avo.action_id}" />{$avo.name}<br/>
+                </volist>
+                <a class="btn btn-primary btn-mini">三级权限</a><br/>
+                <volist name="san" id="avo" >
+                        <input type="checkbox"  name="action_id[]"    <?php if(in_array($avo['action_id'],$data)){ echo "checked=checked"; }  ?> value="{$avo.action_id}" />{$avo.name}<br/>
+                </volist>
+
+
+                <input value="提交权限" type="submit"  />
+            </form> 
+
+        </div>
+    </div>
+</div> 

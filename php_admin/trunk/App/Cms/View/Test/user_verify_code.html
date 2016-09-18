@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>初见管理后台</title>
+    <include file="Common:intohead" />
+</head>
+<body>
+<!--top-Header-menu-->
+<include file="Common:head" />
+<!--sidebar-menu-->
+<include file="Test:left" />
+<!--sidebar-menu-->
+<!--main-container-part-->
+<div id="content">
+    <!--breadcrumbs-->
+    <include file="Common:navbar" />
+    <!--End-breadcrumbs-->
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+                    <form class="form-horizontal" id="form-search">
+                        <div class="controls">搜索:
+                            <select id="form-search-type" name="search">
+                                <option value=1>按电话号</option>
+                            </select>
+                            <input type="text" name="keyword" id="form-search-key">
+                            <input type="submit" value="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+                </div>
+                <div class="widget-content nopadding">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>电话号</th>
+                            <th>验证码</th>
+                            <th>提交次数</th>
+                            <th>验证状态</th>
+                            <th>提交时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo">
+                            <tr class="gradeX">
+                                <td style="text-align: center">{$vo.phone}</td>
+                                <td style="text-align:center">{$vo.code}</td>
+                                <td style="text-align:center">{$vo.num}</td>
+                                <td style="text-align:center">{$vo.status}</td>
+                                <td style="text-align:center">{$vo.dtime}</td>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--Footer-part-->
+<include file="Common:foot" />
+<!--end-Footer-part-->
+</body>
+</html>

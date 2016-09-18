@@ -1,0 +1,31 @@
+<div id="sidebar">
+    <ul>
+
+   
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'account_manage'">active</if>
+        ">
+            <a href="#"> <i class="icon icon-th-list"></i>
+                <span>奖品管理</span>
+            </a>
+                <ul style="display:block"  >
+                <li>
+                    <a href="{:U('PrizeManage/index',array('menu'=>'account_manage'))}">奖品列表</a>
+                </li>
+                <li>
+                    <a href="{:U('PrizeManage/prizerecord',array('menu'=>'account_manage'))}">中奖纪录</a>
+                </li>
+                <li>
+                    <a href="{:U('PrizeManage/pxchange',array('menu'=>'account_manage'))}">兑奖详情</a>
+                </li>
+                <li>
+                    <a href="{:U('PrizeManage/car',array('menu'=>'account_manage'))}">卡牌日志</a>
+                </li>
+                 
+                </ul>
+            </li>
+ 
+        </li>
+
+    </ul>
+</div>

@@ -1,0 +1,40 @@
+ 
+<div id="content">
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">插入10000虚拟用户数据：</label>
+                    <div class="controls">
+                        <a href="{:U('MassDataTest/insert_user_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                        <p>服务器及本地均为uid从10001~20000,</p>
+                        <p>除昵称、认证状态及认证时间外，其余为空</p>
+                        <p>如果数据库数据已存在则不再插入新数据</p>
+                    </div>
+                </div>
+
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">插入10000视频认证数据：</label>
+                    <div class="controls">
+                        <a href="{:U('MassDataTest/insert_certificate_video_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                        <p>服务器及本地均为id从10001~20000</p>
+                        <p>如果数据库数据已存在则不再插入新数据</p>
+                    </div>
+                </div>
+
+                <hr noshade color="#0066cc">
+                <div class="control-group">
+                    <label class="control-label">插入10000未分配视频认证数据：</label>
+                    <div class="controls">
+                        <a href="{:U('MassDataTest/insert_certificate_video_unallocated_req_data/')}" class="btn btn-primary btn-mini" >确认</a>
+                        <p>服务器及本地均为id从10001~20000</p>
+                        <p>如果数据库数据已存在则不再插入新数据</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> 

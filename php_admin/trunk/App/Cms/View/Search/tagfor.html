@@ -1,0 +1,256 @@
+
+<div id="content">
+
+    <!--end-main-container-part-->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="widget-box">
+                <div>
+
+                    <form
+                         <if condition="$_GET['type'] eq 1 ">
+                            action="{:U('search/allocate_task_to_tag')}"
+                         <else/>
+                             action="{:U('search/allocate_task_again_to_tag')}"
+                         </if>
+
+
+                    method="POST">
+
+                        <div class="widget-content nopadding">
+                            <table id="certificate_car_table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="text-align:center">ID</th>
+                                    <th style="text-align:center">注册邀请码</th>
+                                    <th style="text-align:center">邀请码备注</th>
+                                    <th style="text-align:center">用户UID</th>
+                                    <th style="text-align:center">标签</th>
+                                    <th style="text-align:center">分类</th>
+                                    <th style="text-align:center">标签创建时间</th>
+                                    <if condition="$_GET['type'] eq 2 || $_GET['type'] eq 3 || $_GET['menu'] eq 'admin_task'  " >
+                                        <th style="text-align:center">分配给</th>
+                                        <th style="text-align:center">分配时间</th>
+                                        <th style="text-align:center">状态</th>
+                                    </if>
+                                    <if condition="$_GET['menu'] eq 'admin_task'">
+                                        <th style="text-align:center">操作</th>
+                                    </if>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <volist name="list" id="vo">
+                                    <tr class="gradeX">
+                                        <td style="text-align:center">
+                                            {$vo.id}
+                                            <input  type="checkbox" name="id[]" class="input-ch" value="{$vo.id}"/>
+                                        </td>
+                                        <td style="text-align:center">{$vo.code}</td>
+                                        <td style="text-align:center">{$vo.memo}</td>
+                                        <td style="text-align:center">
+                                            <a href="{:U('User/user_info/', array('menu'=>'account_manage','type'=>'all_user','uid'=>$vo['uid'],'tag'=>'show'))}"   target="_blank" >{$vo.uid}</a>
+                                        </td>
+                                        <td style="text-align:center">{$vo.title}</td>
+                                        <td style="text-align:center">
+                                            <select class="tagclass" va="{$vo.id}" >
+                                                <option value="">修改分类</option>
+                                                <volist name="selects" id="vos" >
+                                                    <option value="{$vos.id}" <if condition="$vos['id'] eq $vo['tag_class_id'] ">selected = "selected" </if> >{$vos.name}</option>
+                                                </volist>
+                                            </select>
+                                        </td>
+                                        <td style="text-align:center">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                                        <if condition="$_GET['type'] eq 2 || $_GET['type'] eq 3 || $_GET['menu'] eq 'admin_task'  " >
+                                            <td style="text-align:center">{$vo.nickname}</td>
+                                            <td style="text-align:center">{$vo.distri|date="Y-m-d H:i:s",###}</td>
+                                            <td style="text-align:center">
+                                                 <?php $type = C('TAG_TYPE'); echo $type[$vo['certificate']] ?>
+                                            </td>
+                                        </if>
+                                        <if condition="$_GET['menu'] eq 'admin_task' || $_GET['type'] eq 3 ">
+                                             <td style="text-align: center">
+                                                <a class="btn btn-warning  tag_del" va="{$vo.id}" >审核</a>
+                                                <a class="btn btn-primary btn-mini one_tag_pass" va="{$vo.id}" >通过</a>
+                                             </td>
+
+
+                                         </if>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+                            <if condition="$_GET['type'] eq 1 || $_GET['type'] eq 2  ">
+                                <include file="Common:select_admin" />
+                            </if>
+                        </div>
+                    </form>
+                </div>
+
+                <if condition="$_GET['menu'] eq 'admin_task'">
+                    <div style="float: right">
+                        <input type="submit" id="allconfirm" class="btn btn-w-m btn-warning" value="全部通过"/>
+                    </div>
+                </if>
+
+                <if condition="$_GET['type'] eq '3'">
+                    <div style="float: right">
+                        <input type="submit" id="confirm" class="btn btn-w-m btn-warning" value="确认"/>
+                    </div>
+                </if>
+
+
+            </div>
+        </div>
+        <div class="pagination alternate">
+            <ul>
+                <li style="text-align: center;color: #0000ff">{$page}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="/Public/layer/layer.min.js"></script>
+<script src="/Public/layer/extend/layer.ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var  arr  = [];
+        $(".input-ch").each(function() {
+            arr.push($.trim($(this).val()));
+        });
+        var  content  =  arr.join(',');
+        var  list     =  content;
+
+        $('#confirm').click(function(){
+            $.post("{:U('Search/confirm_tag_request')}",{list:list},function(data){
+                if(data=='ok'){
+                    window.location.href = '';
+                }else{
+                    alert('确认失败！');
+                }
+            });
+        });
+
+
+
+        $('#allconfirm').click(function(){
+            var passtag = layer.confirm('确定要全部通过吗？',function(){
+                $.post("{:U('Search/confirm_all_pass')}",{list:list},function(data){
+                    if(data=='ok'){
+                        window.location.href = '';
+                    }
+                });
+            });
+
+        });
+
+        $('.one_tag_pass').click(function(){
+            var id = $(this).attr('va');
+            var _this = $(this);
+            var closeyes = layer.confirm('确定要通过吗？',function(){
+                $.post("{:U('Search/confirm_all_pass')}",{list:id},function(data){
+                    if(data=='ok'){
+                        _this.parent().parent().empty();
+                        layer.close(closeyes);
+                    }
+                });
+            });
+
+        });
+
+        $("#all").click(function(){
+            if($(this).checked){
+                $(".input-ch").each(function(i){
+                    $(".input-ch").eq(i).prop("checked",true);
+                    //$.uniform.update($(this));
+                });
+            }else{
+                $(".input-ch").each(function(i){
+                    $(".input-ch").eq(i).attr("checked",false);
+                    //$.uniform.update($(this));
+                });
+            }
+        });
+
+        $("#selectAll").click(function(){
+            $(".input-ch").each(function(i){
+                $(".input-ch").eq(i).prop("checked",true);
+                //$.uniform.update($(this));
+            });
+        });
+
+        $("#reverse").click(function(){
+            $(".input-ch").each(function(i){
+                $(".input-ch").eq(i).prop("checked",false);
+                //$.uniform.update($(this));
+            });
+        });
+
+        $('.tag_del').click(function(){
+            var _thiss    = $(this);
+            var id        = $(this).attr('va');
+            var passtaged = layer.confirm('你确定要审核吗？',function(){
+
+                $.layer({
+                    area: ['auto','auto'],
+                    dialog: {
+                        msg: '删除标签原因。',
+                        btns: 2,
+                        type: 4,
+                        btn: ['修改标签','删除标签'],
+                        yes: function(){
+                            layer.prompt({title: '输入修改名称！'}, function(name){
+                                $.post("{:U('Search/delete_tag')}",{id:id,name:name,type:1},function(data){
+                                    if(data=='ok'){
+                                        window.location.href = '';
+                                    }else{
+                                        layer.alert('修改失败！呼叫程序员吧');
+                                    }
+                                });
+                            });
+
+                        }, no: function(){
+
+                            $.post("{:U('Search/delete_tag')}",{id:id,type:2},function(data){
+                                if(data=='ok'){
+                                    _thiss.parent().parent().empty();
+                                    layer.msg('删除成功！');
+                                }
+                            });
+                        }
+                    }
+                });
+
+
+            });
+
+        });
+
+        $('.tagclass').change(function () {
+            var _this   = _this;
+            var classid = $(this).val();
+            var tagid   = $(this).attr('va');
+
+            var tagptag = layer.confirm('你确定要更换分类吗？',function(d){
+                $.post("{:U('search/tagclasschange')}",{classid:classid,id:tagid}, function (data) {
+                    if(data=='ok'){
+                        layer.msg('修改成功！');
+                    }else{
+                        layer.msg('失败！');
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+
+    });
+</script>
+ 

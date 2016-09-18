@@ -1,0 +1,68 @@
+<div id="sidebar">
+    <ul>
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage'">active</if>
+        ">
+        <a href="#"> <i class="icon icon-th-list"></i>
+            <span>车辆管理</span>
+        </a>
+        <ul <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage'">style="display:block"</if>
+        >
+        <li>
+            <a href="{:U('ContentManage/car_brand')}">汽车品牌</a>
+        </li>
+        <li>
+            <a href="{:U('ContentManage/car_model')}">汽车车型</a>
+        </li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage'">active</if>
+        ">
+        <a href="#"> <i class="icon icon-th-list"></i>
+        <span>文字审查</span>
+        </a>
+        <ul <if condition="(strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage') OR (strtolower($Think.const.CONTROLLER_NAME) eq 'user')">style="display:block"</if>
+        >
+        <li>
+        <a href="{:U('User/index/',array('menu'=>'content_manage','type'=>'unprocessed'))}">未审查</a>
+        </li>
+        <li>
+        <a href="{:U('User/index/',array('menu'=>'content_manage','type'=>'processed'))}">已审查</a>
+        </li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage'">active</if>
+        ">
+        <a href="#">
+        <i class="icon icon-th-list"></i>
+        <span>图片审查</span>
+        </a>
+        <ul <if condition="(strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage') OR (strtolower($Think.const.CONTROLLER_NAME) eq 'head_image')">style="display:block"</if>
+        >
+        <li>
+        <a href="{:U('HeadImage/index/',array('menu'=>'content_manage','type'=>'unprocessed'))}">未审查</a>
+        </li>
+        <li>
+        <a href="{:U('HeadImage/index/',array('menu'=>'content_manage','type'=>'processed'))}">已审查</a>
+        </li>
+        </ul>
+        </li>
+
+        <li class="submenu <if condition="strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage'">active</if>
+        ">
+        <a href="#">
+        <i class="icon icon-th-list"></i>
+        <span>敏感词库管理</span>
+        </a>
+        <ul <if condition="(strtolower($Think.const.CONTROLLER_NAME) eq 'content_manage') OR (strtolower($Think.const.CONTROLLER_NAME) eq 'head_image')">style="display:block"</if>
+        >
+        <li>
+        <a href="{:U('content_manage/set_sensitive/')}">设置敏感词</a>
+        </li>
+        </ul>
+        </li>
+
+
+    </ul>
+</div>

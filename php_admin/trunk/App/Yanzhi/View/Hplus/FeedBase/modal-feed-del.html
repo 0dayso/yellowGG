@@ -1,0 +1,31 @@
+<div id="modal-feed-del" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="about:blank" method="POST" class="form-inline" onsubmit="return confirm('真的要这么做？')">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">删除动态</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>删除理由：</label>
+            <select name="reason" class="form-control">
+              <option value="">请选择</option>
+<volist name="data['accusation_reasons']" id="v">
+              <option value="{$key}">{$v}</option>
+</volist>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>备注：</label>
+            <input type="text" name="remark" placeholder="" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+ 
+<div id="content">
+    
+    <!--Action boxes-->
+    <div class="container-fluid">
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+                <form class="form-horizontal" id="save-data">
+                    <div class="control-group">
+                        <label class="control-label">车型：</label>
+                        <div class="controls">
+                            <input id="save-car-type" type="text" class="input" size="150" value="{$info.name}"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">品牌：</label>
+                        <div class="controls">
+                            <select id="save-car-model" style="width:200px;" value="{$info.modelName}">
+                                <option value="{$info.id}:{$info.modelId}" selected="selected">{$info.modelName}</option>
+                                <foreach name="list" item="vo" >
+                                    <if condition="($info.id gt 0)">
+                                        <option value="{$info.id}:{$vo.id}">{$vo.name}</option>
+                                        <else />
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    </if>
+                                </foreach>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="text-align:left">
+                        <span><input type="submit" class="btn btn-success submit" value="保存" /></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+ 
+<script type="text/javascript">
+    $(function(){
+        $('#save-data').on('submit',function() {
+         var type      = $('#save-car-type').val();
+         var model     = $('#save-car-model option:selected').val();
+         location.href ="{:U('Car/process')}?name="+type+"&model="+model;
+
+         return false;
+         });
+    });
+</script>
+ 
